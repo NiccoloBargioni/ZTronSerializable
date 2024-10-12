@@ -1,0 +1,60 @@
+{
+  "originHash" : "e42e88f7bb580556cab9c845f739be1f2c0a553f8f07bcd2d54d0b0cce593e54",
+  "pins" : [
+    {
+      "identity" : "sqlite.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stephencelis/SQLite.swift.git",
+      "state" : {
+        "revision" : "a95fc6df17d108bd99210db5e8a9bac90fe984b8",
+        "version" : "0.15.3"
+      }
+    },
+    {
+      "identity" : "swift-log",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-log.git",
+      "state" : {
+        "revision" : "9cb486020ebf03bfa5b5df985387a14a98744537",
+        "version" : "1.6.1"
+      }
+    },
+    {
+      "identity" : "swiftgraph",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NickTheFreak97/SwiftGraph",
+      "state" : {
+        "branch" : "msa",
+        "revision" : "a00fc9e042d0afff473ef73ea0dc8cd80eca1b28"
+      }
+    },
+    {
+      "identity" : "ztron-routing-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NickTheFreak97/ztron-routing-kit.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "b2806b68f199c6a5f51572da90c6357f5a09dd3f"
+      }
+    },
+    {
+      "identity" : "ztrondatamodel",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NiccoloBargioni/ZTronDataModel",
+      "state" : {
+        "branch" : "main",
+        "revision" : "15b39afeb986f5125b7313719ea1d8b0ea930a3d"
+      }
+    },
+    {
+      "identity" : "ztronrouter",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NiccoloBargioni/ZTronRouter",
+      "state" : {
+        "branch" : "main",
+        "revision" : "1a4888983d2e2f7377b001b8b80139362154b958"
+      }
+    }
+  ],
+  "version" : 3
+}
