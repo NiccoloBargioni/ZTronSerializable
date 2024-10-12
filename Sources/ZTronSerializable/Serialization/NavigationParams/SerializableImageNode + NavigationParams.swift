@@ -8,7 +8,7 @@ extension SerializableImageNode {
         private let boundingFrame: CGRect?
 
         
-        init(bottomBarIcon: String, boundingFrame: CGRect? = nil) {
+        public init(bottomBarIcon: String, boundingFrame: CGRect? = nil) {
             self.bottomBarIcon = bottomBarIcon
             self.boundingFrame = boundingFrame
             

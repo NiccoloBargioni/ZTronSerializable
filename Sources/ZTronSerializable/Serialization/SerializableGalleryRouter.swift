@@ -4,7 +4,7 @@ import ZTronRouter
 
 public class SerializableGalleryRouter: SerializableNode {
     
-    public var router: ZTronRouter<Empty, SerializableGalleryNode, Empty>
+    internal var router: ZTronRouter<Empty, SerializableGalleryNode, Empty>
     
     init() {
         self.router = ZTronRouter()
