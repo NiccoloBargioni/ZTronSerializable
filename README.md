@@ -62,6 +62,8 @@ and desists to serialize if so, avoiding attempts to write records with the same
 
 ## Keep in mind
 
+### Naming conventions
+
 This library uses the path of the images inside gallery routers to infer master->variant relationships between images, therefore the path components should match the name of actual images on the database, as well as it uses the path to establish the name of the variant. 
 
 For instance, consider the following registration code snippet:
@@ -90,10 +92,18 @@ puppetStringsGallery.register(
     position: 0,
     overlays: [SerializableBoundingCircleOverlay()]
   ),
-  at: ["upNAtoms", "NoRave"] 
+  at: ["upNAtoms", "NoRave"],
+  withParameter: SerializableImageNode.NavigationParameters(
+      bottomBarIcon: "image for no rave icon (usually systemName)",
+      boundingFrame: CGRect.NORMALIZED_FULL_SIZE (or any normalized CGRect representing what part of the original image the variant represents"
+  )
 )
 ```
 
 In this scenario, this library infers that there exists an image in `assets.xcassets` named `upNAtoms` and another one named `upNAtomsNoRave`, and that `upNAtomsNoRave` is the "NoRave" variant of `upNAtoms`. This is due to the specified path, not due to the naming of the images.
 Mismatching casing (or id) between path and name property will result in failure, that is "upNAtoms" must be typed the same both at the registration time (as an image name), and at the time it is used as a master for a variant (in the path).
 
+
+### Rules not enforced at compile-time
+
+As of 12.10.2024, `SerializableImageNode` constructor should have a non-null `withParameter` parameter when the path has more than two components, so that every variant of an image has an associated icon and region on screen it represents. Failing to comply will result in a runtime error, causing the app to crash. 
