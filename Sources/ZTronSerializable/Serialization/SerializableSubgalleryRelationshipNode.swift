@@ -11,11 +11,19 @@ public class SerializableSubgalleryRelationshipNode: SerializableNode {
         self.slave = slave
     }
     
-    public func writeTo(db: Connection, with foreignKeys: any SerializableForeignKeys) throws {
+    public func writeTo(db: Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool = false) throws {
         guard let foreignKeys = foreignKeys as? SerializableGalleryForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableGalleryForeignKeys in \(#function) on type \(#file)"
             )
+        }
+        
+        if shouldValidateFK {
+            let firstInvalidFK = try foreignKeys.validate(on: db)
+            
+            if let firstInvalidFK = firstInvalidFK {
+                throw SerializableException.invalidForeignKeyException(reason: firstInvalidFK)
+            }
         }
         
         try DBMS.CRUD.insertIntoHasSubgallery(

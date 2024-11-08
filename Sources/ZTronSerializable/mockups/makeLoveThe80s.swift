@@ -52,7 +52,7 @@ public func makeLoveThe80s() {
                 game: "infinite warfare"
             )
             
-            try loveThe80sGalleries.writeIfNotExists(db: dbConnection, with: galleryFK, propagate: true)
+            try loveThe80sGalleries.writeIfNotExists(db: dbConnection, with: galleryFK, shouldValidateFK: true, propagate: true)
             
             return .commit
         }

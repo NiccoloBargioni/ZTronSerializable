@@ -32,11 +32,19 @@ public class SerializableLabelNode: OverlaySerializableNode {
         self.maxAABB = maxAABB
     }
     
-    public func writeTo(db: Connection, with foreignKeys: any SerializableForeignKeys) throws {
+    public func writeTo(db: Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool = true) throws {
         guard let foreignKeys = foreignKeys as? SerializableImageOverlayForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableImageOverlayForeignKeys in \(#function) on type \(#file)"
             )
+        }
+        
+        if shouldValidateFK {
+            let firstInvalidFK = try foreignKeys.validate(on: db)
+            
+            if let firstInvalidFK = firstInvalidFK {
+                throw SerializableException.invalidForeignKeyException(reason: firstInvalidFK)
+            }
         }
         
         try DBMS.CRUD.insertIntoLabel(

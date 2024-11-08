@@ -40,6 +40,9 @@ let package = Package(
                 .product(name: "ZTronDataModel", package: "ZTronDataModel"),
                 .product(name: "ZTronRouter", package: "ZTronRouter"),
                 .product(name: "SQLite", package: "SQLite.swift")
+            ],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency=complete")
             ]
         ),
         .testTarget(
