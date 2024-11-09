@@ -49,7 +49,9 @@ extension Validator {
                 }
             }
         } catch ValidateImagesRouterError.interruptSearch(let reason) {
-            print(reason)
+            #if DEBUG
+            Self.logger.log(level: .error, "\(reason)")
+            #endif
             return false
         } catch {
             fatalError("Path should be unfeasible in \(#file): \(#function), please reach out to github:NickTheFreak97")

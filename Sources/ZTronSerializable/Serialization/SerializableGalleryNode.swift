@@ -2,6 +2,7 @@ import Foundation
 import SQLite
 import ZTronRouter
 import ZTronDataModel
+import os
 
 public class SerializableGalleryNode: SerializableNode {
     public typealias ImagesRouter = ZTronRouter<Empty, SerializableImageNode, SerializableImageNode.NavigationParameters>
@@ -11,6 +12,8 @@ public class SerializableGalleryNode: SerializableNode {
     private let assetsImageName: String?
     private let searchToken: SerializableGallerySearchTokenNode?
     private let images: ImagesRouter
+    
+    private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableGalleryNode")
     
     // MARK: - Serializable
     public func writeTo(db: Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool = false) throws {
@@ -82,16 +85,20 @@ public class SerializableGalleryNode: SerializableNode {
         }
         
         // If a gallery search token exists, verify that it's on the db
-        if !(try self.searchToken?.existsOn(
-            db: db,
-            with: SerializableImageForeignKeys(
-                gallery: self.name,
-                galleryFK: foreignKeys
-            ),
-            propagate: false
-        ) ?? true) {
-            print("Search Token for \(self.name) does not exist on gallery \(self.name)")
-            return false
+        if let searchToken = self.searchToken {
+            if !(try searchToken.existsOn(
+                db: db,
+                with: SerializableImageForeignKeys(
+                    gallery: self.name,
+                    galleryFK: foreignKeys
+                ),
+                propagate: false
+            )) {
+                #if DEBUG
+                Self.logger.log(level: .error, "Search Token \(searchToken.getTitle()) does not exist on gallery \(self.toString())")
+                #endif
+                return false
+            }
         }
         
         
@@ -137,7 +144,9 @@ public class SerializableGalleryNode: SerializableNode {
                 return dbImagesMastersForThisGallery != imageMasters
             } else {
                 if dbImagesMastersForThisGallery < imageMasters {
-                    print("Expected to find \(imageMasters) masters on db, found \(dbImagesMastersForThisGallery) instead")
+                    #if DEBUG
+                    Self.logger.error("Expected to find \(imageMasters) masters on db, found \(dbImagesMastersForThisGallery) instead")
+                    #endif
                     return false
                 } else {
                     do {
@@ -176,7 +185,9 @@ public class SerializableGalleryNode: SerializableNode {
                             }
                         }
                     } catch SerializableException.illegalGraphStructureException(let reason) {
-                        print(reason)
+                        #if DEBUG
+                        Self.logger.error("\(reason)")
+                        #endif
                         return false
                     }
                     

@@ -85,4 +85,15 @@ public final class SerializableGalleryForeignKeys: SerializableForeignKeys {
         }
     }
 
+    public func toString() -> String {
+        return """
+            GALLERY_FK(
+                tool: \(self.tool),
+                tab: \(self.tab),
+                map: \(self.map),
+                game: \(self.game)
+            )
+        """
+    }
+
 }

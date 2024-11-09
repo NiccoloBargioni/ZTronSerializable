@@ -108,5 +108,16 @@ public final class SerializableImageForeignKeys: SerializableForeignKeys {
         }
     }
     
-    
+    public func toString() -> String {
+        return """
+            IMAGE_FK(
+                gallery: \(self.gallery),
+                tool: \(self.tool),
+                tab: \(self.tab),
+                map: \(self.map),
+                game: \(self.game)
+            )
+        """
+    }
+
 }

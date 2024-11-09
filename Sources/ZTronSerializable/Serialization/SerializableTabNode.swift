@@ -1,6 +1,7 @@
 import Foundation
 import ZTronDataModel
 import SQLite
+import os
 
 /// - `TAB(name, position, iconName, map, game)`
 /// - `PK(name, map, game)`
@@ -10,6 +11,8 @@ public final class SerializableTabNode: SerializableNode {
     private let position: Int
     @Lowercased private var iconName: String
     private let tools: [SerializableToolNode]
+    
+    private static let logger: os.Logger = .init()
     
     public init(name: String, position: Int, iconName: String, tools: [SerializableToolNode]) {
         self.name = name
@@ -45,6 +48,7 @@ public final class SerializableTabNode: SerializableNode {
         
         
         try DBMS.CRUD.insertIntoTab(
+            or: .ignore,
             for: db,
             name: self.name,
             position: self.position,
@@ -84,9 +88,14 @@ public final class SerializableTabNode: SerializableNode {
                         return false
                     }
                 }
-                
+                #if DEBUG
+                Self.logger.info("Tab \(self.toString()) with FK \(foreignKeys.toString()) exists on db")
+                #endif
                 return true
             } else {
+                #if DEBUG
+                Self.logger.info("Tab \(self.toString()) with FK \(foreignKeys.toString()) exists on db")
+                #endif
                 return true
             }
         } else {

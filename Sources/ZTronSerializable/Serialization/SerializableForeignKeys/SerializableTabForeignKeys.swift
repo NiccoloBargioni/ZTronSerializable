@@ -44,4 +44,14 @@ public final class SerializableTabForeignKeys: SerializableForeignKeys {
     public func getGame() -> String {
         return self.game
     }
+    
+    public func toString() -> String {
+        return """
+            TAB_FK(
+                map: \(self.map),
+                game: \(self.game)
+            )
+        """
+    }
+
 }

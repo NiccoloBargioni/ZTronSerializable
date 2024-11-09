@@ -55,7 +55,9 @@ extension Validator {
                 
             }
         } catch ValidateImagesRouterError.interruptSearch(let reason) {
-            print(reason)
+            #if DEBUG
+            Self.logger.log(level: .error, "\(reason)")
+            #endif
             return false
         } catch {
             fatalError("This path should be impossible in \(#file), please reach out to github:NickTheFreak97.")
@@ -63,7 +65,12 @@ extension Validator {
         
         for positions in subpositions.values {
             if !Validator.validatePositions(positions) {
-                print("could not validate positions set \(countingSort(positions))")
+                #if DEBUG
+                self.logger.log(
+                    level: .error,
+                    "Could not validate images positions set \(countingSort(positions)) in \(#function) of \(String(describing: Self.self))"
+                )
+                #endif
                 return false
             }
         }

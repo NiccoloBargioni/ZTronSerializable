@@ -2,7 +2,7 @@ import Foundation
 import SQLite
 
 /// Marker protocol class with default implementation for foreign keys sets
-public protocol SerializableForeignKeys {
+public protocol SerializableForeignKeys: Loggable {
     /// Validates the foreign key on the specified databse connection.
     ///
     /// - Parameter db: The database to check against.

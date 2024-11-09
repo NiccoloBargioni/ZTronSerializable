@@ -1,6 +1,7 @@
 import Foundation
 import SQLite
 import ZTronDataModel
+import os
 
 /// - `TOOL(name, position, assetsImageName, tab, map, game)`
 /// - `PK(name, tab, map, game)`
@@ -11,6 +12,7 @@ public final class SerializableToolNode: SerializableNode {
     private let assetsImageName: String
     private let galleryRouter: SerializableGalleryRouter?
     
+    private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableToolNode")
 
     public init(name: String, position: Int, assetsImageName: String, galleryRouter: SerializableGalleryRouter?) {
         self.name = name
@@ -79,9 +81,17 @@ public final class SerializableToolNode: SerializableNode {
                         propagate: propagate
                     )
                 } else {
+                    #if DEBUG
+                    if toolExists {
+                        Self.logger.info("Tool \(self.name) with FK: \(foreignKeys.toString()) exists on db")
+                    }
+                    #endif
                     return toolExists
                 }
             } else {
+                #if DEBUG
+                Self.logger.info("Tool \(self.name) with FK: \(foreignKeys.toString()) exists on db")
+                #endif
                 return true
             }
         } else {

@@ -124,4 +124,17 @@ public final class SerializableImageOverlayForeignKeys: SerializableForeignKeys 
         }
     }
 
+    public func toString() -> String {
+        return """
+            IMAGE_OVERLAY_FK(
+                image: \(self.image),
+                gallery: \(self.gallery),
+                tool: \(self.tool),
+                tab: \(self.tab),
+                map: \(self.map),
+                game: \(self.game)
+            )
+        """
+    }
+
 }

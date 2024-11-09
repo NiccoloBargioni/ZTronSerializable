@@ -65,4 +65,14 @@ public final class SerializableToolForeignKeys: SerializableForeignKeys {
             return .game
         }
     }
+    
+    public func toString() -> String {
+        return """
+            TOOL_OVERLAY_FK(
+                tab: \(self.tab),
+                map: \(self.map),
+                game: \(self.game)
+            )
+        """
+    }
 }

@@ -1,9 +1,10 @@
 import Foundation
 import SQLite
 import ZTronRouter
+import os
 
 public class SerializableGalleryRouter: SerializableNode {
-    
+    private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableGalleryRouter")
     internal var router: ZTronRouter<Empty, SerializableGalleryNode, Empty>
     
     init() {
@@ -59,7 +60,9 @@ public class SerializableGalleryRouter: SerializableNode {
                         reason: "Gallery \(galleryNode.getName()) (or parts of it) does not exist on db"
                     )
                 } else {
-                    print("Gallery \(galleryNode.getName()) exists on DB")
+                    #if DEBUG
+                    Self.logger.log(level: .info, "Gallery \(galleryNode.getName()) exists on DB")
+                    #endif
                 }
                 
                 if absolutePath.count > 2 {
@@ -78,7 +81,9 @@ public class SerializableGalleryRouter: SerializableNode {
                 }
             }
         } catch ExistanceError.interruptSearchError(let reason) {
-            print(reason)
+            #if DEBUG
+            Self.logger.error("\(reason)")
+            #endif
             return false
         }
         
