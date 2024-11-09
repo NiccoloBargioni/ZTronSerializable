@@ -53,7 +53,11 @@ public final class SerializableToolNode: SerializableNode {
         )
         
         if let galleryRouter = self.galleryRouter {
-            try self.galleryRouter?.writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
+            try galleryRouter.writeTo(
+                db: db,
+                with: SerializableGalleryForeignKeys(tool: self.name, toolFK: foreignKeys),
+                shouldValidateFK: shouldValidateFK
+            )
         }
     }
     
@@ -68,7 +72,11 @@ public final class SerializableToolNode: SerializableNode {
         
         if propagate {
             if let galleryRouter = self.galleryRouter {
-                return try galleryRouter.existsOn(db: db, with: foreignKeys, propagate: propagate)
+                return try galleryRouter.existsOn(
+                    db: db,
+                    with: SerializableGalleryForeignKeys(tool: self.name, toolFK: foreignKeys),
+                    propagate: propagate
+                )
             } else {
                 return toolExists
             }

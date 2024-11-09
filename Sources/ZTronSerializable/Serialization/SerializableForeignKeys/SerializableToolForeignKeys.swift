@@ -15,7 +15,7 @@ public final class SerializableToolForeignKeys: SerializableForeignKeys {
         self.map = map
         self.game = game
     }
-    
+        
     public func getTab() -> String {
         return self.tab
     }
