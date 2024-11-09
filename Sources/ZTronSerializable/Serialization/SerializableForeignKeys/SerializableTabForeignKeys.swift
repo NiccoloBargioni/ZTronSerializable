@@ -9,7 +9,7 @@ public final class SerializableTabForeignKeys: SerializableForeignKeys {
     @Lowercased private var map: String
     @Lowercased private var game: String
     
-    public init(name: String, position: Int, iconName: String, map: String, game: String) {
+    public init(map: String, game: String) {
         self.map = map
         self.game = game
     }
