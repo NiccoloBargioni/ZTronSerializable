@@ -14,6 +14,10 @@ public final class SerializableTabForeignKeys: SerializableForeignKeys {
         self.game = game
     }
     
+    convenience init(map: String, mapFK: SerializableMapForeignKeys) {
+        self.init(map: map, game: mapFK.getGame())
+    }
+    
     public func validate(on db: SQLite.Connection) throws -> ForeignKey? {
         var isGameFKValid: Bool = true
         

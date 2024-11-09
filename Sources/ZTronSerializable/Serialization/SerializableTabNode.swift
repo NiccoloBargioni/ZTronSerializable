@@ -113,5 +113,8 @@ public final class SerializableTabNode: SerializableNode {
         """
     }
     
+    public func getPosition() -> Int {
+        return self.position
+    }
     
 }
