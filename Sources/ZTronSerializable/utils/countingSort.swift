@@ -5,12 +5,21 @@ import Foundation
 /// - Complexity: O(array.count + max(array)) for both space and time.
 public func countingSort(_ array: [Int])-> [Int] {
   guard array.count > 0 else { return [] }
-
-    let maxElement = array.max() ?? 0
+    var arrayCopy = Array(array)
+    
+    let min = array.min()!
+    
+    if min < 0 {
+        for i in 0..<arrayCopy.count {
+            arrayCopy[i] -= min
+        }
+    }
+    
+    let maxElement = arrayCopy.max()!
 
     var countArray = [Int](repeating: 0, count: Int(maxElement + 1))
     
-    for element in array {
+    for element in arrayCopy {
         countArray[element] += 1
     }
 
@@ -19,13 +28,19 @@ public func countingSort(_ array: [Int])-> [Int] {
         countArray[index] = sum
     }
 
-    var sortedArray = [Int](repeating: 0, count: array.count)
+    var sortedArray = [Int](repeating: 0, count: arrayCopy.count)
         
-    for index in stride(from: array.count - 1, through: 0, by: -1) {
-        let element = array[index]
+    for index in stride(from: arrayCopy.count - 1, through: 0, by: -1) {
+        let element = arrayCopy[index]
         countArray[element] -= 1
         sortedArray[countArray[element]] = element
     }
 
+    if min < 0 {
+        for i in 0..<sortedArray.count {
+            sortedArray[i] += min
+        }
+    }
+    
     return sortedArray
 }
