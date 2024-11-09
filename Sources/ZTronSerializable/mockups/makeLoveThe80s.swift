@@ -4,7 +4,7 @@ import Foundation
 import ZTronDataModel
 import ZTronRouter
 
-public func makeLoveThe80s() {
+public func makeLoveThe80s() -> SerializableGalleryRouter {
     let loveThe80sGalleries = SerializableGalleryRouter()
     
     loveThe80sGalleries.router.register(
@@ -42,6 +42,7 @@ public func makeLoveThe80s() {
         at: ["afterlife"]
     )
     
+    /*
     do {
         try DBMS.transaction(#function) { dbConnection in
             
@@ -52,12 +53,15 @@ public func makeLoveThe80s() {
                 game: "infinite warfare"
             )
             
-            try loveThe80sGalleries.writeIfNotExists(db: dbConnection, with: galleryFK, propagate: true)
+            try loveThe80sGalleries.writeIfNotExists(db: dbConnection, with: galleryFK, shouldValidateFK: true, propagate: true)
             
             return .commit
         }
     } catch {
         fatalError(error.localizedDescription)
     }
+     */
+    
+    return loveThe80sGalleries
 }
 #endif

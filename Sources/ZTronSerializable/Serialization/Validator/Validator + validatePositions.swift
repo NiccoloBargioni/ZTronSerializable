@@ -23,6 +23,15 @@ extension Validator {
     ///
     /// - Complexity: O(positions.count + max(positions)) both for space and time. Under typical operating conditions, this becomes O(positions.count)
     public static func validatePositions(_ positions: [Int]) -> Bool {
+        if positions.count <= 0 {
+            #if DEBUG
+            Self.logger.log(
+                level: .debug,
+                "Attempted to validate an empty positions array. By default an empty array is considered to be sorted, but attempting to write to db an empty array is discouraged."
+            )
+            #endif
+            return true
+        }
         
         // Invariant: At the nth iteration, positions[0...n-1] is all non-negative
         for position in positions {
@@ -31,7 +40,7 @@ extension Validator {
             }
         }
         
-        let sortedPositions = countingSort(positions)
+        let sortedPositions = positions.countingSort()
         
         // Invariant: At the nth iteration, sortedPositions[0...n-1] = 0...n-1
         for (i, position) in sortedPositions.enumerated() {

@@ -17,11 +17,19 @@ class SerializableImageVariantRelationshipNode: SerializableNode {
         self.boundingFrame = boundingFrame
     }
     
-    public func writeTo(db: Connection, with foreignKeys: any SerializableForeignKeys) throws {
+    public func writeTo(db: Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool = false) throws {
         guard let foreignKeys = foreignKeys as? SerializableImageForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableImageForeignKeys in \(#function) on type \(#file)"
             )
+        }
+        
+        if shouldValidateFK {
+            let firstInvalidFK = try foreignKeys.validate(on: db)
+            
+            if let firstInvalidFK = firstInvalidFK {
+                throw SerializableException.invalidForeignKeyException(reason: firstInvalidFK)
+            }
         }
                 
         try DBMS.CRUD.insertIntoImageVariant(

@@ -13,11 +13,19 @@ public class SerializableGalleryNode: SerializableNode {
     private let images: ImagesRouter
     
     // MARK: - Serializable
-    public func writeTo(db: Connection, with foreignKeys: any SerializableForeignKeys) throws {
+    public func writeTo(db: Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool = false) throws {
         guard let foreignKeys = foreignKeys as? SerializableGalleryForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableGalleryForeignKeys in \(#function) on type \(#file)"
             )
+        }
+        
+        if shouldValidateFK {
+            let firstInvalidFK = try foreignKeys.validate(on: db)
+            
+            if let firstInvalidFK = firstInvalidFK {
+                throw SerializableException.invalidForeignKeyException(reason: firstInvalidFK)
+            }
         }
         
         #if DEBUG
@@ -38,7 +46,7 @@ public class SerializableGalleryNode: SerializableNode {
             tool: foreignKeys.getTool()
         )
         
-        try self.searchToken?.writeTo(db: db, with: foreignKeys)
+        try self.searchToken?.writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
         
         try self.images.forEach { absolutePath, output, params in
             
@@ -47,7 +55,7 @@ public class SerializableGalleryNode: SerializableNode {
                 galleryFK: foreignKeys
             )
             
-            try output.writeTo(db: db, with: imageFK)
+            try output.writeTo(db: db, with: imageFK, shouldValidateFK: shouldValidateFK)
             
             if absolutePath.count > 2 {
                 guard let params = params else {
@@ -61,7 +69,7 @@ public class SerializableGalleryNode: SerializableNode {
                     bottomBarIcon: params.getBottomBarIcon(),
                     boundingFrame: params.getBoundingFrame()
                 )
-                .writeTo(db: db, with: imageFK)
+                .writeTo(db: db, with: imageFK, shouldValidateFK: shouldValidateFK)
             }
         }
     }
