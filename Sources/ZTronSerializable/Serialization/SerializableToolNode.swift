@@ -70,18 +70,22 @@ public final class SerializableToolNode: SerializableNode {
         
         let toolExists = try DBMS.CRUD.toolExists(for: db, tool: self.name, tab: foreignKeys.getTab(), map: foreignKeys.getMap(), game: foreignKeys.getGame())
         
-        if propagate {
-            if let galleryRouter = self.galleryRouter {
-                return try galleryRouter.existsOn(
-                    db: db,
-                    with: SerializableGalleryForeignKeys(tool: self.name, toolFK: foreignKeys),
-                    propagate: propagate
-                )
+        if toolExists {
+            if propagate {
+                if let galleryRouter = self.galleryRouter {
+                    return try galleryRouter.existsOn(
+                        db: db,
+                        with: SerializableGalleryForeignKeys(tool: self.name, toolFK: foreignKeys),
+                        propagate: propagate
+                    )
+                } else {
+                    return toolExists
+                }
             } else {
-                return toolExists
+                return true
             }
         } else {
-            return toolExists
+            return false
         }
     }
     
@@ -95,5 +99,8 @@ public final class SerializableToolNode: SerializableNode {
         """
     }
     
+    public func getPosition() -> Int {
+        return self.position
+    }
     
 }

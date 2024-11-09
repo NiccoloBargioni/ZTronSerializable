@@ -15,6 +15,10 @@ public final class SerializableToolForeignKeys: SerializableForeignKeys {
         self.map = map
         self.game = game
     }
+    
+    public convenience init(tab: String, tabFK: SerializableTabForeignKeys) {
+        self.init(tab: tab, map: tabFK.getMap(), game: tabFK.getGame())
+    }
         
     public func getTab() -> String {
         return self.tab
