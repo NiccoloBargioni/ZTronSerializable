@@ -6,6 +6,7 @@ public func makeInfiniteWarfare() -> SerializableGameNode {
         assetsImageName: "IWZombies",
         maps: [
             makeSpaceland(),
+            makeRave()
         ]
     )
 }
