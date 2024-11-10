@@ -13,7 +13,7 @@ public final class SerializableGameNode: SerializableNode {
     private let maps: [SerializableMapNode]
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableGameNode")
     
-    init(name: String, position: Int, assetsImageName: String, maps: [SerializableMapNode]) {
+    public init(name: String, position: Int, assetsImageName: String, maps: [SerializableMapNode]) {
         self.name = name
         self.position = position
         self.assetsImageName = assetsImageName
@@ -105,5 +105,9 @@ public final class SerializableGameNode: SerializableNode {
             assetsImageName: \(assetsImageName)
         )
         """
+    }
+    
+    public func getPosition() -> Int {
+        return self.position
     }
 }
