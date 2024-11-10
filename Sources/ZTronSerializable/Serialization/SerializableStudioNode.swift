@@ -1,6 +1,7 @@
 import Foundation
 import SQLite
 import ZTronDataModel
+import os
 
 /// - `STUDIO(name, position, assetsImageName)`
 /// - `PK(name)`
@@ -9,6 +10,7 @@ public final class SerializableStudioNode: SerializableNode {
     private let position: Int
     private let assetsImageName: String
     private let games: [SerializableGameNode]
+    private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableStudioNode")
     
     public init(name: String, position: Int, assetsImageName: String, games: [SerializableGameNode]) {
         self.name = name
@@ -51,7 +53,15 @@ public final class SerializableStudioNode: SerializableNode {
     }
     
     public func existsOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws -> Bool {
-        return try DBMS.CRUD.studioExists(for: db, studio: self.name)
+        let studioExists = try DBMS.CRUD.studioExists(for: db, studio: self.name)
+        
+        #if DEBUG
+        if studioExists {
+            Self.logger.info("Studio \(self.toString()) exists on db")
+        }
+        #endif
+        
+        return studioExists
     }
     
     public func toString() -> String {
@@ -62,5 +72,9 @@ public final class SerializableStudioNode: SerializableNode {
             assetsImageName: \(self.assetsImageName)
         )
         """
+    }
+    
+    public func getPosition() -> Int {
+        return self.position
     }
 }
