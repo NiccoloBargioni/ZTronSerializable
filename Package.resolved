@@ -1,5 +1,5 @@
 {
-  "originHash" : "e42e88f7bb580556cab9c845f739be1f2c0a553f8f07bcd2d54d0b0cce593e54",
+  "originHash" : "137193628cbab6be6856d0b5be94aca5c2dffd1ab902bd325e8456ab81a04cf9",
   "pins" : [
     {
       "identity" : "sqlite.swift",
@@ -43,7 +43,7 @@
       "location" : "https://github.com/NiccoloBargioni/ZTronDataModel",
       "state" : {
         "branch" : "main",
-        "revision" : "0aa00427c1ec623587e531b2e0ccc8c2158a89c2"
+        "revision" : "cddcfb6d7373deee7add14eff19cbbbd3c8a6f2b"
       }
     },
     {

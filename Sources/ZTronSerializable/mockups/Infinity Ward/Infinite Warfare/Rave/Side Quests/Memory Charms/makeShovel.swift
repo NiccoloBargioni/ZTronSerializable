@@ -10,6 +10,7 @@ public func makeShovel() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "archer.range.shovel.outline",
                     boundingBox: .init(
                         x: 921.0/1920.0,
                         y: 526.0/1080.0,
@@ -29,6 +30,7 @@ public func makeShovel() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "bang.bangs.cave.shovel.outline",
                     boundingBox: .init(
                         x: 302.0/1920.0,
                         y: 568.0/1080.0,

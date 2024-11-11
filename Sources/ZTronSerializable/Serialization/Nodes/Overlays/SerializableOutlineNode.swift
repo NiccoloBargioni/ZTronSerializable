@@ -3,12 +3,14 @@ import SQLite
 import ZTronDataModel
 
 public class SerializableOutlineNode: OverlaySerializableNode {
+    private let resourceName: String
     @ColorHex private var colorHex: String
     private let _isActive: Bool
     @NormalizedReal private var opacity: Double
     @NormalizedRect private var boundingBox: CGRect
 
     public init(
+        resourceName: String,
         colorHex: String = OutlineDefaults.COLOR_HEX,
         isActive: Bool = OutlineDefaults.IS_ACTIVE,
         opacity: Double = OutlineDefaults.OPACITY,
@@ -18,6 +20,7 @@ public class SerializableOutlineNode: OverlaySerializableNode {
         self._isActive = isActive
         self.opacity = opacity
         self.boundingBox = boundingBox
+        self.resourceName = resourceName
     }
     
     public func writeTo(db: Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool = false) throws {
@@ -38,6 +41,7 @@ public class SerializableOutlineNode: OverlaySerializableNode {
         try DBMS.CRUD.insertIntoOutline(
             or: .ignore,
             for: db,
+            resourceName: self.resourceName,
             colorHex: self.colorHex,
             isActive: self._isActive,
             opacity: self.opacity,

@@ -10,6 +10,7 @@ public func makeBinoculars() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "recreational.area.crate.binoculars.outline",
                     boundingBox: .init(
                         x: 1345.0/1920.0,
                         y: 608.0/1080.0,
@@ -29,6 +30,7 @@ public func makeBinoculars() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "mess.hall.bench.binoculars.outline",
                     boundingBox: .init(
                         x: 1125.0/1920.0,
                         y: 538.0/1080.0,

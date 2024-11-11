@@ -17,6 +17,7 @@ func makeCosmicWay() -> SerializableGalleryNode {
             position: 0,
             overlays: [
                 SerializableOutlineNode(
+                    resourceName: "Police.outline",
                     boundingBox: CGRect(
                         x: 1317.0/2715.0, y: 745/1527.0,
                         width: 5.0/2715.0, height: 10.0/1527.0
@@ -37,6 +38,7 @@ func makeCosmicWay() -> SerializableGalleryNode {
             position: 0,
             overlays: [
                 SerializableOutlineNode(
+                    resourceName: "Police.zoom.outline",
                     boundingBox: CGRect(
                         x: 985.0/1920.0, y: 387.0/1080.0,
                         width: 54.0/1920.0, height: 107.0/1080.0
@@ -61,6 +63,7 @@ func makeCosmicWay() -> SerializableGalleryNode {
             position: 1,
             overlays: [
                 SerializableOutlineNode(
+                    resourceName: "Shutters.outline",
                     boundingBox: CGRect(
                         x: 790.0/2715.0, y: 767.0/1527.0,
                         width: 23.0/2715.0, height: 43.0/1527.0
@@ -81,6 +84,7 @@ func makeCosmicWay() -> SerializableGalleryNode {
             position: 2,
             overlays: [
                 SerializableOutlineNode(
+                    resourceName: "Depot.outline",
                     boundingBox: CGRect(
                         x: 1768.0/2715.0, y: 862.0/1527.0,
                         width: 44.0/2715.0, height: 46.0/1527.0
@@ -101,6 +105,7 @@ func makeCosmicWay() -> SerializableGalleryNode {
             position: 3,
             overlays: [
                 SerializableOutlineNode(
+                    resourceName: "Cakes.outline",
                     boundingBox: CGRect(
                         x: 1274.0/2715.0, y: 697.0/1527.0,
                         width: 14.0/2715.0, height: 21.0/1527.0
@@ -121,6 +126,7 @@ func makeCosmicWay() -> SerializableGalleryNode {
             position: 4,
             overlays: [
                 SerializableOutlineNode(
+                    resourceName: "SpacelandSign.outline",
                     boundingBox: CGRect(
                         x: 1352.0/2715.0, y: 761.0/1527.0,
                         width: 4.0/2715.0, height: 4.0/1527.0
@@ -141,6 +147,7 @@ func makeCosmicWay() -> SerializableGalleryNode {
             position: 0,
             overlays: [
                 SerializableOutlineNode(
+                    resourceName: "SpacelandSign.zoom.outline",
                     boundingBox: CGRect(
                         x: 1288.0/2715.0, y: 568.0/1527.0,
                         width: 11.0/2715.0, height: 10.0/1527.0

@@ -10,6 +10,7 @@ public func makeMask() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "bear.lake.from.mess.hall.mask.outline",
                     boundingBox: .init(
                         x: 1293.0/1920.0,
                         y: 598.0/1080.0,
@@ -29,6 +30,7 @@ public func makeMask() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "big.fire.nv4.wallbuy.mask.outline",
                     boundingBox: .init(
                         x: 889.0/1920.0,
                         y: 512.0/1080.0,

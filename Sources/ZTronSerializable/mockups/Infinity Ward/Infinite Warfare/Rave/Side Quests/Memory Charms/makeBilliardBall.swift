@@ -10,6 +10,7 @@ public func makeBilliardBall() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "caves.recreational.area.sign.billiard.ball.outline",
                     boundingBox: .init(
                         x: 965.0/1920.0,
                         y: 600.0/1080.0,
@@ -29,6 +30,7 @@ public func makeBilliardBall() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "quickies.rave.area.billiard.ball.outline",
                     boundingBox: .init(
                         x: 539.0/1920.0,
                         y: 658.0/1080.0,

@@ -10,6 +10,7 @@ public func makeArrowHead() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "mess.hall.signs.arrow.head.outline",
                     boundingBox: .init(
                         x: 331.0/1920.0,
                         y: 701.0/1080.0,
@@ -29,6 +30,7 @@ public func makeArrowHead() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "spawn.bench.right.arrow.head.outline",
                     boundingBox: .init(
                         x: 1044.0/1920.0,
                         y: 583.0/1080.0,

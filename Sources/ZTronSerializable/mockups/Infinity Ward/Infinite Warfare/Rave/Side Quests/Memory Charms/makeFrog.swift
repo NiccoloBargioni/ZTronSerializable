@@ -10,6 +10,7 @@ public func makeFrog() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "atm.room.frog.outline",
                     boundingBox: .init(
                         x: 367.0/1920.0,
                         y: 522.0/1080.0,
@@ -29,6 +30,7 @@ public func makeFrog() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "recreational.area.camper.exit.frog.outline",
                     boundingBox: .init(
                         x: 1688.0/1920.0,
                         y: 503.0/1080.0,

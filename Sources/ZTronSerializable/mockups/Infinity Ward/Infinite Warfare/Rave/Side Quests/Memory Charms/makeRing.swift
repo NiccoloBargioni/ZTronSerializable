@@ -10,6 +10,7 @@ public func makeRing() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "cave.steps.bang.bang.ring.outline",
                     boundingBox: .init(
                         x: 707.0/1920.0,
                         y: 703.0/1080.0,
@@ -29,6 +30,7 @@ public func makeRing() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "mess.hall.from.spawn.ring.outline",
                     boundingBox: .init(
                         x: 1080.0/1920.0,
                         y: 642.0/1080.0,

@@ -10,6 +10,7 @@ public func makeBoots() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "bear.lake.magic.wheel.boots.outline",
                     boundingBox: .init(
                         x: 1433.0/1920.0,
                         y: 646.0/1080.0,
@@ -29,6 +30,7 @@ public func makeBoots() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "big.fire.crate.boots.outline",
                     boundingBox: .init(
                         x: 1571.0/1920.0,
                         y: 692.0/1080.0,

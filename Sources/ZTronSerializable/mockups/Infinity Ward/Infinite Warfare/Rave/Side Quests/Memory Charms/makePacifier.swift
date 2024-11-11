@@ -10,6 +10,7 @@ public func makePacifier() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "cabin.racing.stripes.inside.pacifier.outline",
                     boundingBox: .init(
                         x: 909.0/1920.0,
                         y: 567.0/1080.0,
@@ -29,6 +30,7 @@ public func makePacifier() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "bear.lake.kbs.wallbuy.pacifier.outline",
                     boundingBox: .init(
                         x: 896.0/1920.0,
                         y: 539.0/1080.0,

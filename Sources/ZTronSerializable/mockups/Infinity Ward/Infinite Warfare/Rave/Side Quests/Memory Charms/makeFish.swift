@@ -10,6 +10,7 @@ public func makeFish() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "cabins.below.racing.stripes.fish.outline",
                     boundingBox: .init(
                         x: 674.0/1920.0,
                         y: 682.0/1080.0,
@@ -29,6 +30,7 @@ public func makeFish() -> SerializableGalleryNode {
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
+                    resourceName: "pipe.mess.hall.fish.outline",
                     boundingBox: .init(
                         x: 1734.0/1920.0,
                         y: 755.0/1080.0,
