@@ -10,11 +10,11 @@ public final class SerializableTabNode: SerializableNode {
     @Lowercased private var name: String
     private let position: Int
     @Lowercased private var iconName: String
-    private let tools: [SerializableToolNode]
+    private let tools: SerializableToolsRouter
     
     private static let logger: os.Logger = .init()
     
-    public init(name: String, position: Int, iconName: String, tools: [SerializableToolNode]) {
+    public init(name: String, position: Int, iconName: String, tools: SerializableToolsRouter) {
         self.name = name
         self.position = position
         self.iconName = iconName
@@ -36,8 +36,16 @@ public final class SerializableTabNode: SerializableNode {
             }
         }
         
-        let toolsPositions = self.tools.map { tool in
-            return tool.getPosition()
+        if self.tools.router.getMaxDepth() > 2 {
+            throw SerializableException.validationException(
+                reason: "Tools with slave tools are unsupported in \(#file) -> \(#function) for tab \(self.toString())"
+            )
+        }
+            
+        
+        
+        let toolsPositions = self.tools.router.map { _, output in
+            return output.getPosition()
         }
         
         if !Validator.validatePositions(toolsPositions) {
@@ -57,10 +65,10 @@ public final class SerializableTabNode: SerializableNode {
             map: foreignKeys.getMap()
         )
         
-        try self.tools.forEach { tool in
+        try self.tools.router.forEach { _, tool in
             try tool.writeTo(
                 db: db,
-                with: SerializableToolForeignKeys(tab: self.name, tabFK: foreignKeys),
+                with: SerializableTabsForeignKeys(tab: self.name, tabFK: foreignKeys),
                 shouldValidateFK: shouldValidateFK
             )
         }
@@ -77,10 +85,14 @@ public final class SerializableTabNode: SerializableNode {
         
         if tabExists {
             if propagate {
-                for tool in self.tools {
+                let tools = self.tools.router.map { _, output in
+                    return output
+                }
+                
+                for tool in tools {
                     let toolExists = try tool.existsOn(
                         db: db,
-                        with: SerializableToolForeignKeys(tab: self.name, tabFK: foreignKeys),
+                        with: SerializableTabsForeignKeys(tab: self.name, tabFK: foreignKeys),
                         propagate: propagate
                     )
                     
@@ -88,6 +100,7 @@ public final class SerializableTabNode: SerializableNode {
                         return false
                     }
                 }
+                
                 #if DEBUG
                 Self.logger.info("Tab \(self.toString()) with FK \(foreignKeys.toString()) exists on db")
                 #endif

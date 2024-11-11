@@ -4,9 +4,7 @@ public func makeRave() -> SerializableMapNode {
         name: "rave in the redwoods",
         position: 1,
         assetsImageName: "raveIcon",
-        tabs: [
-            makeRaveSideQuestsTab()
-        ]
+        tabs: makeRaveTabs()
     )
 }
 #endif

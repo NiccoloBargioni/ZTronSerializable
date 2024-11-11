@@ -4,9 +4,7 @@ public func makeSpaceland() -> SerializableMapNode {
         name: "spaceland",
         position: 0,
         assetsImageName: "SpacelandCover",
-        tabs: [
-            makeSpacelandMusicTab()
-        ]
+        tabs: makeSpacelandTabs()
     )
 }
 #endif

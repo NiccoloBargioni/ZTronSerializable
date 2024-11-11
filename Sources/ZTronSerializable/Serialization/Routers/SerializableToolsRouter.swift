@@ -4,8 +4,8 @@ import ZTronDataModel
 import ZTronRouter
 import os
 
-public final class SerializableToolsRouterNode: SerializableNode {
-    private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableToolsRouterNode")
+public final class SerializableToolsRouter: SerializableNode {
+    private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableToolsRouter")
     public let router: ZTronRouter<Empty, SerializableToolNode, Empty>
     
     public init() {
@@ -14,9 +14,9 @@ public final class SerializableToolsRouterNode: SerializableNode {
     
     
     public func writeTo(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool) throws {
-        guard let foreignKeys = foreignKeys as? SerializableToolForeignKeys else {
+        guard let foreignKeys = foreignKeys as? SerializableTabsForeignKeys else {
             throw SerializableException.illegalArgumentException(
-                reason: "foreignKeys expected to be of type \(String(describing: SerializableToolForeignKeys.self)) in \(#function) on type \(#file)"
+                reason: "foreignKeys expected to be of type \(String(describing: SerializableTabsForeignKeys.self)) in \(#function) on type \(#file)"
             )
         }
         
@@ -28,10 +28,17 @@ public final class SerializableToolsRouterNode: SerializableNode {
             }
         }
         
+        if self.router.getMaxDepth() <= 1 {
+            #if DEBUG
+            Self.logger.info("Attempted to serialize empty tools router for \(self.toString()).")
+            #endif
+            return
+        }
+        
         // Router should have depth 2
-        if router.getMaxDepth() <= 1 || router.getMaxDepth() > 2 {
+        if router.getMaxDepth() > 2 {
             throw SerializableException.illegalArgumentException(
-                reason: "At the time of coding, tools with slave tools are not allowed in \(self.toString()). Consider checking syntax"
+                reason: "At the time of coding, tools with slave tools are not allowed in \(self.toString()). Consider checking logic"
             )
         }
 
@@ -52,9 +59,9 @@ public final class SerializableToolsRouterNode: SerializableNode {
     }
     
     public func existsOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws -> Bool {
-        guard let foreignKeys = foreignKeys as? SerializableToolForeignKeys else {
+        guard let foreignKeys = foreignKeys as? SerializableTabsForeignKeys else {
             throw SerializableException.illegalArgumentException(
-                reason: "foreignKeys expected to be of type \(String(describing: SerializableToolForeignKeys.self)) in \(#function) on type \(#file)"
+                reason: "foreignKeys expected to be of type \(String(describing: SerializableTabsForeignKeys.self)) in \(#function) on type \(#file)"
             )
         }
 

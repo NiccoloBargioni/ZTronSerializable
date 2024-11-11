@@ -20,7 +20,7 @@ public final class SerializableGalleryForeignKeys: SerializableForeignKeys {
         self.game = game
     }
         
-    public convenience init(tool: String, toolFK: SerializableToolForeignKeys) {
+    public convenience init(tool: String, toolFK: SerializableTabsForeignKeys) {
         self.init(tool: tool, tab: toolFK.getTab(), map: toolFK.getMap(), game: toolFK.getGame())
     }
     

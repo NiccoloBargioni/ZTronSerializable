@@ -4,7 +4,7 @@ public func makeRaveSideQuestsTab() -> SerializableTabNode {
         name: "side quests",
         position: 0,
         iconName: "gamecontroller",
-        tools: [makeMemoryCharmsTool()]
+        tools: makeRaveSideQuestsToolsRouter()
     )
 }
 #endif

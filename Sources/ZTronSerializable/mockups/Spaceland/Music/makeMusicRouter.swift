@@ -1,6 +1,6 @@
 #if DEBUG
-public func makeSpacelandMusicToolsRouter() -> SerializableToolsRouterNode {
-    let musicTools = SerializableToolsRouterNode()
+public func makeSpacelandMusicToolsRouter() -> SerializableToolsRouter {
+    let musicTools = SerializableToolsRouter()
     
     musicTools.router.register(
         makeLoveThe80sTool(),

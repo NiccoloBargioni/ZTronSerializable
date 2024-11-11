@@ -11,9 +11,9 @@ public final class SerializableMapNode: SerializableNode {
     @Lowercased private var name: String
     private let position: Int
     private let assetsImageName: String
-    private let tabs: [SerializableTabNode]
+    private let tabs: SerializableTabsRouter
     
-    public init(name: String, position: Int, assetsImageName: String, tabs: [SerializableTabNode]) {
+    public init(name: String, position: Int, assetsImageName: String, tabs: SerializableTabsRouter) {
         self.name = name
         self.position = position
         self.assetsImageName = assetsImageName
@@ -34,7 +34,7 @@ public final class SerializableMapNode: SerializableNode {
             }
         }
 
-        let tabsPositions = self.tabs.map { tab in
+        let tabsPositions = self.tabs.router.map { _, tab in
             return tab.getPosition()
         }
         
@@ -53,7 +53,8 @@ public final class SerializableMapNode: SerializableNode {
             game: foreignKeys.getGame()
         )
         
-        try self.tabs.forEach { tab in
+        
+        try self.tabs.router.forEach { _, tab in
             try tab.writeTo(
                 db: db,
                 with: SerializableTabForeignKeys(map: self.name, mapFK: foreignKeys),
@@ -71,7 +72,11 @@ public final class SerializableMapNode: SerializableNode {
         
         if mapExists {
             if propagate {
-                for tab in self.tabs {
+                let tabs = self.tabs.router.map { _, output in
+                    return output
+                }
+                
+                for tab in tabs {
                     if !(try tab.existsOn(
                         db: db,
                         with: SerializableTabForeignKeys(map: self.name, mapFK: foreignKeys),
