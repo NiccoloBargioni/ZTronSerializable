@@ -9,10 +9,10 @@ public final class SerializableStudioNode: SerializableNode {
     @Lowercased private var name: String
     private let position: Int
     private let assetsImageName: String
-    private let games: [SerializableGameNode]
+    private let games: SerializableGamesRouter
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableStudioNode")
     
-    public init(name: String, position: Int, assetsImageName: String, games: [SerializableGameNode]) {
+    public init(name: String, position: Int, assetsImageName: String, games: SerializableGamesRouter) {
         self.name = name
         self.position = position
         self.assetsImageName = assetsImageName
@@ -27,7 +27,7 @@ public final class SerializableStudioNode: SerializableNode {
             )
         }
         
-        let positions = self.games.map { $0.getPosition() }
+        let positions = self.games.router.map { $1.getPosition() }
         
         if !Validator.validatePositions(positions) {
             throw SerializableException.illegalArgumentException(
@@ -43,7 +43,7 @@ public final class SerializableStudioNode: SerializableNode {
             assetsImageName: self.assetsImageName
         )
         
-        for game in self.games {
+        try self.games.router.forEach { _ , game in
             try game.writeTo(
                 db: db,
                 with: SerializableGameForeignKeys(studio: self.name),

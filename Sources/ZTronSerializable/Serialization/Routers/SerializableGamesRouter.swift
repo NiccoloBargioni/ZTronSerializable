@@ -4,9 +4,9 @@ import ZTronDataModel
 import ZTronRouter
 import os
 
-public final class SerializableMapsRouter: SerializableNode {
-    private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableMapsRouter")
-    public let router: ZTronRouter<Empty, SerializableMapNode, Empty>
+public final class SerializableGamesRouter: SerializableNode {
+    private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableGamesRouter")
+    public let router: ZTronRouter<Empty, SerializableGameNode, Empty>
     
     public init() {
         self.router = .init()
@@ -14,9 +14,9 @@ public final class SerializableMapsRouter: SerializableNode {
     
     
     public func writeTo(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool) throws {
-        guard let foreignKeys = foreignKeys as? SerializableMapForeignKeys else {
+        guard let foreignKeys = foreignKeys as? SerializableGameForeignKeys else {
             throw SerializableException.illegalArgumentException(
-                reason: "foreignKeys expected to be of type \(String(describing: SerializableMapForeignKeys.self)) in \(#function) on type \(#file)"
+                reason: "foreignKeys expected to be of type \(String(describing: SerializableGameForeignKeys.self)) in \(#function) on type \(#file)"
             )
         }
         
@@ -30,15 +30,15 @@ public final class SerializableMapsRouter: SerializableNode {
         
         if self.router.getMaxDepth() <= 1 {
             #if DEBUG
-            Self.logger.info("Attempted to serialize empty maps router for \(self.toString()).")
+            Self.logger.info("Attempted to serialize empty games router for \(self.toString()).")
             #endif
             return
         }
         
         // Router should have depth 2
-        if router.getMaxDepth() > 3 {
+        if router.getMaxDepth() > 2 {
             throw SerializableException.illegalArgumentException(
-                reason: "At the time of coding, only a few maps with dependency tree of depth 3 (including root symbol) exist. Check your logic in \(self.toString())"
+                reason: "At the time of coding, no game has a master->slave dependency \(self.toString())"
             )
         }
 
@@ -59,19 +59,19 @@ public final class SerializableMapsRouter: SerializableNode {
     }
     
     public func existsOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws -> Bool {
-        guard let foreignKeys = foreignKeys as? SerializableMapForeignKeys else {
+        guard let foreignKeys = foreignKeys as? SerializableGameForeignKeys else {
             throw SerializableException.illegalArgumentException(
-                reason: "foreignKeys expected to be of type \(String(describing: SerializableMapForeignKeys.self)) in \(#function) on type \(#file)"
+                reason: "foreignKeys expected to be of type \(String(describing: SerializableGameForeignKeys.self)) in \(#function) on type \(#file)"
             )
         }
 
         
-        let allMaps = self.router.map { _, output in
+        let allGames = self.router.map { _, output in
             return output
         }
         
-        for map in allMaps {
-            if !(try map.existsOn(db: db, with: foreignKeys, propagate: propagate)) {
+        for game in allGames {
+            if !(try game.existsOn(db: db, with: foreignKeys, propagate: propagate)) {
                 return false
             }
         }
