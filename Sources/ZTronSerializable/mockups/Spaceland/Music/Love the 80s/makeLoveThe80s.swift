@@ -41,27 +41,7 @@ public func makeLoveThe80s() -> SerializableGalleryRouter {
         makeAfterlife(),
         at: ["afterlife"]
     )
-    
-    /*
-    do {
-        try DBMS.transaction(#function) { dbConnection in
-            
-            let galleryFK = SerializableGalleryForeignKeys(
-                tool: "love the 80s",
-                tab: "music",
-                map: "spaceland",
-                game: "infinite warfare"
-            )
-            
-            try loveThe80sGalleries.writeIfNotExists(db: dbConnection, with: galleryFK, shouldValidateFK: true, propagate: true)
-            
-            return .commit
-        }
-    } catch {
-        fatalError(error.localizedDescription)
-    }
-     */
-    
+
     return loveThe80sGalleries
 }
 #endif

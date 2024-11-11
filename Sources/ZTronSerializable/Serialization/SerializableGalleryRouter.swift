@@ -5,7 +5,7 @@ import os
 
 public class SerializableGalleryRouter: SerializableNode {
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableGalleryRouter")
-    internal var router: ZTronRouter<Empty, SerializableGalleryNode, Empty>
+    public let router: ZTronRouter<Empty, SerializableGalleryNode, Empty>
     
     init() {
         self.router = ZTronRouter()

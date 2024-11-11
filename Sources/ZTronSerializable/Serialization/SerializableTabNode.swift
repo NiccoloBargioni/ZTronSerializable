@@ -41,7 +41,7 @@ public final class SerializableTabNode: SerializableNode {
         }
         
         if !Validator.validatePositions(toolsPositions) {
-            throw SerializableException.illegalArgumentException(
+            throw SerializableException.validationException(
                 reason: "Tools positions \(String(describing: toolsPositions)) are not valid in \(#file) -> \(#function) for tab \(self.toString())"
             )
         }
