@@ -114,7 +114,7 @@ func makeUnderground() -> SerializableGalleryNode {
             position: 5,
             overlays: [
                 SerializableOutlineNode(
-                    resourceName: "EmployeesOnlyChair.outline",
+                    resourceName: "EmployeesOnlyDesk.outline",
                     boundingBox: CGRect(
                     x: 47.0/2715.0, y: 829.0/1527.0,
                     width: 129.0/2715.0, height: 94.0/1527.0
@@ -123,7 +123,7 @@ func makeUnderground() -> SerializableGalleryNode {
                 SerializableBoundingCircleNode()
             ]
         ),
-        at: ["EmployeesOnlyChair"]
+        at: ["EmployeesOnlyDesk"]
     )
     
     // MARK: - JUNK MURALES
