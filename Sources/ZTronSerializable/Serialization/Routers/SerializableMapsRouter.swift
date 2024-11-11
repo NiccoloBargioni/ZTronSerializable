@@ -4,9 +4,9 @@ import ZTronDataModel
 import ZTronRouter
 import os
 
-public final class SerializableTabsRouter: SerializableNode {
+public final class SerializableMapsRouter: SerializableNode {
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableTabsRouter")
-    public let router: ZTronRouter<Empty, SerializableTabNode, Empty>
+    public let router: ZTronRouter<Empty, SerializableMapNode, Empty>
     
     public init() {
         self.router = .init()
@@ -14,9 +14,9 @@ public final class SerializableTabsRouter: SerializableNode {
     
     
     public func writeTo(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool) throws {
-        guard let foreignKeys = foreignKeys as? SerializableTabForeignKeys else {
+        guard let foreignKeys = foreignKeys as? SerializableMapForeignKeys else {
             throw SerializableException.illegalArgumentException(
-                reason: "foreignKeys expected to be of type \(String(describing: SerializableTabForeignKeys.self)) in \(#function) on type \(#file)"
+                reason: "foreignKeys expected to be of type \(String(describing: SerializableMapForeignKeys.self)) in \(#function) on type \(#file)"
             )
         }
         
@@ -36,20 +36,20 @@ public final class SerializableTabsRouter: SerializableNode {
         }
         
         // Router should have depth 2
-        if router.getMaxDepth() > 2 {
+        if router.getMaxDepth() > 3 {
             throw SerializableException.illegalArgumentException(
-                reason: "At the time of coding, tabs with slave tabs are not allowed in \(self.toString()). Consider checking logic in \(self.toString())"
+                reason: "At the time of coding, only a few maps with dependency tree of depth 3 (including root symbol) exist. Check your logic in \(self.toString())"
             )
         }
 
         
-        let tabsPositions = router.map { _, output in
+        let mapsPositions = router.map { _, output in
             return output.getPosition()
         }
         
-        if !Validator.validatePositions(tabsPositions) {
+        if !Validator.validatePositions(mapsPositions) {
             throw SerializableException.validationException(
-                reason: "Tabs positions \(String(describing: tabsPositions)) are not valid in \(#file) -> \(#function) for tab \(self.toString())"
+                reason: "Maps positions \(String(describing: mapsPositions)) are not valid in \(#file) -> \(#function) for tab \(self.toString())"
             )
         }
         
@@ -59,25 +59,25 @@ public final class SerializableTabsRouter: SerializableNode {
     }
     
     public func existsOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws -> Bool {
-        guard let foreignKeys = foreignKeys as? SerializableTabForeignKeys else {
+        guard let foreignKeys = foreignKeys as? SerializableMapForeignKeys else {
             throw SerializableException.illegalArgumentException(
-                reason: "foreignKeys expected to be of type \(String(describing: SerializableTabForeignKeys.self)) in \(#function) on type \(#file)"
+                reason: "foreignKeys expected to be of type \(String(describing: SerializableMapForeignKeys.self)) in \(#function) on type \(#file)"
             )
         }
 
         
-        let allTabs = self.router.map { _, output in
+        let allMaps = self.router.map { _, output in
             return output
         }
         
-        for tab in allTabs {
-            if !(try tab.existsOn(db: db, with: foreignKeys, propagate: propagate)) {
+        for map in allMaps {
+            if !(try map.existsOn(db: db, with: foreignKeys, propagate: propagate)) {
                 return false
             }
         }
         
         #if DEBUG
-        Self.logger.info("Tabs router \(self.toString()) exists on db")
+        Self.logger.info("Maps router \(self.toString()) exists on db")
         #endif
         
         return true

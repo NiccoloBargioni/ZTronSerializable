@@ -10,10 +10,10 @@ public final class SerializableGameNode: SerializableNode {
     @Lowercased private var name: String
     private let position: Int
     private let assetsImageName: String
-    private let maps: [SerializableMapNode]
+    private let maps: SerializableMapsRouter
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableGameNode")
     
-    public init(name: String, position: Int, assetsImageName: String, maps: [SerializableMapNode]) {
+    public init(name: String, position: Int, assetsImageName: String, maps: SerializableMapsRouter) {
         self.name = name
         self.position = position
         self.assetsImageName = assetsImageName
@@ -35,7 +35,7 @@ public final class SerializableGameNode: SerializableNode {
             }
         }
         
-        let positions = self.maps.map { $0.getPosition() }
+        let positions = self.maps.router.map { $1.getPosition() }
     
         if !Validator.validatePositions(positions) {
             throw SerializableException.illegalArgumentException(
@@ -52,7 +52,7 @@ public final class SerializableGameNode: SerializableNode {
             studio: foreignKeys.getStudio()
         )
 
-        try self.maps.forEach { map in
+        try self.maps.router.forEach { _, map in
             try map.writeTo(
                 db: db,
                 with: SerializableMapForeignKeys(game: self.name),
@@ -72,7 +72,11 @@ public final class SerializableGameNode: SerializableNode {
         
         if gameExists {
             if propagate {
-                for map in self.maps {
+                let allMaps = self.maps.router.map {
+                    return $1
+                }
+                
+                for map in allMaps {
                     if !(try map.existsOn(
                         db: db,
                         with: SerializableMapForeignKeys(game: self.name),

@@ -38,7 +38,7 @@ public final class SerializableToolsRouter: SerializableNode {
         // Router should have depth 2
         if router.getMaxDepth() > 2 {
             throw SerializableException.illegalArgumentException(
-                reason: "At the time of coding, tools with slave tools are not allowed in \(self.toString()). Consider checking logic"
+                reason: "At the time of coding, tools with slave tools are not allowed in \(self.toString()). Consider checking logic in \(self.toString())"
             )
         }
 
