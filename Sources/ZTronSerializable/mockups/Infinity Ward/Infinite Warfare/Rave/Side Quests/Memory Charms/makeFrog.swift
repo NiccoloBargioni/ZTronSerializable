@@ -12,7 +12,7 @@ public func makeFrog() -> SerializableGalleryNode {
                 SerializableOutlineNode(
                     resourceName: "atm.room.frog.outline",
                     boundingBox: .init(
-                        x: 367.0/1920.0,
+                        x: 637/1920.0,
                         y: 522.0/1080.0,
                         width: 11.0/1920.0,
                         height: 6.0/1080.0
@@ -21,6 +21,7 @@ public func makeFrog() -> SerializableGalleryNode {
             ]
         ), at: [">", "atm.room.frog"]
     )
+
     
     frogLocations.register(
         SerializableImageNode(
