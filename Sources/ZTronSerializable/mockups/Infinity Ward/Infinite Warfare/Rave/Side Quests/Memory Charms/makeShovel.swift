@@ -15,7 +15,7 @@ public func makeShovel() -> SerializableGalleryNode {
                         x: 921.0/1920.0,
                         y: 526.0/1080.0,
                         width: 11.0/1920.0,
-                        height: 14.0/1080.0
+                        height: 24.0/1080.0
                     )
                 )
             ]

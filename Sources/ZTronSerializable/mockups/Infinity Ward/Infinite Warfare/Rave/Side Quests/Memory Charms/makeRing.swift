@@ -12,13 +12,14 @@ public func makeRing() -> SerializableGalleryNode {
                 SerializableOutlineNode(
                     resourceName: "cave.steps.bang.bang.ring.outline",
                     boundingBox: .init(
-                        x: 707.0/1920.0,
+                        x: 797.0/1920.0,
                         y: 703.0/1080.0,
                         width: 36.0/1920.0,
                         height: 24.0/1080.0
                     )
                 )
             ]
+
         ), at: [">", "cave.steps.bang.bang.ring"]
     )
     
