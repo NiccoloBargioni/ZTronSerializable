@@ -2,32 +2,24 @@ import Foundation
 import ZTronDataModel
 import SQLite
 
-/// Game → Map → Tab → Tool
-///
-/// Tab is redundant and uniqueness at 1.12.23 is guaranteed by the sequence
-///
-/// Game → Map  → Tool
-public final class SerializableGalleryForeignKeys: SerializableForeignKeys {
-    @Lowercased private var tool: String
+/// - `TOOL(name, position, assetsImageName, tab, map, game)`
+/// - `PK(name, tab, map, game)`
+/// - `FK(tab, map, game) REFERENCES TAB(name, map, game) ON DELETE CASCADE ON UPDATE CASCADE`
+public final class SerializableTabsForeignKeys: SerializableForeignKeys {
     @Lowercased private var tab: String
     @Lowercased private var map: String
     @Lowercased private var game: String
     
-    public init(tool: String, tab: String, map: String, game: String) {
-        self.tool = tool
+    public init(tab: String, map: String, game: String) {
         self.tab = tab
         self.map = map
         self.game = game
     }
+    
+    public convenience init(tab: String, tabFK: SerializableTabForeignKeys) {
+        self.init(tab: tab, map: tabFK.getMap(), game: tabFK.getGame())
+    }
         
-    public convenience init(tool: String, toolFK: SerializableTabsForeignKeys) {
-        self.init(tool: tool, tab: toolFK.getTab(), map: toolFK.getMap(), game: toolFK.getGame())
-    }
-    
-    public func getTool() -> String {
-        return self.tool
-    }
-    
     public func getTab() -> String {
         return self.tab
     }
@@ -39,8 +31,8 @@ public final class SerializableGalleryForeignKeys: SerializableForeignKeys {
     public func getGame() -> String {
         return self.game
     }
-    
-    @discardableResult public func validate(on db: SQLite.Connection) throws -> ForeignKey? {
+
+    public func validate(on db: SQLite.Connection) throws -> ForeignKey? {
         var isGameFKValid: Bool = true
         
         do {
@@ -65,18 +57,7 @@ public final class SerializableGalleryForeignKeys: SerializableForeignKeys {
                     throw SerializableException.invalidForeignKeyException(reason: .tab)
                 }
                 
-                if isTabFKValid {
-                    var isToolFKValid: Bool = true
-                    do {
-                        isToolFKValid = try DBMS.CRUD.toolExists(for: db, tool: self.tool, tab: self.tab, map: self.map, game: self.game)
-                    } catch {
-                        throw SerializableException.invalidForeignKeyException(reason: .tool)
-                    }
-                    
-                    return isToolFKValid ? nil : .tool
-                } else {
-                    return .tab
-                }
+                return isTabFKValid ? nil : .tab
             } else {
                 return .map
             }
@@ -84,16 +65,14 @@ public final class SerializableGalleryForeignKeys: SerializableForeignKeys {
             return .game
         }
     }
-
+    
     public func toString() -> String {
         return """
-            GALLERY_FK(
-                tool: \(self.tool),
+            TOOL_OVERLAY_FK(
                 tab: \(self.tab),
                 map: \(self.map),
                 game: \(self.game)
             )
         """
     }
-
 }

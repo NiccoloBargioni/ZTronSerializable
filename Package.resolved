@@ -1,6 +1,15 @@
 {
-  "originHash" : "e42e88f7bb580556cab9c845f739be1f2c0a553f8f07bcd2d54d0b0cce593e54",
+  "originHash" : "687362247d8c3065b238638be8c5bbaa399e7a4704037a924109ddb98f9f5b56",
   "pins" : [
+    {
+      "identity" : "loremipsum",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lukaskubanek/LoremIpsum",
+      "state" : {
+        "branch" : "master",
+        "revision" : "3c739014fd11bcf0a3b2263b95b89d12f1257579"
+      }
+    },
     {
       "identity" : "sqlite.swift",
       "kind" : "remoteSourceControl",
@@ -43,7 +52,7 @@
       "location" : "https://github.com/NiccoloBargioni/ZTronDataModel",
       "state" : {
         "branch" : "main",
-        "revision" : "0aa00427c1ec623587e531b2e0ccc8c2158a89c2"
+        "revision" : "cddcfb6d7373deee7add14eff19cbbbd3c8a6f2b"
       }
     },
     {
