@@ -1,11 +1,13 @@
 #if DEBUG
+import LoremIpsum
+
 public func makeBoots() -> SerializableGalleryNode {
     let bootsLocation = ImageRouter.init()
     
     bootsLocation.register(
         SerializableImageNode(
             name: "bear.lake.magic.wheel.boots",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 0,
             overlays: [
                 SerializableBoundingCircleNode(),
@@ -25,7 +27,7 @@ public func makeBoots() -> SerializableGalleryNode {
     bootsLocation.register(
         SerializableImageNode(
             name: "big.fire.crate.boots",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 1,
             overlays: [
                 SerializableBoundingCircleNode(),

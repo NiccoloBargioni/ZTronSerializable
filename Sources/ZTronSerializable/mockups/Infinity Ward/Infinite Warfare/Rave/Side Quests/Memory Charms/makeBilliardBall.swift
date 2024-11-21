@@ -1,11 +1,14 @@
 #if DEBUG
+import LoremIpsum
+
+
 public func makeBilliardBall() -> SerializableGalleryNode {
     let billiardBallLocations = ImageRouter.init()
     
     billiardBallLocations.register(
         SerializableImageNode(
             name: "caves.recreational.area.sign.billiard.ball",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 0,
             overlays: [
                 SerializableBoundingCircleNode(),
@@ -25,7 +28,7 @@ public func makeBilliardBall() -> SerializableGalleryNode {
     billiardBallLocations.register(
         SerializableImageNode(
             name: "quickies.rave.area.billiard.ball",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 1,
             overlays: [
                 SerializableBoundingCircleNode(),

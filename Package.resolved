@@ -1,6 +1,15 @@
 {
-  "originHash" : "137193628cbab6be6856d0b5be94aca5c2dffd1ab902bd325e8456ab81a04cf9",
+  "originHash" : "687362247d8c3065b238638be8c5bbaa399e7a4704037a924109ddb98f9f5b56",
   "pins" : [
+    {
+      "identity" : "loremipsum",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lukaskubanek/LoremIpsum",
+      "state" : {
+        "branch" : "master",
+        "revision" : "3c739014fd11bcf0a3b2263b95b89d12f1257579"
+      }
+    },
     {
       "identity" : "sqlite.swift",
       "kind" : "remoteSourceControl",

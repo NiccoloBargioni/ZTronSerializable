@@ -1,11 +1,14 @@
 #if DEBUG
+import LoremIpsum
+
+
 public func makeFish() -> SerializableGalleryNode {
     let fishLocations = ImageRouter.init()
     
     fishLocations.register(
         SerializableImageNode(
             name: "cabins.below.racing.stripes.fish",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 0,
             overlays: [
                 SerializableBoundingCircleNode(),
@@ -25,7 +28,7 @@ public func makeFish() -> SerializableGalleryNode {
     fishLocations.register(
         SerializableImageNode(
             name: "pipe.mess.hall.fish",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 1,
             overlays: [
                 SerializableBoundingCircleNode(),

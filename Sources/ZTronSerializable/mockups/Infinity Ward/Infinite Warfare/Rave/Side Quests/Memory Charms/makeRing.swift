@@ -1,11 +1,13 @@
 #if DEBUG
+import LoremIpsum
+
 public func makeRing() -> SerializableGalleryNode {
     let ringLocations = ImageRouter.init()
     
     ringLocations.register(
         SerializableImageNode(
             name: "cave.steps.bang.bang.ring",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 0,
             overlays: [
                 SerializableBoundingCircleNode(),
@@ -26,7 +28,7 @@ public func makeRing() -> SerializableGalleryNode {
     ringLocations.register(
         SerializableImageNode(
             name: "mess.hall.from.spawn.ring",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 1,
             overlays: [
                 SerializableBoundingCircleNode(),

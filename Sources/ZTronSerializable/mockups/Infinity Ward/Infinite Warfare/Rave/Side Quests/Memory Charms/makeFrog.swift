@@ -1,11 +1,13 @@
 #if DEBUG
+import LoremIpsum
+
 public func makeFrog() -> SerializableGalleryNode {
     let frogLocations = ImageRouter.init()
     
     frogLocations.register(
         SerializableImageNode(
             name: "atm.room.frog",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 0,
             overlays: [
                 SerializableBoundingCircleNode(),
@@ -26,7 +28,7 @@ public func makeFrog() -> SerializableGalleryNode {
     frogLocations.register(
         SerializableImageNode(
             name: "recreational.area.camper.exit.frog",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 1,
             overlays: [
                 SerializableBoundingCircleNode(),

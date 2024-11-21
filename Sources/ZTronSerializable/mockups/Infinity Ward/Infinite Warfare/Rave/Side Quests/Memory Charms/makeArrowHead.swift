@@ -1,11 +1,13 @@
 #if DEBUG
+import LoremIpsum
+
 public func makeArrowHead() -> SerializableGalleryNode {
     let arrowHeadLocations = ImageRouter.init()
     
     arrowHeadLocations.register(
         SerializableImageNode(
             name: "mess.hall.signs.arrow.head",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 0,
             overlays: [
                 SerializableBoundingCircleNode(),
@@ -25,7 +27,7 @@ public func makeArrowHead() -> SerializableGalleryNode {
     arrowHeadLocations.register(
         SerializableImageNode(
             name: "spawn.bench.right.arrow.head",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 1,
             overlays: [
                 SerializableBoundingCircleNode(),

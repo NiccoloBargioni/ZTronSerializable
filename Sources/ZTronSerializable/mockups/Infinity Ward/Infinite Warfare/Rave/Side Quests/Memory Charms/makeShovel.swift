@@ -1,11 +1,13 @@
 #if DEBUG
+import LoremIpsum
+
 public func makeShovel() -> SerializableGalleryNode {
     let shovelLocations = ImageRouter.init()
     
     shovelLocations.register(
         SerializableImageNode(
             name: "archer.range.shovel",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 0,
             overlays: [
                 SerializableBoundingCircleNode(),
@@ -25,7 +27,7 @@ public func makeShovel() -> SerializableGalleryNode {
     shovelLocations.register(
         SerializableImageNode(
             name: "bang.bangs.cave.shovel",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 1,
             overlays: [
                 SerializableBoundingCircleNode(),

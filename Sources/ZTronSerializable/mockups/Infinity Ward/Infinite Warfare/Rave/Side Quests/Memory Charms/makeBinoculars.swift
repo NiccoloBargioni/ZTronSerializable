@@ -1,11 +1,13 @@
 #if DEBUG
+import LoremIpsum
+
 public func makeBinoculars() -> SerializableGalleryNode {
     let binocularsLocations = ImageRouter.init()
     
     binocularsLocations.register(
         SerializableImageNode(
             name: "recreational.area.crate.binoculars",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 0,
             overlays: [
                 SerializableBoundingCircleNode(),
@@ -25,7 +27,7 @@ public func makeBinoculars() -> SerializableGalleryNode {
     binocularsLocations.register(
         SerializableImageNode(
             name: "mess.hall.bench.binoculars",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 1,
             overlays: [
                 SerializableBoundingCircleNode(),

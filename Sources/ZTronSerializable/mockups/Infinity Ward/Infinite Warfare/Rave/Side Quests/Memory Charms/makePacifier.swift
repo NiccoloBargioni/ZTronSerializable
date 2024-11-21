@@ -1,11 +1,13 @@
 #if DEBUG
+import LoremIpsum
+
 public func makePacifier() -> SerializableGalleryNode {
     let pacifierLocations = ImageRouter.init()
     
     pacifierLocations.register(
         SerializableImageNode(
             name: "cabin.racing.stripes.inside.pacifier",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 0,
             overlays: [
                 SerializableBoundingCircleNode(),
@@ -25,7 +27,7 @@ public func makePacifier() -> SerializableGalleryNode {
     pacifierLocations.register(
         SerializableImageNode(
             name: "bear.lake.kbs.wallbuy.pacifier",
-            description: "Lorem ipsum dolorem sit amet",
+            description: LoremIpsum.paragraph,
             position: 1,
             overlays: [
                 SerializableBoundingCircleNode(),
