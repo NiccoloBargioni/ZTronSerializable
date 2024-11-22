@@ -56,7 +56,7 @@ public func makeBinoculars() -> SerializableGalleryNode {
         SerializableImageNode(
             name: "recreational.area.crate.binoculars",
             description: LoremIpsum.paragraph,
-            position: 0,
+            position: 1,
             overlays: [
                 SerializableBoundingCircleNode(),
                 SerializableOutlineNode(
