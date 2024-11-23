@@ -70,6 +70,7 @@ public class SerializableGalleryNode: SerializableNode {
                     slave: output.getName(),
                     variant: absolutePath.last!,
                     bottomBarIcon: params.getBottomBarIcon(),
+                    goBackBottomBarIcon: params.getGoBackBottomBarIcon(),
                     boundingFrame: params.getBoundingFrame()
                 )
                 .writeTo(db: db, with: imageFK, shouldValidateFK: shouldValidateFK)
@@ -176,6 +177,7 @@ public class SerializableGalleryNode: SerializableNode {
                                         slave: output.getName(),
                                         variant: absolutePath.last!,
                                         bottomBarIcon: params.getBottomBarIcon(),
+                                        goBackBottomBarIcon: params.getGoBackBottomBarIcon(),
                                         boundingFrame: params.getBoundingFrame()
                                     )
                                     .existsOn(db: db, with: imageFK, propagate: true)
