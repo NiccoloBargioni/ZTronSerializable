@@ -54,7 +54,7 @@ public func makeBinoculars() -> SerializableGalleryNode {
     
     binocularsLocations.register(
         SerializableImageNode(
-            name: "police",
+            name: "shutters",
             description: LoremIpsum.paragraph,
             position: 1,
             overlays: [
