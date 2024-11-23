@@ -7,13 +7,15 @@ class SerializableImageVariantRelationshipNode: SerializableNode {
     private var slave: String
     @Lowercased private var variant: String
     @Lowercased private var bottomBarIcon: String
+    @NullableLowercased private var goBackBottomBarIcon: String?
     @NullableNormalizedRect private var boundingFrame: CGRect?
     
-    init(master: String, slave: String, variant: String, bottomBarIcon: String, boundingFrame: CGRect? = nil) {
+    init(master: String, slave: String, variant: String, bottomBarIcon: String, goBackBottomBarIcon: String? = nil, boundingFrame: CGRect? = nil) {
         self.master = master
         self.slave = slave
         self.variant = variant
         self.bottomBarIcon = bottomBarIcon
+        self.goBackBottomBarIcon = goBackBottomBarIcon
         self.boundingFrame = boundingFrame
     }
     
@@ -39,6 +41,7 @@ class SerializableImageVariantRelationshipNode: SerializableNode {
             slave: self.slave,
             variant: self.variant,
             bottomBarIcon: self.bottomBarIcon,
+            goBackBottomBarIcon: self.goBackBottomBarIcon,
             boundingFrame: self.boundingFrame,
             game: foreignKeys.getGame(),
             map: foreignKeys.getMap(),
@@ -83,6 +86,10 @@ class SerializableImageVariantRelationshipNode: SerializableNode {
         return self.bottomBarIcon
     }
     
+    public func getGoBackBottomBarIcon() -> String? {
+        return self.goBackBottomBarIcon
+    }
+    
     public func getBoundingFrame() -> CGRect? {
         return self.boundingFrame
     }
@@ -94,6 +101,7 @@ class SerializableImageVariantRelationshipNode: SerializableNode {
                 slave: \(self.slave),
                 variant: \(self.variant),
                 bottomBarIcon: \(self.bottomBarIcon),
+                goBackBottomBarIcon: \(String(describing: goBackBottomBarIcon)),
                 boundingFrame: \(String(describing: self.boundingFrame))
             )
             """

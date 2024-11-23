@@ -51,6 +51,7 @@ func makeCosmicWay() -> SerializableGalleryNode {
         at: [">", "Police", "zoom"],
         withParameter: SerializableImageNode.NavigationParameters(
             bottomBarIcon: "plus.magnifyingglass",
+            goBackBottomBarIcon: "minus.magnifyingglass",
             boundingFrame: CGRect.NORMALIZED_FULL_SIZE
         )
     )
@@ -160,6 +161,7 @@ func makeCosmicWay() -> SerializableGalleryNode {
         at: [">", "SpacelandSign", "zoom"],
         withParameter: SerializableImageNode.NavigationParameters(
             bottomBarIcon: "plus.magnifyingglass",
+            goBackBottomBarIcon: "minus.magnifyingglass",
             boundingFrame: CGRect.NORMALIZED_FULL_SIZE
         )
     )

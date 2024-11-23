@@ -46,6 +46,7 @@ func makeKepler() -> SerializableGalleryNode {
         at: ["ChromosphereLampFar", "zoom"],
         withParameter: SerializableImageNode.NavigationParameters(
             bottomBarIcon: "plus.magnifyingglass",
+            goBackBottomBarIcon: "minus.magnifyingglass",
             boundingFrame: CGRect.NORMALIZED_FULL_SIZE
         )
     )
@@ -130,6 +131,7 @@ func makeKepler() -> SerializableGalleryNode {
         at: ["DJBooth", "zoom"],
         withParameter: SerializableImageNode.NavigationParameters(
             bottomBarIcon: "plus.magnifyingglass",
+            goBackBottomBarIcon: "minus.magnifyingglass",
             boundingFrame: CGRect.NORMALIZED_FULL_SIZE
         )
     )

@@ -45,6 +45,7 @@ public func makeBinoculars() -> SerializableGalleryNode {
         ), at: [">", "recreational.area.crate.binoculars", "zoom"],
         withParameter: .init(
             bottomBarIcon: "plus.magnifyingglass",
+            goBackBottomBarIcon: "minus.magnifyingglass",
             boundingFrame: .init(
                 origin: .init(x: 1146.0/2715.0, y: 658.0/1527.0),
                 size: .init(width: 312.0/2715.0, height: 176.0/1527.0)

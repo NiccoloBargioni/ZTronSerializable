@@ -226,6 +226,7 @@ func makeUnderground() -> SerializableGalleryNode {
         at: ["YetiShutter", "zoom"],
         withParameter: SerializableImageNode.NavigationParameters(
             bottomBarIcon: "plus.magnifyingglass",
+            goBackBottomBarIcon: "minus.magnifyingglass",
             boundingFrame: CGRect.NORMALIZED_FULL_SIZE
         )
     )
