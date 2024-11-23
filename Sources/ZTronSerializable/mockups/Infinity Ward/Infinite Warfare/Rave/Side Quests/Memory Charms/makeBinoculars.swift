@@ -27,7 +27,7 @@ public func makeBinoculars() -> SerializableGalleryNode {
     
     binocularsLocations.register(
         SerializableImageNode(
-            name: "recreational.area.crate.binoculars",
+            name: "police",
             description: LoremIpsum.paragraph,
             position: 0,
             overlays: [
@@ -54,7 +54,7 @@ public func makeBinoculars() -> SerializableGalleryNode {
     
     binocularsLocations.register(
         SerializableImageNode(
-            name: "recreational.area.crate.binoculars",
+            name: "police",
             description: LoremIpsum.paragraph,
             position: 1,
             overlays: [
