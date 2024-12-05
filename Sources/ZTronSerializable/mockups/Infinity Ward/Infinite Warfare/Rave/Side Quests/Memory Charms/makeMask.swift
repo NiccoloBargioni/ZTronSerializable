@@ -45,7 +45,7 @@ public func makeMask() -> SerializableGalleryNode {
     
     
     return SerializableGalleryNode(
-        name: "iw.rave.mask.arrow_head.gallery_name",
+        name: "iw.rave.memory_charms.mask.gallery_name",
         position: 4,
         assetsImageName: "maskIcon",
         images: maskLocations
