@@ -46,7 +46,7 @@ public func makeArrowHead() -> SerializableGalleryNode {
     
     
     return SerializableGalleryNode(
-        name: "Arrow Head",
+        name: "iw.rave.memory_charms.arrow_head.gallery_name",
         position: 2,
         assetsImageName: "arrowHeadIcon",
         images: arrowHeadLocations

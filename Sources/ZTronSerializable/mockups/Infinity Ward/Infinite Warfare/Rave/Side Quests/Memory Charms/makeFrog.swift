@@ -47,7 +47,7 @@ public func makeFrog() -> SerializableGalleryNode {
     
     
     return SerializableGalleryNode(
-        name: "Frog",
+        name: "iw.rave.memory_charms.frog.gallery_name",
         position: 7,
         assetsImageName: "frogIcon",
         images: frogLocations

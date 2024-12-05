@@ -103,7 +103,7 @@ public func makeBinoculars() -> SerializableGalleryNode {
     
     
     return SerializableGalleryNode(
-        name: "Binoculars",
+        name: "iw.rave.memory_charms.binoculars.gallery_name",
         position: 0,
         assetsImageName: "binocularIcon",
         images: binocularsLocations

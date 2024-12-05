@@ -46,7 +46,7 @@ public func makeShovel() -> SerializableGalleryNode {
     
     
     return SerializableGalleryNode(
-        name: "Shovel",
+        name: "iw.rave.memory_charms.shovel.gallery_name",
         position: 1,
         assetsImageName: "shovelIcon",
         images: shovelLocations

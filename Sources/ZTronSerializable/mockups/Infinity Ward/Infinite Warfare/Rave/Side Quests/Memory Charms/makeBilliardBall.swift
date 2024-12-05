@@ -47,7 +47,7 @@ public func makeBilliardBall() -> SerializableGalleryNode {
     
     
     return SerializableGalleryNode(
-        name: "Billiard Ball",
+        name: "iw.rave.memory_charms.billiard_ball.gallery_name",
         position: 5,
         assetsImageName: "billiardBallIcon",
         images: billiardBallLocations

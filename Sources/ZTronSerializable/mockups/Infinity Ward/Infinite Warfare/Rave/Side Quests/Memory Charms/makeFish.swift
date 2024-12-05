@@ -47,7 +47,7 @@ public func makeFish() -> SerializableGalleryNode {
     
     
     return SerializableGalleryNode(
-        name: "Fish",
+        name: "iw.rave.memory_charms.fish.gallery_name",
         position: 6,
         assetsImageName: "fishIcon",
         images: fishLocations

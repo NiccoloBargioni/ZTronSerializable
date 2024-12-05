@@ -46,7 +46,7 @@ public func makeBoots() -> SerializableGalleryNode {
     
     
     return SerializableGalleryNode(
-        name: "Boots",
+        name: "iw.rave.memory_charms.boots.gallery_name",
         position: 9,
         assetsImageName: "bootsIcon",
         images: bootsLocation

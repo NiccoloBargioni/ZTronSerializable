@@ -46,7 +46,7 @@ public func makePacifier() -> SerializableGalleryNode {
     
     
     return SerializableGalleryNode(
-        name: "Pacifier",
+        name: "iw.rave.memory_charms.pacifier.gallery_name",
         position: 8,
         assetsImageName: "pacifierIcon",
         images: pacifierLocations

@@ -47,7 +47,7 @@ public func makeRing() -> SerializableGalleryNode {
     
     
     return SerializableGalleryNode(
-        name: "Ring",
+        name: "iw.rave.memory_charms.ring.gallery_name",
         position: 3,
         assetsImageName: "ringIcon",
         images: ringLocations
