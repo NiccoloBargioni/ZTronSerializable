@@ -43,13 +43,13 @@ func makeJourneyIntoSpace() -> SerializableGalleryNode {
     
     // MARK: - MOONSHAKES TOILET
     journeyImages.register(SerializableImageNode(
-        name: "journey.inside.moonshakes.star.mission.trap.teddy.bear",
-        description: "IW.SPA.MUS.LT8.journey into space.journey.inside.moonshakes.star.mission.trap.teddy.bear.caption",
+        name: "journey.tuff.nuff.moonshakes.star.mission.further.toilet.teddy.bear",
+        description: "IW.SPA.MUS.LT8.journey into space.journey.tuff.nuff.moonshakes.star.mission.further.toilet.teddy.bear.caption",
         position: 2,
-        searchLabel: "IW.SPA.MUS.LT8.journey into space.journey.inside.moonshakes.star.mission.trap.teddy.bear.search.label",
+        searchLabel: "IW.SPA.MUS.LT8.journey into space.journey.tuff.nuff.moonshakes.star.mission.further.toilet.teddy.bear.search.label",
         overlays: [
             SerializableOutlineNode(
-                resourceName: "journey.inside.moonshakes.star.mission.trap.teddy.bear.outline",
+                resourceName: "journey.tuff.nuff.moonshakes.star.mission.further.toilet.teddy.bear.outline",
                 boundingBox: CGRect(
                 x: 367.0/2715.0, y: 905.0/1527.0,
                 width: 74.0/2715.0, height: 107.0/1527.0
