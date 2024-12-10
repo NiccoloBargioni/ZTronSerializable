@@ -100,7 +100,7 @@ func makeJourneyIntoSpace() -> SerializableGalleryNode {
         searchLabel: "journey.spaceman.astronaut.cutout.outside.astrocade.bumper.cars.teddy.bear.search.label",
         overlays: [
             SerializableOutlineNode(
-                resourceName: "AstronautLegs.outline",
+                resourceName: "journey.spaceman.astronaut.cutout.outside.astrocade.bumper.cars.teddy.bear.outline",
                 boundingBox: CGRect(
                 x: 1130.0/2715.0, y: 736.0/1527.0,
                 width: 16.0/2715.0, height: 15.0/1527.0
@@ -117,7 +117,7 @@ func makeJourneyIntoSpace() -> SerializableGalleryNode {
         searchLabel: "IW.SPA.MUS.LT8.journey into space.journey.rooftop.above.blue.bolts.astrocade.coin.machine.underground.entrance.teddy.bear.search.label",
         overlays: [
             SerializableOutlineNode(
-                resourceName: "BlueBolts.outline",
+                resourceName: "journey.rooftop.above.blue.bolts.astrocade.coin.machine.underground.entrance.teddy.bear.outline",
                 boundingBox: CGRect(
                 x: 1065.0/2715.0, y: 802.0/1527.0,
                 width: 13.0/2715.0, height: 19.0/1527.0

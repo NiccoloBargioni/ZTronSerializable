@@ -313,7 +313,7 @@ func makePolarPeak() -> SerializableGalleryNode {
             searchLabel: "IW.SPA.MUS.LT8.polar peak.polar.peak.fountains.hyperslopes.booth.chair.door.teddy.bear.search.label",
             overlays: [
                 SerializableOutlineNode(
-                    resourceName: "polar.peak.fountains.hyperslopes.booth.chair.door.teddy..outline",
+                    resourceName: "polar.peak.fountains.hyperslopes.booth.chair.door.teddy.outline",
                     boundingBox: CGRect(
                     x: 2096.0/2715.0, y: 663.0/1527.0,
                     width: 109.0/2715.0, height: 80.0/1527.0
