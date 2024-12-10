@@ -82,7 +82,7 @@ func makeCosmicWay() -> SerializableGalleryNode {
     // MARK: - DEPOT
     cosmicWayImagesRouter.register(
         SerializableImageNode(
-            name: "cosmic.way.banshee.wallbuy.depot.teddy.bear.search.label",
+            name: "cosmic.way.banshee.wallbuy.depot.teddy.bear",
             description: "IW.SPA.MUS.LT8.cosmic way.cosmic.way.banshee.wallbuy.depot.teddy.bear.caption",
             position: 2,
             searchLabel: "IW.SPA.MUS.LT8.cosmic way.cosmic.way.banshee.wallbuy.depot.teddy.bear.search.label",
