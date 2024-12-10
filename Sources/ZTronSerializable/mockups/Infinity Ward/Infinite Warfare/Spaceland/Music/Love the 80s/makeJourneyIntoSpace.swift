@@ -8,74 +8,79 @@ func makeJourneyIntoSpace() -> SerializableGalleryNode {
         
     // MARK: - MOONSHAKES TERRACE
     journeyImages.register(SerializableImageNode(
-        name: "MoonShakesTerrace",
-        description: "IW.SPA.MUS.LT8.journey into space.MoonShakesTerrace",
+        name: "journey.terrace.railings.above.moonshakes.teddy.bear",
+        description: "IW.SPA.MUS.LT8.journey into space.journey.terrace.railings.above.moonshakes.teddy.bear.caption",
         position: 0,
+        searchLabel: "journey.terrace.railings.above.moonshakes.teddy.bear.search.label",
         overlays: [
             SerializableOutlineNode(
-                resourceName: "MoonShakesTerrace.outline",
+                resourceName: "journey.terrace.railings.above.moonshakes.teddy.bear.outline",
                 boundingBox: CGRect(
                 x: 1158.0/2715.0, y: 678.0/1527.0,
                 width: 20.0/2715.0, height: 35.0/1527.0
             )),
             SerializableBoundingCircleNode()
         ]
-    ), at: ["MoonShakesTerrace"])
+    ), at: ["journey.terrace.railings.above.moonshakes.teddy.bear"])
     
     
     // MARK: - MOONSHAKES LOCATION 2
     journeyImages.register(SerializableImageNode(
-        name: "MoonShakes",
-        description: "IW.SPA.MUS.LT8.journey into space.MoonShakes",
+        name: "journey.inside.moonshakes.star.mission.trap.teddy.bear",
+        description: "IW.SPA.MUS.LT8.journey into space.journey.inside.moonshakes.star.mission.trap.teddy.bear.caption",
         position: 1,
+        searchLabel: "IW.SPA.MUS.LT8.journey into space.journey.inside.moonshakes.star.mission.trap.teddy.bear.search.label",
         overlays: [
             SerializableOutlineNode(
-                resourceName: "MoonShakes.outline",
+                resourceName: "journey.inside.moonshakes.star.mission.trap.teddy.bear.outline",
                 boundingBox: CGRect(
                 x: 2247.0/2714.0, y: 617.0/1526.0,
                 width: 94.0/2714.0, height: 85.0/1526.0
             )),
             SerializableBoundingCircleNode()
         ]
-    ), at: ["MoonShakes"])
+    ), at: ["journey.inside.moonshakes.star.mission.trap.teddy.bear"])
     
     // MARK: - MOONSHAKES TOILET
     journeyImages.register(SerializableImageNode(
-        name: "MoonShakesToilet",
-        description: "IW.SPA.MUS.LT8.journey into space.MoonShakesToilet",
+        name: "journey.inside.moonshakes.star.mission.trap.teddy.bear",
+        description: "IW.SPA.MUS.LT8.journey into space.journey.inside.moonshakes.star.mission.trap.teddy.bear.caption",
         position: 2,
+        searchLabel: "IW.SPA.MUS.LT8.journey into space.journey.inside.moonshakes.star.mission.trap.teddy.bear.search.label",
         overlays: [
             SerializableOutlineNode(
-                resourceName: "MoonShakesToilet.outline",
+                resourceName: "journey.inside.moonshakes.star.mission.trap.teddy.bear.outline",
                 boundingBox: CGRect(
                 x: 367.0/2715.0, y: 905.0/1527.0,
                 width: 74.0/2715.0, height: 107.0/1527.0
             )),
             SerializableBoundingCircleNode()
         ]
-    ), at: ["MoonShakesToilet"])
+    ), at: ["journey.tuff.nuff.moonshakes.star.mission.further.toilet.teddy.bear"])
     
     // MARK: - TUFF 'NUFF TOILET
     journeyImages.register(SerializableImageNode(
-        name: "JuggToilet",
-        description: "IW.SPA.MUS.LT8.journey into space.JuggToilet",
+        name: "journey.tuff.nuff.moonshakes.star.mission.closer.toilet.teddy.bear",
+        description: "IW.SPA.MUS.LT8.journey into space.journey.tuff.nuff.moonshakes.star.mission.closer.toilet.teddy.bear.caption",
         position: 3,
+        searchLabel: "IW.SPA.MUS.LT8.journey into space.journey.tuff.nuff.moonshakes.star.mission.closer.toilet.teddy.bear.search.label",
         overlays: [
             SerializableOutlineNode(
-                resourceName: "JuggToilet.outline",
+                resourceName: "journey.tuff.nuff.moonshakes.star.mission.closer.toilet.teddy.bear.outline",
                 boundingBox: CGRect(
                 x: 572.0/2715.0, y: 685.0/1527.0,
                 width: 46.0/2715.0, height: 62.0/1527.0
             )),
             SerializableBoundingCircleNode()
         ]
-    ), at: ["JuggToilet"])
+    ), at: ["journey.tuff.nuff.moonshakes.star.mission.closer.toilet.teddy.bear"])
 
     // MARK: - BUMPER CARS
     journeyImages.register(SerializableImageNode(
-        name: "BumperCars",
-        description: "IW.SPA.MUS.LT8.journey into space.BumperCars",
+        name: "journey.bumper.cars.trap.left.of.entrance.teddy.bear",
+        description: "IW.SPA.MUS.LT8.journey into space.journey.bumper.cars.trap.left.of.entrance.teddy.bear.caption",
         position: 4,
+        searchLabel: "IW.SPA.MUS.LT8.journey into space.journey.bumper.cars.trap.left.of.entrance.teddy.bear.search.label",
         overlays: [
             SerializableOutlineNode(
                 resourceName: "BumperCars.outline",
@@ -85,13 +90,14 @@ func makeJourneyIntoSpace() -> SerializableGalleryNode {
             )),
             SerializableBoundingCircleNode()
         ]
-    ), at: ["BumperCars"])
+    ), at: ["journey.bumper.cars.trap.left.of.entrance.teddy.bear"])
     
     // MARK: - ASTRONAUT CUTOUT
     journeyImages.register(SerializableImageNode(
-        name: "AstronautLegs",
-        description: "IW.SPA.MUS.LT8.journey into space.AstronautLegs",
+        name: "journey.spaceman.astronaut.cutout.outside.astrocade.bumper.cars.teddy.bear",
+        description: "IW.SPA.MUS.LT8.journey into space.journey.spaceman.astronaut.cutout.outside.astrocade.bumper.cars.teddy.bear.caption",
         position: 5,
+        searchLabel: "journey.spaceman.astronaut.cutout.outside.astrocade.bumper.cars.teddy.bear.search.label",
         overlays: [
             SerializableOutlineNode(
                 resourceName: "AstronautLegs.outline",
@@ -101,13 +107,14 @@ func makeJourneyIntoSpace() -> SerializableGalleryNode {
             )),
             SerializableBoundingCircleNode()
         ]
-    ), at: ["AstronautLegs"])
+    ), at: ["journey.spaceman.astronaut.cutout.outside.astrocade.bumper.cars.teddy.bear"])
 
     // MARK: - BLUE BOLTS
     journeyImages.register(SerializableImageNode(
-        name: "BlueBolts",
-        description: "IW.SPA.MUS.LT8.journey into space.BlueBolts",
+        name: "journey.rooftop.above.blue.bolts.astrocade.coin.machine.underground.entrance.teddy.bear",
+        description: "IW.SPA.MUS.LT8.journey into space.journey.rooftop.above.blue.bolts.astrocade.coin.machine.underground.entrance.teddy.bear.caption",
         position: 6,
+        searchLabel: "IW.SPA.MUS.LT8.journey into space.journey.rooftop.above.blue.bolts.astrocade.coin.machine.underground.entrance.teddy.bear.search.label",
         overlays: [
             SerializableOutlineNode(
                 resourceName: "BlueBolts.outline",
@@ -117,7 +124,7 @@ func makeJourneyIntoSpace() -> SerializableGalleryNode {
             )),
             SerializableBoundingCircleNode()
         ]
-    ), at: ["BlueBolts"])
+    ), at: ["journey.rooftop.above.blue.bolts.astrocade.coin.machine.underground.entrance.teddy.bear"])
         
     return SerializableGalleryNode(
         name: "journey into space",

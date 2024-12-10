@@ -9,12 +9,13 @@ func makeAfterlife() -> SerializableGalleryNode {
     // MARK: - AFTERLIFE DOOR
     afterlife.register(
         SerializableImageNode(
-            name: "AfterlifeExit",
-            description: "IW.SPA.MUS.LT8.afterlife.AfterlifeExit",
+            name: "afterlife.door.teddy.bear",
+            description: "IW.SPA.MUS.LT8.afterlife.afterlife.door.teddy.bear.caption",
             position: 0,
+            searchLabel: "IW.SPA.MUS.LT8.afterlife.afterlife.door.teddy.bear.search.label",
             overlays: [
                 SerializableOutlineNode(
-                    resourceName: "AfterlifeExit.outline",
+                    resourceName: "afterlife.door.teddy.bear.outline",
                     boundingBox: CGRect(
                     x: 1288.0/2715.0, y: 722.0/1527.0,
                     width: 19.0/2715.0, height: 32.0/1527.0
@@ -23,7 +24,7 @@ func makeAfterlife() -> SerializableGalleryNode {
                 SerializableBoundingCircleNode()
             ]
         ),
-        at: ["AfterlifeExit"]
+        at: ["afterlife.door.teddy.bear"]
     )
     
     return SerializableGalleryNode(
