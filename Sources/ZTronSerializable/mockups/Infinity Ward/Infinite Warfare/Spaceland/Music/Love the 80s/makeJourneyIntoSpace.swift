@@ -83,7 +83,7 @@ func makeJourneyIntoSpace() -> SerializableGalleryNode {
         searchLabel: "IW.SPA.MUS.LT8.journey into space.journey.bumper.cars.trap.left.of.entrance.teddy.bear.search.label",
         overlays: [
             SerializableOutlineNode(
-                resourceName: "BumperCars.outline",
+                resourceName: "journey.bumper.cars.trap.left.of.entrance.teddy.outline",
                 boundingBox: CGRect(
                 x: 165.0/2715.0, y: 683.0/1527.0,
                 width: 77.0/2715.0, height: 55.0/1527.0

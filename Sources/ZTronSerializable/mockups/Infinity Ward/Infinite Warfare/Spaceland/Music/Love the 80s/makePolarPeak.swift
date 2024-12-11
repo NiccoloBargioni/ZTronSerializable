@@ -294,8 +294,8 @@ func makePolarPeak() -> SerializableGalleryNode {
                 SerializableOutlineNode(
                     resourceName: "polar.peak.fountains.hyperslopes.booth.chair.desk.teddy.bear.outline",
                     boundingBox: CGRect(
-                    x: 1694.0/2715.0, y: 719.0/1527.0,
-                    width: 21.0/2715.0, height: 22.0/1527.0
+                        x: 2096.0/2715.0, y: 663.0/1527.0,
+                        width: 109.0/2715.0, height: 80.0/1527.0
                 )),
 
                 SerializableBoundingCircleNode()
@@ -315,10 +315,10 @@ func makePolarPeak() -> SerializableGalleryNode {
                 SerializableOutlineNode(
                     resourceName: "polar.peak.fountains.hyperslopes.booth.chair.door.teddy.bear.outline",
                     boundingBox: CGRect(
-                    x: 2096.0/2715.0, y: 663.0/1527.0,
-                    width: 109.0/2715.0, height: 80.0/1527.0
-                )),
-
+                        x: 1694.0/2715.0, y: 719.0/1527.0,
+                        width: 21.0/2715.0, height: 22.0/1527.0
+                    )
+                ),
                 SerializableBoundingCircleNode()
             ]
         ),
