@@ -5,7 +5,7 @@ public func makeAOTRTSkullhopTab() -> SerializableTabNode {
         name: "skullhop",
         position: 0,
         iconName: "music.note",
-        tools: makeSpacelandMusicToolsRouter()
+        tools: makeAOTRTSkullhopTools()
     )
 }
 

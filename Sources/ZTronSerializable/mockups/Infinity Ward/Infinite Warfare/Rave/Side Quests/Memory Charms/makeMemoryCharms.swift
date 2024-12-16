@@ -12,7 +12,6 @@ public func makeMemoryCharms() -> SerializableGalleryRouter {
     memoryCharms.router.register(makeFrog(), at: [">", "frog"])
     memoryCharms.router.register(makePacifier(), at: [">", "pacifier"])
     memoryCharms.router.register(makeBoots(), at: [">", "boots"])
-    memoryCharms.router.register(makeBoots(), at: [">", "boots"])
     
     return memoryCharms
 }
