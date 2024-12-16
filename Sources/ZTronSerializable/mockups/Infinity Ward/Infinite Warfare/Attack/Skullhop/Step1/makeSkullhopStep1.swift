@@ -218,7 +218,7 @@ public func makeSkullhopStep1() -> SerializableGalleryRouter {
                     )
                 )
             ]
-        ), at: [">", "dumpster.right.gas.station.skull", "zoom"],
+        ), at: [">", "cliff.near.radioactive.thing.skull", "zoom"],
         withParameter: .init(
             bottomBarIcon: "plus.magnifyingglass",
             goBackBottomBarIcon: "minus.magnifyingglass",
