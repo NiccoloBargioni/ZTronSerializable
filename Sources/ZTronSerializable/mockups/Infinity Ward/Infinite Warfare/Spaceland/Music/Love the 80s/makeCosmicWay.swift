@@ -9,53 +9,6 @@ typealias GalleryRouter = ZTronRouter<Empty, SerializableGalleryNode, Empty>
 func makeCosmicWay() -> SerializableGalleryNode {
     let cosmicWayImagesRouter = ImageRouter()
     
-    
-    /*
-     underground.register(
-         SerializableImageNode(
-             name: "underground.yeti.shutter.racing.stripes.ticket.vendor.rooftop.teddy.bear",
-             description: "IW.SPA.MUS.LT8.underground.underground.yeti.shutter.racing.stripes.ticket.vendor.rooftop.teddy.bear.caption",
-             position: 9,
-             searchLabel: "IW.SPA.MUS.LT8.underground.underground.yeti.shutter.racing.stripes.ticket.vendor.rooftop.teddy.bear.search.label",
-             overlays: [
-                 SerializableOutlineNode(
-                     resourceName: "underground.yeti.shutter.racing.stripes.ticket.vendor.rooftop.teddy.bear.outline",
-                     boundingBox: CGRect(
-                     x: 1353.0/2715.0, y: 737.0/1527.0,
-                     width: 16.0/2715.0, height: 24.0/1527.0
-                 )),
-
-                 SerializableBoundingCircleNode()
-             ]
-         ),
-         at: ["underground.yeti.shutter.racing.stripes.ticket.vendor.rooftop.teddy.bear"]
-     )
-     
-     // MARK: - YETI SHUTTER ZOOM
-     underground.register(
-         SerializableImageNode(
-             name: "underground.yeti.shutter.racing.stripes.ticket.vendor.rooftop.teddy.bear.zoom",
-             description: "IW.SPA.MUS.LT8.underground.underground.yeti.shutter.racing.stripes.ticket.vendor.rooftop.teddy.bear.caption",
-             position: 0,
-             overlays: [
-                 SerializableOutlineNode(
-                     resourceName: "underground.yeti.shutter.racing.stripes.ticket.vendor.rooftop.teddy.bear.zoom.outline",
-                     boundingBox: CGRect(
-                     x: 1191.0/2715.0, y: 614.0/1527.0,
-                     width: 95.0/2715.0, height: 119.0/1527.0
-                 )),
-
-                 SerializableBoundingCircleNode()
-             ]
-         ),
-         at: ["underground.yeti.shutter.racing.stripes.ticket.vendor.rooftop.teddy.bear", "zoom"],
-         withParameter: SerializableImageNode.NavigationParameters(
-             bottomBarIcon: "plus.magnifyingglass",
-             goBackBottomBarIcon: "minus.magnifyingglass",
-             boundingFrame: CGRect.NORMALIZED_FULL_SIZE
-         )
-     )
-     */
     // MARK: - POLICE
     cosmicWayImagesRouter.register(
         SerializableImageNode(
