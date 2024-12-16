@@ -123,8 +123,8 @@ public func makeSkullhopStep1() -> SerializableGalleryRouter {
             ]
         ), at: [">", "sign.outside.beachside.market.skull", "zoom"],
         withParameter: .init(
-            bottomBarIcon: "magnifyingglass.plus",
-            goBackBottomBarIcon: "magnifyingglass.minus",
+            bottomBarIcon: "plus.magnifyingglass",
+            goBackBottomBarIcon: "minus.magnifyingglass",
             boundingFrame: .init(
                 origin: .init(x: 1147.0/2715.0, y: 656.0/1527.0),
                 size: .init(width: (182.0 * 16.0/9.0)/2715.0, height: 182.0/1527.0)
@@ -172,8 +172,8 @@ public func makeSkullhopStep1() -> SerializableGalleryRouter {
             ]
         ), at: [">", "dumpster.right.gas.station.skull", "zoom"],
         withParameter: .init(
-            bottomBarIcon: "magnifyingglass.plus",
-            goBackBottomBarIcon: "magnifyingglass.minus",
+            bottomBarIcon: "plus.magnifyingglass",
+            goBackBottomBarIcon: "minus.magnifyingglass",
             boundingFrame: .init(
                 origin: .init(x: 1131.0/2715.0, y: 646.0/1527.0),
                 size: .init(width: 415.0/2715.0, height: (415.0*9.0/16.0)/1527.0)
@@ -220,8 +220,8 @@ public func makeSkullhopStep1() -> SerializableGalleryRouter {
             ]
         ), at: [">", "dumpster.right.gas.station.skull", "zoom"],
         withParameter: .init(
-            bottomBarIcon: "magnifyingglass.plus",
-            goBackBottomBarIcon: "magnifyingglass.minus",
+            bottomBarIcon: "plus.magnifyingglass",
+            goBackBottomBarIcon: "minus.magnifyingglass",
             boundingFrame: .init(
                 origin: .init(x: 1234.0/2715.0, y: 696.0/1527.0),
                 size: .init(width: (116.0*16.0/9.0)/2715.0, height: 116.0/1527.0)
@@ -270,8 +270,8 @@ public func makeSkullhopStep1() -> SerializableGalleryRouter {
             ]
         ), at: [">", "motel.last.floor.beach.skull", "zoom"],
         withParameter: .init(
-            bottomBarIcon: "magnifyingglass.plus",
-            goBackBottomBarIcon: "magnifyingglass.minus",
+            bottomBarIcon: "plus.magnifyingglass",
+            goBackBottomBarIcon: "minus.magnifyingglass",
             boundingFrame: .init(
                 origin: .init(x: 828.0/2715.0, y: 503.0/1527.0),
                 size: .init(width: (405.0*16.0/9.0)/2715.0, height: 405.0/1527.0)
@@ -339,8 +339,8 @@ public func makeSkullhopStep1() -> SerializableGalleryRouter {
             ]
         ), at: [">", "bus.park.behind.spawn.room.skull", "zoom"],
         withParameter: .init(
-            bottomBarIcon: "magnifyingglass.plus",
-            goBackBottomBarIcon: "magnifyingglass.minus",
+            bottomBarIcon: "plus.magnifyingglass",
+            goBackBottomBarIcon: "minus.magnifyingglass",
             boundingFrame: .init(
                 origin: .init(x: 1322.0/2715.0, y: 722.0/1527.0),
                 size: .init(width: (200.0*16.0/9.0)/2715.0, height: 200.0/1527.0)
