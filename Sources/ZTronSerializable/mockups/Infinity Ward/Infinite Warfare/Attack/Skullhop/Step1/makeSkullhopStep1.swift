@@ -354,7 +354,7 @@ public func makeSkullhopStep1() -> SerializableGalleryRouter {
     skullhopstep1router.router.register(SerializableGalleryNode(
         name: "iw.aotrt.skullhop.step1",
         position: 0,
-        assetsImageName: nil,
+        assetsImageName: "ghost.n.skull.logo",
         images: skullLocations
     ), at: [">", "master"])
     
