@@ -3,8 +3,8 @@ public func makeAOTRTSkullhopTools() -> SerializableToolsRouter {
     let skullhopTools = SerializableToolsRouter()
     
     skullhopTools.router.register(
-        makeLoveThe80sTool(),
-        at: [">", "love the 80s"]
+        makeSkullhopStep1Tool(),
+        at: [">", "skullhop step 1"]
     )
 
     return skullhopTools
