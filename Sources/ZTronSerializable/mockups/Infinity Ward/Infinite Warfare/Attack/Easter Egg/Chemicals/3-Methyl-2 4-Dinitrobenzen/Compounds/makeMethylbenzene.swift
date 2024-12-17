@@ -26,7 +26,7 @@ func makeMethylbenzene() -> SerializableGalleryNode {
     let detergent = makeDetergent(forPosition: 1)
     methylbenzeneCompounds.register(detergent, at: [">", detergent.getName()])
     
-    let drainOpener = makeDrainOpener(forPosition: 1)
+    let drainOpener = makeDrainOpener(forPosition: 2)
     methylbenzeneCompounds.register(drainOpener, at: [">", drainOpener.getName()])
 
     return SerializableGalleryNode(
