@@ -36,10 +36,12 @@ public class SerializableGalleryRouter: SerializableNode {
             try output.writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
             
             if absolutePath.count > 2 {
-                let master = absolutePath[absolutePath.count-2]
+                guard let master = self.router.peek(at: Array.array(subsequence: absolutePath.prefix(upTo: absolutePath.count - 1))) else {
+                    fatalError("Gaps not allowed in \(String(describing: Self.self)) for \(self.toString())")
+                }
                 let slave = output.getName()
                 
-                try SerializableSubgalleryRelationshipNode(master: master, slave: slave).writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
+                try SerializableSubgalleryRelationshipNode(master: master.getName(), slave: slave).writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
             }
 
         }
@@ -66,7 +68,11 @@ public class SerializableGalleryRouter: SerializableNode {
                 }
                 
                 if absolutePath.count > 2 {
-                    let master = absolutePath[absolutePath.count-2]
+                    guard let master = self.router.peek(
+                        at: Array.array(subsequence: absolutePath.prefix(upTo: absolutePath.count - 1))
+                    )?.getName() else {
+                        fatalError("No gaps allowed in \(String(describing: Self.self)) for \(self.toString())")
+                    }
                     let slave = galleryNode.getName()
                     
                     let relationshipNode = SerializableSubgalleryRelationshipNode(

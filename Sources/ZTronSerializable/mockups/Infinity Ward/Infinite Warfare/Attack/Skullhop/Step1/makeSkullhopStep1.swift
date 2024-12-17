@@ -342,7 +342,7 @@ public func makeSkullhopStep1() -> SerializableGalleryRouter {
             bottomBarIcon: "plus.magnifyingglass",
             goBackBottomBarIcon: "minus.magnifyingglass",
             boundingFrame: .init(
-                origin: .init(x: 1322.0/2715.0, y: 722.0/1527.0),
+                origin: .init(x: 1150.0/2715.0, y: 659.0/1527.0),
                 size: .init(width: (200.0*16.0/9.0)/2715.0, height: 200.0/1527.0)
             )
         )

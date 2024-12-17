@@ -2,6 +2,7 @@
 func makeAttack() -> SerializableMapNode {
     let attackTabs = SerializableTabsRouter()
     
+    attackTabs.router.register(makeAOTRTEasterEggTab(), at: [">", "iw.aotrt.ee.tab.name"])
     attackTabs.router.register(makeAOTRTSkullhopTab(), at: [">", "skullhop"])
     
     return SerializableMapNode(

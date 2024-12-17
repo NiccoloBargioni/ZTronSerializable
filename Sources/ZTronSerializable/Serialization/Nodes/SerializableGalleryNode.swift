@@ -64,9 +64,15 @@ public class SerializableGalleryNode: SerializableNode {
                 guard let params = params else {
                     throw SerializableException.illegalGraphStructureException(reason: "Expected params for image variants")
                 }
+                
+                guard let master = self.images.peek(
+                    at: Array.array(
+                        subsequence: absolutePath.prefix(upTo: absolutePath.count - 1)
+                    )
+                )?.getName() else { fatalError("Gaps not allowed in \(String(describing: Self.self)) for \(self.toString())") }
                                 
                 try SerializableImageVariantRelationshipNode(
-                    master: absolutePath[absolutePath.count-2],
+                    master: master,
                     slave: output.getName(),
                     variant: absolutePath.last!,
                     bottomBarIcon: params.getBottomBarIcon(),

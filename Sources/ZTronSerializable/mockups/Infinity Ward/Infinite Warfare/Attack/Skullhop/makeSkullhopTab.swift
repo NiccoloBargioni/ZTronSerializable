@@ -3,7 +3,7 @@
 public func makeAOTRTSkullhopTab() -> SerializableTabNode {
     return SerializableTabNode(
         name: "skullhop",
-        position: 0,
+        position: 1,
         iconName: "music.note",
         tools: makeAOTRTSkullhopTools()
     )
