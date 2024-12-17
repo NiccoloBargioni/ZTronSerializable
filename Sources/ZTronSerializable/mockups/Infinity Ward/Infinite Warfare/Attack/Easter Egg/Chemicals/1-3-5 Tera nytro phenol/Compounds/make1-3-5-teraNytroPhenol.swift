@@ -19,7 +19,7 @@ func make135TeraNytroPhenol() -> SerializableGalleryNode {
     )
     
     return SerializableGalleryNode(
-        name: "iw.aotrt.ee.chemicals.135.tera.nytro.phenol",
+        name: "iw.aotrt.ee.chemicals.135.tera.nytro.phenol.135.tera.nytro.phenol",
         position: 2,
         assetsImageName: "chemical.logo",
         images: _135TeraNytroPhenolCompounds
