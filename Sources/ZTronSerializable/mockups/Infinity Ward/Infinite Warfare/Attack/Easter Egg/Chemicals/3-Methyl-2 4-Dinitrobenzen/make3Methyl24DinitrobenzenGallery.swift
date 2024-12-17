@@ -14,7 +14,7 @@ func make3Methyl24DinitrobenzenGallery() -> SerializableGalleryRouter {
     
     _3Methyl24DinitrobenzenGallery.router.register(
         make3Methyl24Dinitrobenzen(),
-        at: [">", "iw.aotrt.ee.chemicals.3.4.methyl.2.4.dinitrobenzene.dinitro"]
+        at: [">", "iw.aotrt.ee.chemicals.3.4.methyl.2.4.dinitrobenzene.3.4.methyl.2.4.dinitrobenzene"]
     )
     
     return _3Methyl24DinitrobenzenGallery
