@@ -33,7 +33,7 @@ public class SerializableGalleryRouter: SerializableNode {
         #endif
         
         try self.router.forEach { absolutePath, output in
-            try output.writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
+            try output.writeGalleryEntryTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
             
             if absolutePath.count > 2 {
                 guard let master = self.router.peek(at: Array.array(subsequence: absolutePath.prefix(upTo: absolutePath.count - 1))) else {
@@ -43,7 +43,9 @@ public class SerializableGalleryRouter: SerializableNode {
                 
                 try SerializableSubgalleryRelationshipNode(master: master.getName(), slave: slave).writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
             }
-
+            
+            
+            try output.writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
         }
     }
     

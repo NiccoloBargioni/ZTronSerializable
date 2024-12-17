@@ -13,7 +13,45 @@ public class SerializableGalleryNode: SerializableNode {
     private let searchToken: SerializableGallerySearchTokenNode?
     private let images: ImagesRouter
     
+    private var didSerializeGallery: Bool = false
+    
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableGalleryNode")
+    
+    
+    internal func writeGalleryEntryTo(db: Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool = false) throws {
+        guard !self.didSerializeGallery else { return }
+        
+        guard let foreignKeys = foreignKeys as? SerializableGalleryForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "foreignKeys expected to be of type SerializableGalleryForeignKeys in \(#function) on type \(#file)"
+            )
+        }
+        
+        if shouldValidateFK {
+            let firstInvalidFK = try foreignKeys.validate(on: db)
+            
+            if let firstInvalidFK = firstInvalidFK {
+                throw SerializableException.invalidForeignKeyException(reason: firstInvalidFK)
+            }
+        }
+        
+        try DBMS.CRUD.insertIntoGallery(
+            or: .ignore,
+            for: db,
+            name: self.name,
+            position: self.position,
+            assetsImageName: self.assetsImageName,
+            game: foreignKeys.getGame(),
+            map: foreignKeys.getMap(),
+            tab: foreignKeys.getTab(),
+            tool: foreignKeys.getTool()
+        )
+        
+        try self.searchToken?.writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
+        
+        self.didSerializeGallery = true
+    }
+    
     
     // MARK: - Serializable
     public func writeTo(db: Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool = false) throws {
@@ -37,19 +75,7 @@ public class SerializableGalleryNode: SerializableNode {
         }
         #endif
 
-        try DBMS.CRUD.insertIntoGallery(
-            or: .ignore,
-            for: db,
-            name: self.name,
-            position: self.position,
-            assetsImageName: self.assetsImageName,
-            game: foreignKeys.getGame(),
-            map: foreignKeys.getMap(),
-            tab: foreignKeys.getTab(),
-            tool: foreignKeys.getTool()
-        )
-        
-        try self.searchToken?.writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
+        try self.writeGalleryEntryTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
         
         try self.images.forEach { absolutePath, output, params in
             
