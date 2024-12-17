@@ -12,7 +12,7 @@ func make135TeraNytroPhenol() -> SerializableGalleryNode {
         at: [">", "chemicals.lab.phenosulphuric.acid"]
     )
     
-    let detergent = makeDetergent(forPosition: 0)
+    let detergent = makeDetergent(forPosition: 1)
     _135TeraNytroPhenolCompounds.register(
         detergent,
         at: [">", detergent.getName()]
