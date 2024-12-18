@@ -1,5 +1,5 @@
 #if DEBUG
-func makeFormaldehyde(forPosition: Int) -> SerializableGalleryNode {
+func makeFormaldehyde(forPosition: Int, chemicalID: String) -> SerializableGalleryNode {
     assert(forPosition >= 0)
     
     let formaldehydeCompounds = ImageRouter()
@@ -30,7 +30,7 @@ func makeFormaldehyde(forPosition: Int) -> SerializableGalleryNode {
     
     
     return SerializableGalleryNode(
-        name: "iw.aotrt.ee.chemicals.formaldehyde",
+        name: "iw.aotrt.ee.chemicals." + chemicalID + ".formaldehyde",
         position: forPosition,
         assetsImageName: "chemical.logo",
         images: formaldehydeCompounds

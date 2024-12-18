@@ -9,7 +9,7 @@ func make34DiNitroxyMethylPropaneGallery() -> SerializableGalleryRouter {
     )
     
     _34DiNitroxyMethylPropaneGallery.router.register(
-        makeFormaldehyde(forPosition: 1),
+        makeFormaldehyde(forPosition: 1, chemicalID: "3.4.di.nitroxy.methyilpropane"),
         at: [">", "iw.aotrt.ee.chemicals.3.4.di.nitroxy.methyilpropane.formaldehyde"]
     )
     
