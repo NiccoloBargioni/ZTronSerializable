@@ -7,7 +7,7 @@ public class SerializableGalleryRouter: SerializableNode {
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableGalleryRouter")
     public let router: ZTronRouter<Empty, SerializableGalleryNode, Empty>
     
-    init() {
+    public init() {
         self.router = ZTronRouter()
     }
     
