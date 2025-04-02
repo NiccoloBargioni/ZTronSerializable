@@ -41,7 +41,7 @@ extension Validator {
                 assetsImageNamesMap[parentPath]?.append(output.getAssetsImageName())
                 
                 if validateImages {
-                    if !Validator.validateImagesRouter(output.getImages()) {
+                    if !Validator.validateMediasRouter(output.getMedias()) {
                         throw ValidateImagesRouterError.interruptSearch(
                             reason: "Could not validate images router for \(output.getName())"
                         )

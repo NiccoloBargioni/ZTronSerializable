@@ -16,7 +16,7 @@ extension Validator {
     /// that is not a `slave`, must go under the path `['>', 'SpacelandSign']`.
     ///
     /// - Complexity: **Time:** O(V) to topologically iterate over the images collection. **Memory:** O(V) for the same reason.
-    public static func validateImagesRouter(_ router: SerializableGalleryNode.ImagesRouter) -> Bool {
+    public static func validateMediasRouter(_ router: SerializableGalleryNode.MediasRouter) -> Bool {
         var subpositions: [Array<String>.SubSequence: [Int]] = [:]
         
         do {

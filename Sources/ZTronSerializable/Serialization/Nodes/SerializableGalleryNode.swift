@@ -5,13 +5,13 @@ import ZTronDataModel
 import os
 
 public class SerializableGalleryNode: SerializableNode {
-    public typealias ImagesRouter = ZTronRouter<Empty, SerializableImageNode, SerializableImageNode.NavigationParameters>
+    public typealias MediasRouter = ZTronRouter<Empty, any SerializableVisualMediaNode, SerializableImageNode.NavigationParameters>
     
     @Lowercased private var name: String
     private let position: Int
     private let assetsImageName: String?
     private let searchToken: SerializableGallerySearchTokenNode?
-    private let images: ImagesRouter
+    private let medias: MediasRouter
     
     private var didSerializeGallery: Bool = false
     
@@ -70,14 +70,14 @@ public class SerializableGalleryNode: SerializableNode {
         }
         
         #if DEBUG
-        if !Validator.validateImagesRouter(self.images) {
+        if !Validator.validateMediasRouter(self.medias) {
             throw SerializableException.validationException(reason: "Couldn't validate images for \(self.name)")
         }
         #endif
 
         try self.writeGalleryEntryTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
         
-        try self.images.forEach { absolutePath, output, params in
+        try self.medias.forEach { absolutePath, output, params in
             
             let imageFK = SerializableImageForeignKeys(
                 gallery: self.name,
@@ -91,7 +91,7 @@ public class SerializableGalleryNode: SerializableNode {
                     throw SerializableException.illegalGraphStructureException(reason: "Expected params for image variants")
                 }
                 
-                guard let master = self.images.peek(
+                guard let master = self.medias.peek(
                     at: Array.array(
                         subsequence: absolutePath.prefix(upTo: absolutePath.count - 1)
                     )
@@ -135,7 +135,7 @@ public class SerializableGalleryNode: SerializableNode {
         }
         
         
-        if images.getRoutesCount() <= 0 {
+        if medias.getRoutesCount() <= 0 {
             
             /// If no images are included in this gallery, just verify if the record for this Gallery exists on the db
             return try DBMS.CRUD.galleryExists(
@@ -153,7 +153,7 @@ public class SerializableGalleryNode: SerializableNode {
             var imageMasters = 0
             
             
-            self.images.forEachBFS { absolutePath, output in
+            self.medias.forEachBFS { absolutePath, output in
                 if absolutePath.count == 1 {
                     imageMasters += 1
                 }
@@ -183,7 +183,7 @@ public class SerializableGalleryNode: SerializableNode {
                     return false
                 } else {
                     do {
-                        try self.images.forEach { absolutePath, output, params in
+                        try self.medias.forEach { absolutePath, output, params in
                             let imageFK = SerializableImageForeignKeys(
                                 gallery: self.name,
                                 galleryFK: foreignKeys
@@ -236,13 +236,13 @@ public class SerializableGalleryNode: SerializableNode {
         position: Int,
         assetsImageName: String?,
         searchToken: SerializableGallerySearchTokenNode? = nil,
-        images: ImagesRouter
+        images: MediasRouter
     ) {
         self.name = name
         self.position = position
         self.assetsImageName = assetsImageName
         self.searchToken = searchToken
-        self.images = images
+        self.medias = images
     }
     
     public func getName() -> String {
@@ -261,8 +261,8 @@ public class SerializableGalleryNode: SerializableNode {
         return self.searchToken
     }
     
-    public func getImages() -> ImagesRouter {
-        return self.images
+    public func getMedias() -> MediasRouter {
+        return self.medias
     }
     
     public func toString() -> String {
