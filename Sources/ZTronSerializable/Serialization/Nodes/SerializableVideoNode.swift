@@ -2,25 +2,25 @@ import Foundation
 import SQLite
 import ZTronDataModel
 
-public class SerializableImageNode: SerializableVisualMediaNode {
+public class SerializableVideoNode: SerializableVisualMediaNode {
     private let name: String
+    private let `extension`: String
     private let description: String
     private let position: Int
     private let searchLabel: String?
-    internal let overlays: [any OverlaySerializableNode]
 
     public init(
         name: String,
+        extension: String,
         description: String,
         position: Int,
-        searchLabel: String? = nil,
-        overlays: [any OverlaySerializableNode] = []
+        searchLabel: String? = nil
     ) {
         self.name = name
+        self.extension = `extension`
         self.description = description
         self.position = position
         self.searchLabel = searchLabel
-        self.overlays = overlays
     }
     
     public func writeTo(db: Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool = false) throws {
@@ -41,8 +41,8 @@ public class SerializableImageNode: SerializableVisualMediaNode {
         try DBMS.CRUD.insertIntoVisualMedia(
             or: .ignore,
             for: db,
-            type: .image,
-            format: nil,
+            type: .video,
+            format: self.extension,
             name: self.name,
             description: self.description,
             position: self.position,
@@ -53,17 +53,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
             tool: foreignKeys.getTool(),
             gallery: foreignKeys.getGallery()
         )
-        
-        try self.overlays.forEach { overlayNode in
-            try overlayNode.writeTo(
-                db: db,
-                with: SerializableImageOverlayForeignKeys(
-                    image: self.name,
-                    imageFK: foreignKeys
-                ),
-                shouldValidateFK: shouldValidateFK
-            )
-        }
+
     }
     
     public func existsOn(db: Connection, with foreignKeys: SerializableForeignKeys, propagate: Bool) throws -> Bool {
@@ -73,7 +63,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
             )
         }
 
-        let imageExists = try DBMS.CRUD.imageExists(
+        let videoExists = try DBMS.CRUD.videoExists(
             for: db,
             image: self.name,
             game: foreignKeys.getGame(),
@@ -83,28 +73,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
             gallery: foreignKeys.getGallery()
         )
         
-        if !propagate {
-            return imageExists
-        } else {
-            if !imageExists {
-                return false
-            } else {
-                for overlay in self.overlays {
-                    if !(try overlay.existsOn(
-                        db: db,
-                        with: SerializableImageOverlayForeignKeys(
-                            image: self.name,
-                            imageFK: foreignKeys
-                        ),
-                        propagate: true
-                    )) {
-                        return false
-                    }
-                }
-                
-                return true
-            }
-        }
+        return videoExists
     }
     
     public func getName() -> String {
@@ -119,14 +88,19 @@ public class SerializableImageNode: SerializableVisualMediaNode {
         return self.position
     }
     
+    public func getExtension() -> String {
+        return self.extension
+    }
+    
     public func getSearchLabel() -> String? {
         return self.searchLabel
     }
     
     public func toString() -> String {
         return """
-            IMAGE(
+            VIDEO(
                 name: \(self.name),
+                extension: \(self.extension),
                 description: \(self.description),
                 position: \(self.position),
                 searchLabel: \(String(describing: self.searchLabel))

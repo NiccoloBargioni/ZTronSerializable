@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/stephencelis/SQLite.swift.git",
       "state" : {
-        "revision" : "a95fc6df17d108bd99210db5e8a9bac90fe984b8",
-        "version" : "0.15.3"
+        "branch" : "master",
+        "revision" : "c7b78f2f9a0376bc0145f3ecbd0df05eab1688f7"
       }
     },
     {
@@ -52,7 +52,7 @@
       "location" : "https://github.com/NiccoloBargioni/ZTronDataModel",
       "state" : {
         "branch" : "main",
-        "revision" : "6c937a1aaaca5fa6759272aafeaffa90b66c3e6c"
+        "revision" : "eba91a01b4f5bc12999ac5e110c66cb891e9f7e8"
       }
     },
     {
