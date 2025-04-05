@@ -53,7 +53,9 @@ public final class SerializableToolNode: SerializableNode {
         if let galleryRouters = self.galleryRouters {
             for galleryRouter in galleryRouters {
                 if !Validator.validateGalleryRouter(galleryRouter.router, validateImages: true) {
-                    throw SerializableException.validationException(reason: "Could not validate gallery router for tool \(self.toString())")
+                    throw SerializableException.validationException(
+                        reason: "Could not validate gallery router for tool \(self.toString())"
+                    )
                 }
             }
         }

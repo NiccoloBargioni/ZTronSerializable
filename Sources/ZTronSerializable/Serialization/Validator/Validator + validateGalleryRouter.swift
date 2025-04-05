@@ -59,12 +59,18 @@ extension Validator {
         
         for positionsSet in positionsMap.values {
             if !Validator.validatePositions(positionsSet) {
+                #if DEBUG
+                Self.logger.log(level: .error, "Could not validate positions set for subgalleries in gallery.")
+                #endif
                 return false
             }
         }
                 
         for assetsImageNamesSet in assetsImageNamesMap.values {
             if !self.validateAssetsImages(assetsImageNamesSet) {
+                #if DEBUG
+                Self.logger.log(level: .error, "Could not validate assets images in gallery.")
+                #endif
                 return false
             }
         }
