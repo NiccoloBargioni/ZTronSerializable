@@ -6,9 +6,9 @@ extension Validator {
     
     /// Validates the tree of all the galleries inside a specific tool.
     ///
-    /// - Parameter galleryRouter: The gallery router to validate.
+    /// - Parameter galleryRouters: The gallery router to validate.
     /// - Parameter validateImages: if `true`, all the images in all the subgalleries are validated as well.
-    /// - Returns: `true` if `galleryRouter` is a valid router, `false` otherwise.
+    /// - Returns: `true` if `galleryRouters` is a valid router, `false` otherwise.
     ///
     /// The router must comply to the following rules in order to be considered valid:
     ///

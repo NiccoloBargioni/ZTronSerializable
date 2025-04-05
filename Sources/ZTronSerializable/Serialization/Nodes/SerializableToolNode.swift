@@ -10,7 +10,7 @@ public final class SerializableToolNode: SerializableNode {
     @Lowercased private var name: String
     private let position: Int
     private let assetsImageName: String
-    private let galleryRouter: SerializableGalleryRouter?
+    private let galleryRouters: [SerializableGalleryRouter]?
     
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableToolNode")
 
@@ -18,9 +18,21 @@ public final class SerializableToolNode: SerializableNode {
         self.name = name
         self.position = position
         self.assetsImageName = assetsImageName
-        self.galleryRouter = galleryRouter
+        
+        if let galleryRouter = galleryRouter {
+            self.galleryRouters = [galleryRouter]
+        } else {
+            self.galleryRouters = nil
+        }
     }
     
+    public init(name: String, position: Int, assetsImageName: String, galleryRouter: [SerializableGalleryRouter]) {
+        self.name = name
+        self.position = position
+        self.assetsImageName = assetsImageName
+        self.galleryRouters = galleryRouter
+    }
+
     
     public func writeTo(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool) throws {
         guard let foreignKeys = foreignKeys as? SerializableTabsForeignKeys else {
@@ -37,9 +49,12 @@ public final class SerializableToolNode: SerializableNode {
             }
         }
 
-        if let galleryRouter = self.galleryRouter {
-            if !Validator.validateGalleryRouter(galleryRouter.router, validateImages: true) {
-                throw SerializableException.validationException(reason: "Could not validate gallery router for tool \(self.toString())")
+        
+        if let galleryRouters = self.galleryRouters {
+            for galleryRouter in galleryRouters {
+                if !Validator.validateGalleryRouter(galleryRouter.router, validateImages: true) {
+                    throw SerializableException.validationException(reason: "Could not validate gallery router for tool \(self.toString())")
+                }
             }
         }
         
@@ -54,12 +69,14 @@ public final class SerializableToolNode: SerializableNode {
             tab: foreignKeys.getTab()
         )
         
-        if let galleryRouter = self.galleryRouter {
-            try galleryRouter.writeTo(
-                db: db,
-                with: SerializableGalleryForeignKeys(tool: self.name, toolFK: foreignKeys),
-                shouldValidateFK: shouldValidateFK
-            )
+        if let galleryRouters = self.galleryRouters {
+            for galleryRouter in galleryRouters {
+                try galleryRouter.writeTo(
+                    db: db,
+                    with: SerializableGalleryForeignKeys(tool: self.name, toolFK: foreignKeys),
+                    shouldValidateFK: shouldValidateFK
+                )
+            }
         }
     }
     
@@ -74,12 +91,18 @@ public final class SerializableToolNode: SerializableNode {
         
         if toolExists {
             if propagate {
-                if let galleryRouter = self.galleryRouter {
-                    return try galleryRouter.existsOn(
-                        db: db,
-                        with: SerializableGalleryForeignKeys(tool: self.name, toolFK: foreignKeys),
-                        propagate: propagate
-                    )
+                if let galleryRouters = self.galleryRouters {
+                    var exists: Bool = true
+                    for galleryRouter in galleryRouters {
+                        guard exists else { break }
+                        try exists = exists && galleryRouter.existsOn(
+                            db: db,
+                            with: SerializableGalleryForeignKeys(tool: self.name, toolFK: foreignKeys),
+                            propagate: propagate
+                        )
+                    }
+                    
+                    return exists
                 } else {
                     #if DEBUG
                     if toolExists {
