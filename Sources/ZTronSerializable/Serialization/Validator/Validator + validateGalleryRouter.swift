@@ -79,17 +79,13 @@ extension Validator {
     }
     
     fileprivate static func validateAssetsImages(_ imagesNames: [String?]) -> Bool {
-        for imagesName in imagesNames {
-            if imagesNames.first == nil && imagesName != nil {
-                return false
-            } else {
-                if imagesNames.first != nil && imagesName == nil {
-                    return false
-                }
-            }
+        let ogCount: Int = imagesNames.count
+        
+        let filterdImages = imagesNames.compactMap {
+            return $0
         }
         
-        return true
+        return filterdImages.count == 0 || filterdImages.count == ogCount
     }
 }
 
