@@ -35,12 +35,24 @@ public final class SerializableGameNode: SerializableNode {
             }
         }
         
-        let positions = self.maps.router.map { $1.getPosition() }
-    
-        if !Validator.validatePositions(positions) {
-            throw SerializableException.illegalArgumentException(
-                reason: "Unable to validate positions \(String(describing: positions)) for game \(self.toString()) with foreign keys \(foreignKeys.toString())"
-            )
+        var mapsPositionsByDepth: [Int: [Int]] = [:]
+        
+        self.maps.router.forEach { absolutePath, output in
+            if mapsPositionsByDepth[absolutePath.count - 1] == nil {
+                mapsPositionsByDepth[absolutePath.count - 1] = .init()
+            }
+            
+            mapsPositionsByDepth[absolutePath.count - 1]?.append(output.getPosition())
+        }
+        
+        for depth in mapsPositionsByDepth.keys {
+            if let positionsForDepth = mapsPositionsByDepth[depth] {
+                if !Validator.validatePositions(positionsForDepth) {
+                    throw SerializableException.validationException(
+                        reason: "Maps positions \(String(describing: positionsForDepth)) are not valid in \(#file) -> \(#function) for tab \(self.toString())"
+                    )
+                }
+            }
         }
         
         try DBMS.CRUD.insertIntoGame(
