@@ -117,5 +117,9 @@ public final class SerializableMapNode: SerializableNode {
     public func getPosition() -> Int {
         return self.position
     }
+    
+    public final func getName() -> String {
+        return self.name
+    }
 
 }

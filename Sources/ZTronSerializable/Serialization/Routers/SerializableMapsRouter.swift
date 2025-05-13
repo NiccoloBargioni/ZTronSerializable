@@ -37,24 +37,50 @@ public final class SerializableMapsRouter: SerializableNode {
         
         // Router should have depth 2
         if router.getMaxDepth() > 3 {
-            throw SerializableException.illegalArgumentException(
-                reason: "At the time of coding, only a few maps with dependency tree of depth 3 (including root symbol) exist. Check your logic in \(self.toString())"
-            )
-        }
-
-        
-        let mapsPositions = router.map { _, output in
-            return output.getPosition()
+            #if DEBUG
+                Self.logger.info("At the time of coding, only a few maps with dependency tree of depth 3 (including root symbol) exist. Check your logic in \(self.toString())")
+            #endif
         }
         
-        if !Validator.validatePositions(mapsPositions) {
-            throw SerializableException.validationException(
-                reason: "Maps positions \(String(describing: mapsPositions)) are not valid in \(#file) -> \(#function) for tab \(self.toString())"
-            )
+        var mapsPositionsByDepth: [Int: [Int]] = [:]
+        
+        router.forEach { absolutePath, output in
+            if mapsPositionsByDepth[absolutePath.count - 1] == nil {
+                mapsPositionsByDepth[absolutePath.count - 1] = .init()
+            }
+            
+            mapsPositionsByDepth[absolutePath.count - 1]?.append(output.getPosition())
         }
         
-        try self.router.forEach { _, output in
+        for depth in mapsPositionsByDepth.keys {
+            if let positionsForDepth = mapsPositionsByDepth[depth] {
+                if !Validator.validatePositions(positionsForDepth) {
+                    throw SerializableException.validationException(
+                        reason: "Maps positions \(String(describing: positionsForDepth)) are not valid in \(#file) -> \(#function) for tab \(self.toString())"
+                    )
+                }
+            }
+        }
+        
+        try self.router.forEach { path, output in
             try output.writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
+                        
+            if path.count > 2 {
+                guard let master = self.router.peek(at: Array.array(subsequence: path.prefix(upTo: path.count - 1))) else {
+                    fatalError("Gaps not allowed in \(String(describing: Self.self)) for \(self.toString())")
+                }
+                let slave = output.getName()
+                
+                try SerializableSubmapRelationshipNode(
+                    master: master.getName(),
+                    slave: slave
+                ).writeTo(
+                    db: db,
+                    with: foreignKeys,
+                    shouldValidateFK: shouldValidateFK
+                )
+            }
+
         }
     }
     
