@@ -42,16 +42,26 @@ public final class SerializableGamesRouter: SerializableNode {
             )
         }
 
+        var mapsPositionsByDepth: [Int: [Int]] = [:]
         
-        let mapsPositions = router.map { _, output in
-            return output.getPosition()
+        router.forEach { absolutePath, output in
+            if mapsPositionsByDepth[absolutePath.count - 1] == nil {
+                mapsPositionsByDepth[absolutePath.count - 1] = .init()
+            }
+            
+            mapsPositionsByDepth[absolutePath.count - 1]?.append(output.getPosition())
         }
         
-        if !Validator.validatePositions(mapsPositions) {
-            throw SerializableException.validationException(
-                reason: "Maps positions \(String(describing: mapsPositions)) are not valid in \(#file) -> \(#function) for tab \(self.toString())"
-            )
+        for depth in mapsPositionsByDepth.keys {
+            if let positionsForDepth = mapsPositionsByDepth[depth] {
+                if !Validator.validatePositions(positionsForDepth) {
+                    throw SerializableException.validationException(
+                        reason: "Maps positions \(String(describing: positionsForDepth)) are not valid in \(#file) -> \(#function) for tab \(self.toString())"
+                    )
+                }
+            }
         }
+
         
         try self.router.forEach { _, output in
             try output.writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
