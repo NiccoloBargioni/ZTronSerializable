@@ -57,10 +57,14 @@ extension Validator {
             fatalError("Path should be unfeasible in \(#file): \(#function), please reach out to github:NickTheFreak97")
         }
         
-        for positionsSet in positionsMap.values {
-            if !Validator.validatePositions(positionsSet) {
+        for parentPath in positionsMap.keys {
+            guard let positionsToValidate = positionsMap[parentPath] else { continue }
+            if !Validator.validatePositions(positionsToValidate) {
                 #if DEBUG
-                Self.logger.log(level: .error, "Could not validate positions set for subgalleries in gallery.")
+                Self.logger.log(
+                    level: .error,
+                    "Could not validate positions set: \(String(describing: positionsToValidate)) for subgalleries in gallery. Invalid parent: \(String(describing: parentPath))."
+                )
                 #endif
                 return false
             }
