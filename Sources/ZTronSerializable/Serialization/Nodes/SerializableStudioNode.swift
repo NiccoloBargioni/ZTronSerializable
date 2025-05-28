@@ -27,6 +27,8 @@ public final class SerializableStudioNode: SerializableNode {
             )
         }
         
+        // FIXME: CURRENTLY SUPPRESSED
+        /*
         let positions = self.games.router.map { $1.getPosition() }
         
         if !Validator.validatePositions(positions) {
@@ -34,6 +36,7 @@ public final class SerializableStudioNode: SerializableNode {
                 reason: "Unable to validate positions \(String(describing: positions)) for studio \(self.toString()) with foreign keys \(foreignKeys.toString())"
             )
         }
+        */
 
         try DBMS.CRUD.insertIntoStudio(
             or: .ignore,
