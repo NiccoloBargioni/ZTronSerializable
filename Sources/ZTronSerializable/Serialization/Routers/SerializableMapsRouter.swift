@@ -90,7 +90,6 @@ public final class SerializableMapsRouter: SerializableNode {
                 reason: "foreignKeys expected to be of type \(String(describing: SerializableMapForeignKeys.self)) in \(#function) on type \(#file)"
             )
         }
-
         
         let allMaps = self.router.map { _, output in
             return output

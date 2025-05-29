@@ -64,13 +64,7 @@ public final class SerializableGameNode: SerializableNode {
             studio: foreignKeys.getStudio()
         )
 
-        try self.maps.router.forEach { _, map in
-            try map.writeTo(
-                db: db,
-                with: SerializableMapForeignKeys(game: self.name),
-                shouldValidateFK: shouldValidateFK
-            )
-        }
+        try self.maps.writeTo(db: db, with: SerializableMapForeignKeys(game: self.name), shouldValidateFK: shouldValidateFK)
     }
     
     public func existsOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws -> Bool {
