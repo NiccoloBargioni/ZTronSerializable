@@ -82,14 +82,8 @@ public final class SerializableGameNode: SerializableNode {
                     return $1
                 }
                 
-                for map in allMaps {
-                    if !(try map.existsOn(
-                        db: db,
-                        with: SerializableMapForeignKeys(game: self.name),
-                        propagate: propagate
-                    )) {
-                        return false
-                    }
+                if !(try maps.existsOn(db: db, with: SerializableMapForeignKeys(game: self.name), propagate: propagate)) {
+                    return false
                 }
                 
                 #if DEBUG

@@ -54,13 +54,11 @@ public final class SerializableMapNode: SerializableNode {
         )
         
         
-        try self.tabs.router.forEach { _, tab in
-            try tab.writeTo(
+        try self.tabs.writeTo(
                 db: db,
                 with: SerializableTabForeignKeys(map: self.name, mapFK: foreignKeys),
                 shouldValidateFK: shouldValidateFK
             )
-        }
     }
     
     public func existsOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws -> Bool {
@@ -75,18 +73,15 @@ public final class SerializableMapNode: SerializableNode {
                 let tabs = self.tabs.router.map { _, output in
                     return output
                 }
-                
-                for tab in tabs {
-                    if !(try tab.existsOn(
-                        db: db,
-                        with: SerializableTabForeignKeys(map: self.name, mapFK: foreignKeys),
-                        propagate: propagate
-                    )
-                ) {
-                        return false
-                    }
+                    
+                if !(try self.tabs.existsOn(
+                    db: db,
+                    with: SerializableTabForeignKeys(map: self.name, mapFK: foreignKeys),
+                    propagate: propagate
+                )) {
+                    return false
                 }
-                
+
                 #if DEBUG
                 Self.logger.info("Map \(self.toString()) with FK \(foreignKeys.toString()) exists on db")
                 #endif
