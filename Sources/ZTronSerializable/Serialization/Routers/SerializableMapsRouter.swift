@@ -28,7 +28,7 @@ public final class SerializableMapsRouter: SerializableNode {
             }
         }
         
-        if self.router.getMaxDepth() <= 1 {
+        if self.router.getMaxDepth() <= 0 {
             #if DEBUG
             Self.logger.info("Attempted to serialize empty maps router for \(self.toString()).")
             #endif
