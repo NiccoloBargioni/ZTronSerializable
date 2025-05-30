@@ -28,7 +28,7 @@ public final class SerializableTabsRouter: SerializableNode {
             }
         }
         
-        if self.router.getMaxDepth() <= 1 {
+        if self.router.getMaxDepth() <= 0 {
             #if DEBUG
             Self.logger.info("Attempted to serialize empty tools router for \(self.toString()).")
             #endif
