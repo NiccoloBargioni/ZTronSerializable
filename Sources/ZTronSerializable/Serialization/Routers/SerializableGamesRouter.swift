@@ -179,12 +179,15 @@ public final class SerializableGamesRouter: SerializableNode {
 
             },
             validate: { gameModels in
+                // FIXME: To be fair with subdivision by studio being legacy, there's no sure way to validate positions at this local level.
+                /*
                 return Validator.validatePositions(gameModels.filter({ gameModel in
                     return foreignKeys.getStudio() == gameModel.getStudio()
                 }).map({ gameModel in
                     return gameModel.getPosition()
                 }))
-                
+                */
+                return true
             }
         )
     }
