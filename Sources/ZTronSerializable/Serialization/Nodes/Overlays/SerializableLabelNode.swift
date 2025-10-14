@@ -2,6 +2,7 @@ import Foundation
 import SQLite
 import ZTronDataModel
 
+/*
 public class SerializableLabelNode: OverlaySerializableNode {
     private let label: String
     private let _isActive: Bool
@@ -142,4 +143,4 @@ public class SerializableLabelNode: OverlaySerializableNode {
         public static let OPACITY: Double = 0.75
         public static let MAX_AABB: CGRect? = nil
     }
-}
+}*/

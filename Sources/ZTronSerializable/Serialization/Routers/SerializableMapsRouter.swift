@@ -80,7 +80,6 @@ public final class SerializableMapsRouter: SerializableNode {
                     shouldValidateFK: shouldValidateFK
                 )
             }
-
         }
     }
     
@@ -116,5 +115,68 @@ public final class SerializableMapsRouter: SerializableNode {
         }
         
         return description
+    }
+    
+    
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableMapForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreignKeys of type \(String(describing: SerializableMapForeignKeys.self)) in \(#file) -> \(#function)"
+            )
+        }
+
+        if propagate {
+            try self.router.forEach { path, output in
+                try output.deleteDanglingReferencesOn(db: db, with: foreignKeys, propagate: propagate)
+            }
+        }
+
+        var firstLevelOfMaps: [String: SerializableMapNode] = [:]
+        var firstLevelOfSlavesForMaster: [String: [SerializableMapNode]] = [:]
+        
+        self.router.forEach { path, output in
+            if path.count > 2 {
+                guard let master = self.router.peek(at: Array.array(subsequence: path.prefix(upTo: path.count - 1))) else {
+                    fatalError("Gaps not allowed in \(String(describing: Self.self)) for \(self.toString())")
+                }
+                
+                if firstLevelOfSlavesForMaster[master.getName()] == nil {
+                    firstLevelOfSlavesForMaster[master.getName()] = []
+                }
+                
+                firstLevelOfSlavesForMaster[master.getName()]?.append(output)
+            } else {
+                firstLevelOfMaps[output.getName()] = output
+            }
+        }
+        
+        try firstLevelOfSlavesForMaster.keys.forEach { masterID in
+            if let slaves = firstLevelOfSlavesForMaster[masterID] {
+                var flatSlavesDict: [String: SerializableMapNode] = [:]
+                
+                slaves.forEach { slaveModel in
+                    flatSlavesDict[slaveModel.getName()] = slaveModel
+                }
+                
+                try DBMS.CRUD.batchDeleteFirstLevelSubmapsForMap(
+                    for: db,
+                    master: masterID,
+                    game: foreignKeys.getGame(),
+                    shouldRemove: { mapModel in
+                        return flatSlavesDict[mapModel.getName()] == nil
+                    },
+                    shouldDecreasePositions: false
+                )
+            }
+        }
+        
+        try DBMS.CRUD.batchDeleteFirstLevelMapsForGame(
+            for: db,
+            game: foreignKeys.getGame(),
+            shouldRemove: { mapModel in
+                return firstLevelOfMaps[mapModel.getName()] == nil
+            },
+            shouldDecreasePositions: false
+        )
     }
 }

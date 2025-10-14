@@ -5,7 +5,7 @@ import SQLite
 /// - `TOOL(name, position, assetsImageName, tab, map, game)`
 /// - `PK(name, tab, map, game)`
 /// - `FK(tab, map, game) REFERENCES TAB(name, map, game) ON DELETE CASCADE ON UPDATE CASCADE`
-public final class SerializableTabsForeignKeys: SerializableForeignKeys {
+public final class SerializableToolForeignKeys: SerializableForeignKeys {
     @Lowercased private var tab: String
     @Lowercased private var map: String
     @Lowercased private var game: String

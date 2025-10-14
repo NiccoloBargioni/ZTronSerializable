@@ -68,7 +68,7 @@ public final class SerializableTabNode: SerializableNode {
         try self.tools.router.forEach { _, tool in
             try tool.writeTo(
                 db: db,
-                with: SerializableTabsForeignKeys(tab: self.name, tabFK: foreignKeys),
+                with: SerializableToolForeignKeys(tab: self.name, tabFK: foreignKeys),
                 shouldValidateFK: shouldValidateFK
             )
         }
@@ -92,7 +92,7 @@ public final class SerializableTabNode: SerializableNode {
                 for tool in tools {
                     let toolExists = try tool.existsOn(
                         db: db,
-                        with: SerializableTabsForeignKeys(tab: self.name, tabFK: foreignKeys),
+                        with: SerializableToolForeignKeys(tab: self.name, tabFK: foreignKeys),
                         propagate: propagate
                     )
                     
@@ -130,4 +130,19 @@ public final class SerializableTabNode: SerializableNode {
         return self.position
     }
     
+    
+    public func getName() -> String {
+        return self.name
+    }
+    
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableTabForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreignKeys of type \(String(describing: SerializableTabForeignKeys.self)) in \(#file) -> \(#function)"
+            )
+        }
+
+        try self.tools.deleteDanglingReferencesOn(db: db, with: SerializableToolForeignKeys(tab: self.name, tabFK: foreignKeys), propagate: propagate)
+    }
+
 }

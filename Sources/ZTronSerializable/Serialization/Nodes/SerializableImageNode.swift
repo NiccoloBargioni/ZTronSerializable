@@ -133,4 +133,46 @@ public class SerializableImageNode: SerializableVisualMediaNode {
             )
         """
     }
+    
+    /// This implementation removes dangling outlines and bounding circles if any.
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableImageForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "foreignKeys expected to be of type SerializableImageForeignKeys in \(#function) on type \(#file)"
+            )
+        }
+
+        let boundingCircles = self.overlays.compactMap { overlayNode in
+            return overlayNode as? SerializableBoundingCircleNode
+        }
+        
+        if boundingCircles.count <= 0 {
+            try DBMS.CRUD.deleteBoundingCircleForImage(
+                for: db,
+                image: self.name,
+                gallery: foreignKeys.getGallery(),
+                tool: foreignKeys.getTool(),
+                tab: foreignKeys.getTab(),
+                map: foreignKeys.getMap(),
+                game: foreignKeys.getGame()
+            )
+        }
+        
+        let outlines = self.overlays.compactMap { overlayNode in
+            return overlayNode as? SerializableOutlineNode
+        }
+        
+        if outlines.count <= 0 {
+           try DBMS.CRUD.deleteOutlineForImage(
+               for: db,
+               image: self.name,
+               gallery: foreignKeys.getGallery(),
+               tool: foreignKeys.getTool(),
+               tab: foreignKeys.getTab(),
+               map: foreignKeys.getMap(),
+               game: foreignKeys.getGame()
+           )
+       }
+    }
+
 }

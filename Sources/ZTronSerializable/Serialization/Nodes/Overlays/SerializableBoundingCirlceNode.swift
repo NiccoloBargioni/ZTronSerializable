@@ -111,4 +111,10 @@ public class SerializableBoundingCircleNode: OverlaySerializableNode {
         public static let IS_ACTIVE: Bool = SerializableOutlineNode.OutlineDefaults.IS_ACTIVE
         public static let OPACITY: Double = SerializableOutlineNode.OutlineDefaults.OPACITY
     }
+    
+    /// - Note: Bounding Circle cannot have dangling references if you enter here. Deleting a bounding circle must happen at Visual Media level.
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        
+    }
+
 }

@@ -12,11 +12,10 @@ public final class SerializableToolsRouter: SerializableNode {
         self.router = .init()
     }
     
-    
     public func writeTo(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool) throws {
-        guard let foreignKeys = foreignKeys as? SerializableTabsForeignKeys else {
+        guard let foreignKeys = foreignKeys as? SerializableToolForeignKeys else {
             throw SerializableException.illegalArgumentException(
-                reason: "foreignKeys expected to be of type \(String(describing: SerializableTabsForeignKeys.self)) in \(#function) on type \(#file)"
+                reason: "foreignKeys expected to be of type \(String(describing: SerializableToolForeignKeys.self)) in \(#function) on type \(#file)"
             )
         }
         
@@ -59,9 +58,9 @@ public final class SerializableToolsRouter: SerializableNode {
     }
     
     public func existsOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws -> Bool {
-        guard let foreignKeys = foreignKeys as? SerializableTabsForeignKeys else {
+        guard let foreignKeys = foreignKeys as? SerializableToolForeignKeys else {
             throw SerializableException.illegalArgumentException(
-                reason: "foreignKeys expected to be of type \(String(describing: SerializableTabsForeignKeys.self)) in \(#function) on type \(#file)"
+                reason: "foreignKeys expected to be of type \(String(describing: SerializableToolForeignKeys.self)) in \(#function) on type \(#file)"
             )
         }
 
@@ -91,5 +90,43 @@ public final class SerializableToolsRouter: SerializableNode {
         }
         
         return description
+    }
+    
+    
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableToolForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreignKeys of type \(String(describing: SerializableToolForeignKeys.self)) in \(#file) -> \(#function)"
+            )
+        }
+
+        if self.router.getMaxDepth() > 2 {
+            throw SerializableException.validationException(
+                reason: "Tools with slave tools are unsupported in \(#file) -> \(#function) for tab \(self.toString())"
+            )
+        }
+        
+        if propagate {
+            try self.router.forEach { absolutePath, output in
+                try output.deleteDanglingReferencesOn(db: db, with: foreignKeys, propagate: propagate)
+            }
+        }
+
+        var toolsForThisTab: [String: SerializableToolNode] = [:]
+        
+        self.router.forEach { absolutePath, toolModel in
+            toolsForThisTab[toolModel.getName()] = toolModel
+        }
+        
+        try DBMS.CRUD.batchDeleteToolsForTab(
+            for: db,
+            tab: foreignKeys.getTab(),
+            map: foreignKeys.getMap(),
+            game: foreignKeys.getGame(),
+            shouldRemove: { tool in
+                return toolsForThisTab[tool.getName()] == nil
+            },
+            shouldDecreasePositions: false
+        )
     }
 }

@@ -92,4 +92,42 @@ public final class SerializableTabsRouter: SerializableNode {
         
         return description
     }
+    
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableTabForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreignKeys of type \(String(describing: SerializableTabForeignKeys.self)) in \(#file) -> \(#function)"
+            )
+        }
+
+        if self.router.getMaxDepth() > 2 {
+            throw SerializableException.validationException(
+                reason: "Tabs with slave tabs are unsupported in \(#file) -> \(#function) for map \(self.toString())"
+            )
+        }
+        
+        if propagate {
+            try self.router.forEach { absolutePath, output in
+                try output.deleteDanglingReferencesOn(db: db, with: foreignKeys, propagate: propagate)
+            }
+        }
+
+
+        var tabs: [String: SerializableTabNode] = [:]
+        
+        self.router.forEach { absolutePath, tabNode in
+            tabs[tabNode.getName()] = tabNode
+        }
+        
+        try DBMS.CRUD.batchDeleteTabsForMap(
+            for: db,
+            map: foreignKeys.getMap(),
+            game: foreignKeys.getGame(),
+            shouldRemove: { tabModel in
+                return tabs[tabModel.getName()] == nil
+            },
+            shouldDecreasePositions: false
+        )
+    }
+
 }

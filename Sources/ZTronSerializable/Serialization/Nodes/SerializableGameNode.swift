@@ -114,4 +114,19 @@ public final class SerializableGameNode: SerializableNode {
     public func getPosition() -> Int {
         return self.position
     }
+    
+    
+    public final func getName() -> String {
+        return self.name
+    }
+    
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableGameForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreignKeys of type \(String(describing: SerializableGameForeignKeys.self)) in \(#file) -> \(#function)"
+            )
+        }
+
+        try self.maps.deleteDanglingReferencesOn(db: db, with: SerializableMapForeignKeys(game: self.name), propagate: propagate)
+    }
 }

@@ -35,9 +35,9 @@ public final class SerializableToolNode: SerializableNode {
 
     
     public func writeTo(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool) throws {
-        guard let foreignKeys = foreignKeys as? SerializableTabsForeignKeys else {
+        guard let foreignKeys = foreignKeys as? SerializableToolForeignKeys else {
             throw SerializableException.illegalArgumentException(
-                reason: "foreignKeys expected to be of type \(String(describing: SerializableTabsForeignKeys.self)) in \(#function) on type \(#file)"
+                reason: "foreignKeys expected to be of type \(String(describing: SerializableToolForeignKeys.self)) in \(#function) on type \(#file)"
             )
         }
 
@@ -83,9 +83,9 @@ public final class SerializableToolNode: SerializableNode {
     }
     
     public func existsOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws -> Bool {
-        guard let foreignKeys = foreignKeys as? SerializableTabsForeignKeys else {
+        guard let foreignKeys = foreignKeys as? SerializableToolForeignKeys else {
             throw SerializableException.illegalArgumentException(
-                reason: "foreignKeys expected to be of type \(String(describing: SerializableTabsForeignKeys.self)) in \(#function) on type \(#file)"
+                reason: "foreignKeys expected to be of type \(String(describing: SerializableToolForeignKeys.self)) in \(#function) on type \(#file)"
             )
         }
         
@@ -136,6 +136,23 @@ public final class SerializableToolNode: SerializableNode {
     
     public func getPosition() -> Int {
         return self.position
+    }
+    
+    public func getName() -> String {
+        return self.name
+    }
+    
+    
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableToolForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "foreignKeys expected to be of type SerializableToolForeignKeys in \(#function) on type \(#file)"
+            )
+        }
+        
+        try self.galleryRouters?.forEach { galleryRouter in
+            try galleryRouter.deleteDanglingReferencesOn(db: db, with: foreignKeys, propagate: propagate)
+        }
     }
     
 }

@@ -1,6 +1,7 @@
 import Foundation
 import SQLite
 import ZTronRouter
+import ZTronDataModel
 import os
 
 public class SerializableGalleryRouter: SerializableNode {
@@ -102,6 +103,84 @@ public class SerializableGalleryRouter: SerializableNode {
         }.joined(separator: "\n")
     }
     
+    
+    public func deleteDanglingReferencesOn(
+        db: SQLite.Connection,
+        with foreignKeys: any SerializableForeignKeys,
+        propagate: Bool
+    ) throws {
+        guard let foreignKeys = foreignKeys as? SerializableGalleryForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "foreignKeys expected to be of type SerializableGalleryForeignKeys in \(#function) on type \(#file)"
+            )
+        }
+        
+        if propagate {
+            try self.router.forEach { absolutePath, output in
+                try output.deleteDanglingReferencesOn(db: db, with: foreignKeys, propagate: propagate)
+            }
+        }
+
+        var firstLevelOfMasterGalleries: [String: SerializableGalleryNode] = [:]
+        var firstLevelOfSlavesForGallery: [String: [SerializableGalleryNode]] = [:]
+        
+        self.router.forEach { absolutePath, galleryNode in
+            if absolutePath.count > 2 {
+                guard let master = self.router.peek(
+                    at: Array.array(subsequence: absolutePath.prefix(upTo: absolutePath.count - 1))
+                )?.getName() else {
+                    fatalError("No gaps allowed in \(String(describing: Self.self)) for \(self.toString())")
+                }
+                
+                if firstLevelOfSlavesForGallery[master] == nil {
+                    firstLevelOfSlavesForGallery[master] = []
+                }
+                
+                firstLevelOfSlavesForGallery[master]?.append(galleryNode)
+            } else {
+                let nameOfThisNode: String = galleryNode.getName()
+                if firstLevelOfMasterGalleries[nameOfThisNode] == nil {
+                    firstLevelOfMasterGalleries[nameOfThisNode] = galleryNode
+                }
+            }
+        }
+        
+        try firstLevelOfSlavesForGallery.keys.forEach { masterId in
+            if let slavesOfThisMaster = firstLevelOfSlavesForGallery[masterId] {
+                var slaves: [String: SerializableGalleryNode] = [:]
+                
+                slavesOfThisMaster.forEach { galleryNode in
+                    slaves[galleryNode.getName()] = galleryNode
+                }
+                
+                try DBMS.CRUD.batchDeleteSubgalleriesOfMasterForTool(
+                    for: db,
+                    master: masterId,
+                    tool: foreignKeys.getTool(),
+                    tab: foreignKeys.getTab(),
+                    map: foreignKeys.getMap(),
+                    game: foreignKeys.getGame(),
+                    shouldRemove: { gallery in
+                        return slaves[gallery.getName()] == nil
+                    },
+                    shouldDecreasePositions: false
+                )
+            }
+        }
+        
+        
+        try DBMS.CRUD.batchDeleteFirstLevelGalleryForTool(
+            for: db,
+            tool: foreignKeys.getTool(),
+            tab: foreignKeys.getTab(),
+            map: foreignKeys.getMap(),
+            game: foreignKeys.getGame(),
+            shouldRemove: { galleryModel in
+                return firstLevelOfMasterGalleries[galleryModel.getName()] == nil
+            },
+            shouldDecreasePositions: false
+        )
+    }
 }
 
 fileprivate enum ExistanceError: Error {
