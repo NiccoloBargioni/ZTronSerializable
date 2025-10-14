@@ -267,7 +267,7 @@ public class SerializableGalleryRouter: SerializableNode {
         
         if propagate {
             try self.router.forEach { _, galleryNode in
-                try galleryNode.updateOn(db: db, with: foreignKeys, propagate: false)
+                try galleryNode.updateOn(db: db, with: foreignKeys, propagate: propagate)
             }
         }
     }
