@@ -117,4 +117,20 @@ public final class SerializableMapNode: SerializableNode {
         return self.name
     }
 
+    
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableMapForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreignKeys of type \(String(describing: SerializableMapForeignKeys.self)) in \(#file) -> \(#function)"
+            )
+        }
+
+        try self.tabs.deleteDanglingReferencesOn(
+            db: db,
+            with: SerializableTabForeignKeys(map: self.name, mapFK: foreignKeys),
+            propagate: propagate
+        )
+    }
+    
+    
 }

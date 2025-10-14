@@ -72,6 +72,14 @@ public final class SerializableStudioRouter: SerializableNode {
         return "ALL_STUDIOS"
     }
     
+    
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        try self.studios.forEach { _, output in
+            try output.deleteDanglingReferencesOn(db: db, with: foreignKeys, propagate: propagate)
+        }
+    }
+
+    
 }
 
 

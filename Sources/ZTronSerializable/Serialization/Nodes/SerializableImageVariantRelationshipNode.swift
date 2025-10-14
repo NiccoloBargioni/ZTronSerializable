@@ -107,4 +107,14 @@ class SerializableImageVariantRelationshipNode: SerializableNode {
             """
     }
     
+    /// - Note: Nothing to do, `SerializableImageVariantRelationshipNode` is a leaf.
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableImageForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "foreignKeys expected to be of type SerializableImageForeignKeys in \(#function) on type \(#file)"
+            )
+        }
+
+        
+    }
 }

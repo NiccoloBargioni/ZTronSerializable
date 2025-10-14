@@ -80,4 +80,9 @@ public final class SerializableStudioNode: SerializableNode {
     public func getPosition() -> Int {
         return self.position
     }
+    
+    
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        try self.games.deleteDanglingReferencesOn(db: db, with: SerializableGameForeignKeys(studio: self.name), propagate: propagate)
+    }
 }

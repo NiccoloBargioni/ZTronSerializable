@@ -105,4 +105,10 @@ public class SerializableOutlineNode: OverlaySerializableNode {
         public static let OPACITY: Double = 1.0
         public static let COLOR_HEX: String = "#A2C9FF"
     }
+    
+    /// - Note: Outline cannot have dangling references if you enter here. Deleting a bounding circle must happen at Visual Media level.
+    public func deleteDanglingReferencesOn(db: Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        
+    }
+
 }

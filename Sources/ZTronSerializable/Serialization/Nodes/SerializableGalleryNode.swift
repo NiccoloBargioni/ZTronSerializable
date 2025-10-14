@@ -12,11 +12,53 @@ public class SerializableGalleryNode: SerializableNode {
     private let assetsImageName: String?
     private let searchToken: SerializableGallerySearchTokenNode?
     private let medias: MediasRouter
-    
     private var didSerializeGallery: Bool = false
     
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableGalleryNode")
     
+    public init(
+        name: String,
+        position: Int,
+        assetsImageName: String?,
+        searchToken: SerializableGallerySearchTokenNode? = nil,
+        images: MediasRouter
+    ) {
+        self.name = name
+        self.position = position
+        self.assetsImageName = assetsImageName
+        self.searchToken = searchToken
+        self.medias = images
+    }
+    
+    public func getName() -> String {
+        return self.name
+    }
+    
+    public func getPosition() -> Int {
+        return self.position
+    }
+    
+    public func getAssetsImageName() -> String? {
+        return self.assetsImageName
+    }
+    
+    public func getSearchToken() -> SerializableGallerySearchTokenNode? {
+        return self.searchToken
+    }
+    
+    public func getMedias() -> MediasRouter {
+        return self.medias
+    }
+    
+    public func toString() -> String {
+        return """
+            GALLERY(
+                name: \(self.name),
+                assetsImageName: \(String(describing: self.assetsImageName)),
+                searchToken: \(String(describing: self.searchToken?.toString()))
+            )
+            """
+    }
     
     internal func writeGalleryEntryTo(db: Connection, with foreignKeys: any SerializableForeignKeys, shouldValidateFK: Bool = false) throws {
         guard !self.didSerializeGallery else { return }
@@ -69,12 +111,12 @@ public class SerializableGalleryNode: SerializableNode {
             }
         }
         
-        #if DEBUG
+#if DEBUG
         if !Validator.validateMediasRouter(self.medias) {
             throw SerializableException.validationException(reason: "Couldn't validate images for \(self.name)")
         }
-        #endif
-
+#endif
+        
         try self.writeGalleryEntryTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
         
         try self.medias.forEach { absolutePath, output, params in
@@ -96,7 +138,7 @@ public class SerializableGalleryNode: SerializableNode {
                         subsequence: absolutePath.prefix(upTo: absolutePath.count - 1)
                     )
                 )?.getName() else { fatalError("Gaps not allowed in \(String(describing: Self.self)) for \(self.toString())") }
-                                
+                
                 try SerializableImageVariantRelationshipNode(
                     master: master,
                     slave: output.getName(),
@@ -109,7 +151,7 @@ public class SerializableGalleryNode: SerializableNode {
             }
         }
     }
-
+    
     public func existsOn(db: SQLite.Connection, with foreignKeys: SerializableForeignKeys, propagate: Bool) throws -> Bool {
         guard let foreignKeys = foreignKeys as? SerializableGalleryForeignKeys else {
             throw SerializableException.illegalArgumentException(
@@ -127,9 +169,9 @@ public class SerializableGalleryNode: SerializableNode {
                 ),
                 propagate: false
             )) {
-                #if DEBUG
+#if DEBUG
                 Self.logger.log(level: .error, "Search Token \(searchToken.getTitle()) does not exist on gallery \(self.toString())")
-                #endif
+#endif
                 return false
             }
         }
@@ -177,9 +219,9 @@ public class SerializableGalleryNode: SerializableNode {
                 return dbImagesMastersForThisGallery != imageMasters
             } else {
                 if dbImagesMastersForThisGallery < imageMasters {
-                    #if DEBUG
+#if DEBUG
                     Self.logger.error("Expected to find \(imageMasters) masters on db, found \(dbImagesMastersForThisGallery) instead")
-                    #endif
+#endif
                     return false
                 } else {
                     do {
@@ -190,10 +232,10 @@ public class SerializableGalleryNode: SerializableNode {
                             )
                             
                             if !(try output.existsOn(
-                                    db: db,
-                                    with: imageFK,
-                                    propagate: true
-                                )
+                                db: db,
+                                with: imageFK,
+                                propagate: true
+                            )
                             ) {
                                 throw SerializableException.illegalGraphStructureException(reason: "Image \(output.getName()) could not be validated on db")
                             }
@@ -219,9 +261,9 @@ public class SerializableGalleryNode: SerializableNode {
                             }
                         }
                     } catch SerializableException.illegalGraphStructureException(let reason) {
-                        #if DEBUG
+#if DEBUG
                         Self.logger.error("\(reason)")
-                        #endif
+#endif
                         return false
                     }
                     
@@ -231,47 +273,93 @@ public class SerializableGalleryNode: SerializableNode {
         }
     }
     
-    public init(
-        name: String,
-        position: Int,
-        assetsImageName: String?,
-        searchToken: SerializableGallerySearchTokenNode? = nil,
-        images: MediasRouter
-    ) {
-        self.name = name
-        self.position = position
-        self.assetsImageName = assetsImageName
-        self.searchToken = searchToken
-        self.medias = images
-    }
     
-    public func getName() -> String {
-        return self.name
-    }
-    
-    public func getPosition() -> Int {
-        return self.position
-    }
-    
-    public func getAssetsImageName() -> String? {
-        return self.assetsImageName
-    }
-    
-    public func getSearchToken() -> SerializableGallerySearchTokenNode? {
-        return self.searchToken
-    }
-    
-    public func getMedias() -> MediasRouter {
-        return self.medias
-    }
-    
-    public func toString() -> String {
-        return """
-            GALLERY(
-                name: \(self.name),
-                assetsImageName: \(String(describing: self.assetsImageName)),
-                searchToken: \(String(describing: self.searchToken?.toString()))
+    /// - Note: Nothing to do, `SerializableGallerySearchTokenNode` is a leaf.
+    /// - Note: This should `DELETE CASCADE` all master-slave relationship from db as well
+    /// - Note: `propagate` should be unnecessary: removing dangling content for a gallery should delete all of their subtrees
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableGalleryForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "foreignKeys expected to be of type SerializableGalleryForeignKeys in \(#function) on type \(#file)"
             )
-            """
+        }
+        
+        if propagate {
+            try self.medias.forEach { absolutePath, output in
+                try output.deleteDanglingReferencesOn(
+                    db: db,
+                    with: SerializableImageForeignKeys(gallery: self.name, galleryFK: foreignKeys),
+                    propagate: propagate
+                )
+            }
+        }
+        
+        var imagesVariantsTree: [String: [any SerializableVisualMediaNode]] = [:]
+        var firstLevelOfMastersImages: [String: any SerializableVisualMediaNode] = [:]
+        
+        try self.medias.forEach { absolutePath, output, params in
+            if absolutePath.count > 2 {
+                guard let params = params else {
+                    throw SerializableException.illegalGraphStructureException(reason: "Expected params for image variants @ \(absolutePath)")
+                }
+                
+                var master = absolutePath[absolutePath.count-2]
+                
+                if imagesVariantsTree[master] == nil {
+                    imagesVariantsTree[master] = []
+                }
+                
+                imagesVariantsTree[master]?.append(output)
+            } else {
+                let nameOfThisImage = output.getName()
+                
+                if firstLevelOfMastersImages[nameOfThisImage] == nil {
+                    firstLevelOfMastersImages[nameOfThisImage] = output
+                } else {
+                    Self.logger.warning("Attempted to overwrite duplicate first level image \(nameOfThisImage) for gallery \(self.name)")
+                    return
+                }
+            }
+            
+            /*
+             - Betting that deleting a master image is enough to remove all of its subtree, since IMAGE_VARIANT references VISUAL_MEDIA
+             - VISUAL_MEDIA specified ON DELETE CASCADE, therefore it should propagate deletion to IMAGE_VARIANT
+             
+            try imagesVariantsTree.keys.forEach { imageMasterName in
+                if let slavesOfMaster = imagesVariantsTree[imageMasterName] {
+                    var firstLevelOfSlaves: [String: any SerializableVisualMediaNode] = [:]
+                    
+                    slavesOfMaster.forEach { slave in
+                        firstLevelOfSlaves[slave.getName()] = slave
+                    }
+                    
+                    try DBMS.CRUD.batchDeleteFirstSlaveImagesForImage(
+                        for: db,
+                        master: imageMasterName,
+                        gallery: self.name,
+                        tool: foreignKeys.getTool(),
+                        tab: foreignKeys.getTab(),
+                        map: foreignKeys.getMap(),
+                        game: foreignKeys.getGame(),
+                        shouldDecreasePositions: false
+                    ) { slaveModel in
+                        return firstLevelOfSlaves[slaveModel.getName()] == nil
+                    }
+                }
+            }*/
+            
+            try DBMS.CRUD.batchDeleteFirstLevelImagesForGallery(
+                for: db,
+                gallery: self.name,
+                tool: foreignKeys.getTool(),
+                tab: foreignKeys.getTab(),
+                map: foreignKeys.getMap(),
+                game: foreignKeys.getGame(),
+                shouldDecreasePositions: false
+            ) { imageModel in
+                return firstLevelOfMastersImages[imageModel.getName()] == nil
+            }
+        }
     }
 }
+
