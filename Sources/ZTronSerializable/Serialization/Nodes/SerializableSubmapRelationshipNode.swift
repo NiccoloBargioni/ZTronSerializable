@@ -71,9 +71,19 @@ public class SerializableSubmapRelationshipNode: SerializableNode {
     
     /// - Note: Nothing to do, `SerializableSubmapRelationshipNode` is a leaf.
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        guard let foreignKeys = foreignKeys as? SerializableMapForeignKeys else {
+        guard let _ = foreignKeys as? SerializableMapForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableMapForeignKeys in \(#function) on type \(#file)"
+            )
+        }
+        
+    }
+    
+    /// - Note: Nothing to do, `SerializableSubmapRelationshipNode` is a leaf.
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableMapForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "_ expected to be of type SerializableMapForeignKeys in \(#function) on type \(#file)"
             )
         }
         

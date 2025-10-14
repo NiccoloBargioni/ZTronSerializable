@@ -91,4 +91,15 @@ public final class SerializableStudioNode: SerializableNode {
 
         try self.games.deleteDanglingReferencesOn(db: db, with: SerializableGameForeignKeys(studio: self.name), propagate: propagate)
     }
+    
+    
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let _ = foreignKeys as? ZTronSerializable.EmptyFK else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreign keys of type \(String(describing: ZTronSerializable.EmptyFK.self)) in \(#function) @ \(#file) for game \(self.toString())"
+            )
+        }
+
+        try self.games.updateOn(db: db, with: SerializableGameForeignKeys(studio: self.name), propagate: propagate)
+    }
 }

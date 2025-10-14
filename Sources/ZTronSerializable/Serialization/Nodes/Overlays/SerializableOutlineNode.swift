@@ -100,6 +100,10 @@ public class SerializableOutlineNode: OverlaySerializableNode {
         return self.boundingBox
     }
     
+    public func getResourceName() -> String {
+        return self.resourceName
+    }
+    
     public struct OutlineDefaults {
         public static let IS_ACTIVE: Bool = true
         public static let OPACITY: Double = 1.0
@@ -108,6 +112,17 @@ public class SerializableOutlineNode: OverlaySerializableNode {
     
     /// - Note: Outline cannot have dangling references if you enter here. Deleting a bounding circle must happen at Visual Media level.
     public func deleteDanglingReferencesOn(db: Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        
+    }
+    
+    
+    /// - Note: Outline cannot have dangling references if you enter here. Deleting a bounding circle must happen at Visual Media level.
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableImageOverlayForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "foreignKeys expected to be of type SerializableImageOverlayForeignKeys in \(#function) on type \(#file)"
+            )
+        }
         
     }
 

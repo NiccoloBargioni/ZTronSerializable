@@ -129,4 +129,48 @@ public final class SerializableToolsRouter: SerializableNode {
             shouldDecreasePositions: false
         )
     }
+    
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableToolForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreignKeys of type \(String(describing: SerializableToolForeignKeys.self)) in \(#file) -> \(#function)"
+            )
+        }
+
+        if self.router.getMaxDepth() > 2 {
+            throw SerializableException.validationException(
+                reason: "Tools with slave tools are unsupported in \(#file) -> \(#function) for tab \(self.toString())"
+            )
+        }
+        
+        if propagate {
+            try self.router.forEach { absolutePath, output in
+                try output.updateOn(db: db, with: foreignKeys, propagate: propagate)
+            }
+        }
+
+        var toolsForThisTab: [String: SerializableToolNode] = [:]
+        
+        self.router.forEach { absolutePath, toolModel in
+            toolsForThisTab[toolModel.getName()] = toolModel
+        }
+        
+        
+        try DBMS.CRUD.updateToolsForTab(
+            for: db,
+            game: foreignKeys.getGame(),
+            map: foreignKeys.getMap(),
+            tab: foreignKeys.getTab()) { toolDraft in
+                if let toolNode = toolsForThisTab[toolDraft.getName()] {
+                    toolDraft
+                        .withUpdatedPosition(toolNode.getPosition())
+                        .withAssetsImageName(toolNode.getAssetsImageName())
+                }
+            } validate: { tools in
+                return Validator.validatePositions(tools.map({ toolModel in
+                    return toolModel.getPosition()
+                }))
+            }
+
+    }
 }

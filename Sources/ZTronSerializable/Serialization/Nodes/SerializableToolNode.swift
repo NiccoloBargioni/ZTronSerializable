@@ -138,6 +138,10 @@ public final class SerializableToolNode: SerializableNode {
         return self.position
     }
     
+    public func getAssetsImageName() -> String {
+        return self.assetsImageName
+    }
+    
     public func getName() -> String {
         return self.name
     }
@@ -152,6 +156,19 @@ public final class SerializableToolNode: SerializableNode {
         
         try self.galleryRouters?.forEach { galleryRouter in
             try galleryRouter.deleteDanglingReferencesOn(db: db, with: SerializableGalleryForeignKeys(tool: self.name, toolFK: foreignKeys), propagate: propagate)
+        }
+    }
+    
+    
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableToolForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "foreignKeys expected to be of type SerializableToolForeignKeys in \(#function) on type \(#file)"
+            )
+        }
+        
+        try self.galleryRouters?.forEach { galleryRouter in
+            try galleryRouter.updateOn(db: db, with: SerializableGalleryForeignKeys(tool: self.name, toolFK: foreignKeys), propagate: propagate)
         }
     }
     

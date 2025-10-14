@@ -29,17 +29,17 @@ public final class SerializableMapsRouter: SerializableNode {
         }
         
         if self.router.getMaxDepth() <= 0 {
-            #if DEBUG
+#if DEBUG
             Self.logger.info("Attempted to serialize empty maps router for \(self.toString()).")
-            #endif
+#endif
             return
         }
         
         // Router should have depth 2
         if router.getMaxDepth() > 3 {
-            #if DEBUG
-                Self.logger.info("At the time of coding, only a few maps with dependency tree of depth 3 (including root symbol) exist. Check your logic in \(self.toString())")
-            #endif
+#if DEBUG
+            Self.logger.info("At the time of coding, only a few maps with dependency tree of depth 3 (including root symbol) exist. Check your logic in \(self.toString())")
+#endif
         }
         
         var mapsPositionsByDepth: [Int: [Int]] = [:]
@@ -64,7 +64,7 @@ public final class SerializableMapsRouter: SerializableNode {
         
         try self.router.forEach { path, output in
             try output.writeTo(db: db, with: foreignKeys, shouldValidateFK: shouldValidateFK)
-                        
+            
             if path.count > 2 {
                 guard let master = self.router.peek(at: Array.array(subsequence: path.prefix(upTo: path.count - 1))) else {
                     fatalError("Gaps not allowed in \(String(describing: Self.self)) for \(self.toString())")
@@ -100,12 +100,13 @@ public final class SerializableMapsRouter: SerializableNode {
             }
         }
         
-        #if DEBUG
+#if DEBUG
         Self.logger.info("Maps router \(self.toString()) exists on db")
-        #endif
+#endif
         
         return true
     }
+    
     
     public func toString() -> String {
         var description: String = ""
@@ -124,13 +125,13 @@ public final class SerializableMapsRouter: SerializableNode {
                 reason: "Expected foreignKeys of type \(String(describing: SerializableMapForeignKeys.self)) in \(#file) -> \(#function)"
             )
         }
-
+        
         if propagate {
             try self.router.forEach { path, output in
                 try output.deleteDanglingReferencesOn(db: db, with: foreignKeys, propagate: propagate)
             }
         }
-
+        
         var firstLevelOfMaps: [String: SerializableMapNode] = [:]
         var firstLevelOfSlavesForMaster: [String: [SerializableMapNode]] = [:]
         
@@ -178,5 +179,78 @@ public final class SerializableMapsRouter: SerializableNode {
             },
             shouldDecreasePositions: false
         )
+    }
+    
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableMapForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreignKeys of type \(String(describing: SerializableMapForeignKeys.self)) in \(#file) -> \(#function)"
+            )
+        }
+        
+        if propagate {
+            try self.router.forEach { path, output in
+                try output.updateOn(db: db, with: foreignKeys, propagate: propagate)
+            }
+        }
+        
+        var firstLevelOfMaps: [String: SerializableMapNode] = [:]
+        var firstLevelOfSlavesForMaster: [String: [SerializableMapNode]] = [:]
+        
+        self.router.forEach { path, output in
+            if path.count > 2 {
+                guard let master = self.router.peek(at: Array.array(subsequence: path.prefix(upTo: path.count - 1))) else {
+                    fatalError("Gaps not allowed in \(String(describing: Self.self)) for \(self.toString())")
+                }
+                
+                if firstLevelOfSlavesForMaster[master.getName()] == nil {
+                    firstLevelOfSlavesForMaster[master.getName()] = []
+                }
+                
+                firstLevelOfSlavesForMaster[master.getName()]?.append(output)
+            } else {
+                firstLevelOfMaps[output.getName()] = output
+            }
+        }
+        
+        try firstLevelOfSlavesForMaster.keys.forEach { masterID in
+            if let slaves = firstLevelOfSlavesForMaster[masterID] {
+                var flatSlavesDict: [String: SerializableMapNode] = [:]
+                
+                slaves.forEach { slaveModel in
+                    flatSlavesDict[slaveModel.getName()] = slaveModel
+                }
+                
+                try DBMS.CRUD.updateFirstLevelSubmapsOfMap(
+                    for: db,
+                    master: masterID,
+                    game: foreignKeys.getGame()) { mapDraft in
+                        if let mapModel = flatSlavesDict[mapDraft.getName()] {
+                            mapDraft
+                                .withUpdatedPosition(mapModel.getPosition())
+                                .withUpdatedAssetsImageName(mapModel.getAssetsImageName())
+                        }
+                    } validate: { mapModels in
+                        return Validator.validatePositions(mapModels.map({ map in
+                            return map.getPosition()
+                        }))
+                    }
+            }
+        }
+        
+        try DBMS.CRUD.updateFirstLevelMapsForGame(
+            for: db,
+            game: foreignKeys.getGame()
+        ) { mapDraft in
+            if let mapModel = firstLevelOfMaps[mapDraft.getName()] {
+                mapDraft
+                    .withUpdatedPosition(mapModel.getPosition())
+                    .withUpdatedAssetsImageName(mapModel.getAssetsImageName())
+            }
+        } validate: { mapModels in
+            return Validator.validatePositions(mapModels.map({ map in
+                return map.getPosition()
+            }))
+        }
     }
 }

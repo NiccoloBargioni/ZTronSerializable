@@ -17,7 +17,10 @@ public protocol SerializableNode: Loggable {
     func existsOn(db: Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws -> Bool
     
     
-    func deleteDanglingReferencesOn(db: Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws 
+    func deleteDanglingReferencesOn(db: Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws
+    
+    
+    func updateOn(db: Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws
 }
 
 extension SerializableNode {

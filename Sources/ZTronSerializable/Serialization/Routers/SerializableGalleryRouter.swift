@@ -181,6 +181,97 @@ public class SerializableGalleryRouter: SerializableNode {
             shouldDecreasePositions: false
         )
     }
+    
+    
+    
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableGalleryForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "foreignKeys expected to be of type SerializableGalleryForeignKeys in \(#function) on type \(#file)"
+            )
+        }
+     
+        var firstLevelOfMasterGalleries: [String: SerializableGalleryNode] = [:]
+        var firstLevelOfSlavesForGallery: [String: [SerializableGalleryNode]] = [:]
+        
+        self.router.forEach { absolutePath, galleryNode in
+            if absolutePath.count > 2 {
+                guard let master = self.router.peek(
+                    at: Array.array(subsequence: absolutePath.prefix(upTo: absolutePath.count - 1))
+                )?.getName() else {
+                    fatalError("No gaps allowed in \(String(describing: Self.self)) for \(self.toString())")
+                }
+                
+                if firstLevelOfSlavesForGallery[master] == nil {
+                    firstLevelOfSlavesForGallery[master] = []
+                }
+                
+                firstLevelOfSlavesForGallery[master]?.append(galleryNode)
+            } else {
+                let nameOfThisNode: String = galleryNode.getName()
+                if firstLevelOfMasterGalleries[nameOfThisNode] == nil {
+                    firstLevelOfMasterGalleries[nameOfThisNode] = galleryNode
+                }
+            }
+        }
+        
+        try firstLevelOfSlavesForGallery.keys.forEach { masterId in
+            if let slavesOfThisMaster = firstLevelOfSlavesForGallery[masterId] {
+                var slaves: [String: SerializableGalleryNode] = [:]
+                
+                slavesOfThisMaster.forEach { galleryNode in
+                    slaves[galleryNode.getName()] = galleryNode
+                }
+                
+                try DBMS.CRUD.updateFirstLevelSlaveGalleriesForMaster(
+                    for: db,
+                    master: masterId,
+                    tool: foreignKeys.getTool(),
+                    tab: foreignKeys.getTab(),
+                    map: foreignKeys.getMap(),
+                    game: foreignKeys.getGame(),
+                    produce: { slaveDraft in
+                        guard let slave = slaves[slaveDraft.getName()] else { return }
+                        
+                        slaveDraft
+                            .withPosition(slave.getPosition())
+                            .withAssetsImageName(slave.getAssetsImageName())
+                    },
+                    validate: { slaves in
+                        return Validator.validatePositions(slaves.map({ slaveModel in
+                            slaveModel.getPosition()
+                        }))
+                    }
+                )
+            }
+        }
+        
+        
+        try DBMS.CRUD.updateFirstLevelGalleriesForTab(
+            for: db,
+            tool: foreignKeys.getTool(),
+            tab: foreignKeys.getTab(),
+            map: foreignKeys.getMap(),
+            game: foreignKeys.getGame(),
+            produce: { masterDraft in
+                guard let master = firstLevelOfMasterGalleries[masterDraft.getName()] else { return }
+                masterDraft
+                    .withPosition(master.getPosition())
+                    .withAssetsImageName(master.getAssetsImageName())
+            }, validate: { masters in
+                return Validator.validatePositions(masters.map({ mastersModels in
+                    mastersModels.getPosition()
+                }))
+            })
+    
+        
+        if propagate {
+            try self.router.forEach { _, galleryNode in
+                try galleryNode.updateOn(db: db, with: foreignKeys, propagate: false)
+            }
+        }
+    }
+
 }
 
 fileprivate enum ExistanceError: Error {

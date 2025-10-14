@@ -144,5 +144,16 @@ public final class SerializableTabNode: SerializableNode {
 
         try self.tools.deleteDanglingReferencesOn(db: db, with: SerializableToolForeignKeys(tab: self.name, tabFK: foreignKeys), propagate: propagate)
     }
+    
+    
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableTabForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreignKeys of type \(String(describing: SerializableTabForeignKeys.self)) in \(#file) -> \(#function)"
+            )
+        }
+
+        try self.tools.updateOn(db: db, with: SerializableToolForeignKeys(tab: self.name, tabFK: foreignKeys), propagate: propagate)
+    }
 
 }

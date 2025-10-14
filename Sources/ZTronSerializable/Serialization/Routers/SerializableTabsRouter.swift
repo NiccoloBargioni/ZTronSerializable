@@ -129,5 +129,48 @@ public final class SerializableTabsRouter: SerializableNode {
             shouldDecreasePositions: false
         )
     }
+    
+    
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableTabForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreignKeys of type \(String(describing: SerializableTabForeignKeys.self)) in \(#file) -> \(#function)"
+            )
+        }
+
+        if self.router.getMaxDepth() > 2 {
+            throw SerializableException.validationException(
+                reason: "Tabs with slave tabs are unsupported in \(#file) -> \(#function) for map \(self.toString())"
+            )
+        }
+        
+        if propagate {
+            try self.router.forEach { absolutePath, output in
+                try output.updateOn(db: db, with: foreignKeys, propagate: propagate)
+            }
+        }
+
+
+        var tabs: [String: SerializableTabNode] = [:]
+        
+        self.router.forEach { absolutePath, tabNode in
+            tabs[tabNode.getName()] = tabNode
+        }
+        
+        try DBMS.CRUD.updateTabsForMap(
+            for: db,
+            game: foreignKeys.getGame(),
+            map: foreignKeys.getMap()) { tabDraft in
+                if let tab = tabs[tabDraft.getName()] {
+                    tabDraft
+                        .withUpdatedPosition(tab.getPosition())
+                }
+            } validate: { tabs in
+                return Validator.validatePositions(tabs.map({ tabModel in
+                    return tabModel.getPosition()
+                }))
+            }
+
+    }
 
 }

@@ -175,4 +175,83 @@ public class SerializableImageNode: SerializableVisualMediaNode {
        }
     }
 
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableImageForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "foreignKeys expected to be of type SerializableImageForeignKeys in \(#function) on type \(#file)"
+            )
+        }
+        
+        try self.overlays.compactMap { overlay in
+            return overlay as? SerializableBoundingCircleNode
+        }.forEach { boundingCircleNode in
+            try DBMS.CRUD.updateBoundingCirclesForImage(
+                for: db,
+                image: self.name,
+                gallery: foreignKeys.getGallery(),
+                tool: foreignKeys.getTool(),
+                tab: foreignKeys.getTab(),
+                map: foreignKeys.getMap(),
+                game: foreignKeys.getGame()
+            ) { draft in
+                draft
+                   .withIdleDiameter(boundingCircleNode.getIdleDiameter())
+                   .withNormalizedCenter(boundingCircleNode.getNormalizedCenter())
+            } validate: { boundingCircles in
+                return boundingCircles.reduce(true) { isSetValid, boundingCircle in
+                    let diameter = boundingCircle.getIdleDiameter() ?? 0
+                    let normalizedCenter = boundingCircle.getNormalizedCenter()
+                    let opacity: Double = boundingCircle.getOpacity()
+                    let color: String = boundingCircle.getColorHex()
+                    
+                    return isSetValid &&
+                            (diameter >= 0 && diameter <= 1) &&
+                                (normalizedCenter?.x ?? 0 >= 0 && normalizedCenter?.x ?? 0 <= 1) &&
+                                (normalizedCenter?.y ?? 0 >= 0 && normalizedCenter?.y ?? 0 <= 1) &&
+                                opacity >= 0 && opacity <= 1 &&
+                                isValidHexColor(color)
+                }
+            }
+        }
+        
+        
+        try self.overlays.compactMap { overlay in
+            return overlay as? SerializableOutlineNode
+        }.forEach { outlineNode in
+            
+            try DBMS.CRUD.updateOutlinesForImage(
+                for: db,
+                image: self.name,
+                gallery: foreignKeys.getGallery(),
+                tool: foreignKeys.getTool(),
+                tab: foreignKeys.getTab(),
+                map: foreignKeys.getMap(),
+                game: foreignKeys.getGame()
+            ) { draft in
+                draft
+                    .withResourceName(outlineNode.getResourceName())
+                    .withBoundingBox(outlineNode.getBoundingBox())
+            } validate: { outlines in
+                return outlines.reduce(true) { isSetValid, outline in
+                    let boundingBox = outline.getBoundingBox()
+                    let opacity: Double = outline.getOpacity()
+                    let color: String = outline.getColorHex()
+                    
+                    return isSetValid &&
+                            (boundingBox.origin.x >= 0 && boundingBox.origin.x <= 1) &&
+                            (boundingBox.origin.y >= 0 && boundingBox.origin.y <= 1) &&
+                            (boundingBox.size.width >= 0 && boundingBox.size.width <= 1) &&
+                            (boundingBox.size.height >= 0 && boundingBox.size.height <= 1) &&
+                            opacity >= 0 && opacity <= 1 && isValidHexColor(color)
+                }
+            }
+        }
+        
+        if propagate {
+            try self.overlays.forEach { overlayNode in
+                try overlayNode.updateOn(db: db, with: SerializableImageOverlayForeignKeys(image: self.name, imageFK: foreignKeys), propagate: propagate)
+            }
+        }
+    }
+
 }

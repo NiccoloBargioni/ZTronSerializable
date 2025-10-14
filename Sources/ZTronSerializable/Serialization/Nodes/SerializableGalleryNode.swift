@@ -261,9 +261,9 @@ public class SerializableGalleryNode: SerializableNode {
                             }
                         }
                     } catch SerializableException.illegalGraphStructureException(let reason) {
-#if DEBUG
+                        #if DEBUG
                         Self.logger.error("\(reason)")
-#endif
+                        #endif
                         return false
                     }
                     
@@ -299,11 +299,7 @@ public class SerializableGalleryNode: SerializableNode {
         
         try self.medias.forEach { absolutePath, output, params in
             if absolutePath.count > 2 {
-                guard let params = params else {
-                    throw SerializableException.illegalGraphStructureException(reason: "Expected params for image variants @ \(absolutePath)")
-                }
-                
-                var master = absolutePath[absolutePath.count-2]
+                let master = absolutePath[absolutePath.count-2]
                 
                 if imagesVariantsTree[master] == nil {
                     imagesVariantsTree[master] = []
@@ -321,10 +317,6 @@ public class SerializableGalleryNode: SerializableNode {
                 }
             }
             
-            /*
-             - Betting that deleting a master image is enough to remove all of its subtree, since IMAGE_VARIANT references VISUAL_MEDIA
-             - VISUAL_MEDIA specified ON DELETE CASCADE, therefore it should propagate deletion to IMAGE_VARIANT
-             
             try imagesVariantsTree.keys.forEach { imageMasterName in
                 if let slavesOfMaster = imagesVariantsTree[imageMasterName] {
                     var firstLevelOfSlaves: [String: any SerializableVisualMediaNode] = [:]
@@ -346,20 +338,150 @@ public class SerializableGalleryNode: SerializableNode {
                         return firstLevelOfSlaves[slaveModel.getName()] == nil
                     }
                 }
-            }*/
-            
-            try DBMS.CRUD.batchDeleteFirstLevelImagesForGallery(
-                for: db,
-                gallery: self.name,
-                tool: foreignKeys.getTool(),
-                tab: foreignKeys.getTab(),
-                map: foreignKeys.getMap(),
-                game: foreignKeys.getGame(),
-                shouldDecreasePositions: false
-            ) { imageModel in
-                return firstLevelOfMastersImages[imageModel.getName()] == nil
             }
         }
+            
+        try DBMS.CRUD.batchDeleteFirstLevelImagesForGallery(
+            for: db,
+            gallery: self.name,
+            tool: foreignKeys.getTool(),
+            tab: foreignKeys.getTab(),
+            map: foreignKeys.getMap(),
+            game: foreignKeys.getGame(),
+            shouldDecreasePositions: false
+        ) { imageModel in
+            return firstLevelOfMastersImages[imageModel.getName()] == nil
+        }
+    }
+    
+    
+    
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableGalleryForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "foreignKeys expected to be of type SerializableGalleryForeignKeys in \(#function) on type \(#file)"
+            )
+        }
+        
+        var imagesVariantsTree: [String: [any SerializableVisualMediaNode]] = [:]
+        var firstLevelOfMastersImages: [String: any SerializableVisualMediaNode] = [:]
+        
+        
+        try self.medias.forEach { absolutePath, output, params in
+            if absolutePath.count > 2 {
+                let master = absolutePath[absolutePath.count-2]
+                
+                if imagesVariantsTree[master] == nil {
+                    imagesVariantsTree[master] = []
+                }
+                
+                imagesVariantsTree[master]?.append(output)
+                
+                if let params = params {
+                    try DBMS.CRUD.updateVisualMediaMasterSlaveRelationshipsForMaster(
+                        for: db,
+                        master: master,
+                        gallery: self.name,
+                        tool: foreignKeys.getTool(),
+                        tab: foreignKeys.getTab(),
+                        map: foreignKeys.getMap(),
+                        game: foreignKeys.getGame()
+                    ) { variantDraft in
+                        variantDraft
+                            .withOrigin(params.getBoundingFrame()?.origin)
+                            .withSize(params.getBoundingFrame()?.size)
+                            .withBottomBarIcon(params.getBottomBarIcon())
+                            .withGoBackBottomBarIcon(params.getGoBackBottomBarIcon())
+                    } validate: { metadataModels in
+                        return metadataModels.reduce(true) { isValid, nextMetadataModel in
+                            let boundingFrame = nextMetadataModel.getBoundingFrame()
+                            
+                            if let boundingFrame = boundingFrame {
+                                return isValid &&
+                                    (boundingFrame.origin.x >= 0 && boundingFrame.origin.x <= 1) &&
+                                    (boundingFrame.origin.y >= 0 && boundingFrame.origin.y <= 1) &&
+                                    (boundingFrame.size.width >= 0 && boundingFrame.size.width <= 1) &&
+                                    (boundingFrame.size.height >= 0 && boundingFrame.size.height <= 1)
+                            } else {
+                                return true
+                            }
+                        }
+                    }
+                } else {
+                    throw SerializableException.illegalGraphStructureException(reason: "Expected params for image variants @ \(absolutePath)")
+                }
+
+            } else {
+                let nameOfThisImage = output.getName()
+                
+                if firstLevelOfMastersImages[nameOfThisImage] == nil {
+                    firstLevelOfMastersImages[nameOfThisImage] = output
+                } else {
+                    Self.logger.warning("Attempted to overwrite duplicate first level image \(nameOfThisImage) for gallery \(self.name)")
+                    return
+                }
+            }
+        }
+        
+        
+        try imagesVariantsTree.keys.forEach { masterId in
+            if let variantsOfThisImage = imagesVariantsTree[masterId] {
+                var slavesModels: [String: any SerializableVisualMediaNode] = [:]
+                
+                variantsOfThisImage.forEach { slaveModel in
+                    slavesModels[slaveModel.getName()] = slaveModel
+                }
+                
+                try DBMS.CRUD.updateFirstLevelVariantsOfImageForGallery(
+                    for: db,
+                    master: masterId,
+                    gallery: self.name,
+                    tool: foreignKeys.getTool(),
+                    tab: foreignKeys.getTab(),
+                    map: foreignKeys.getMap(),
+                    game: foreignKeys.getGame()
+                ) { slaveDraft in
+                    guard let slaveNode = slavesModels[slaveDraft.getName()] else { return }
+                    
+                    slaveDraft
+                        .withPosition(slaveNode.getPosition())
+                        .withDescription(slaveNode.getDescription())
+                        .withSearchLabel(slaveNode.getSearchLabel())
+                } validate: { slaves in
+                    return Validator.validatePositions(slaves.map({ slaveModel in
+                        slaveModel.getPosition()
+                    }))
+                }
+            }
+        }
+        
+        try DBMS.CRUD.updateMasterVisualMediasForGallery(
+            for: db,
+            gallery: self.name,
+            tool: foreignKeys.getTool(),
+            tab: foreignKeys.getTab(),
+            map: foreignKeys.getMap(),
+            game: foreignKeys.getGame()
+        ) { masterDraft in
+            guard let masterNode = firstLevelOfMastersImages[masterDraft.getName()] else { return }
+            
+            masterDraft
+                .withPosition(masterNode.getPosition())
+                .withDescription(masterNode.getDescription())
+                .withSearchLabel(masterNode.getSearchLabel())
+        } validate: { masters in
+            return Validator.validatePositions(masters.map({ masterNode in
+                return masterNode.getPosition()
+            }))
+        }
+
+        
+        if propagate {
+            try self.medias.forEach { _, mediaNode in
+                try mediaNode.updateOn(db: db, with: SerializableImageForeignKeys(gallery: self.name, galleryFK: foreignKeys), propagate: propagate)
+            }
+        }
+
     }
 }
 

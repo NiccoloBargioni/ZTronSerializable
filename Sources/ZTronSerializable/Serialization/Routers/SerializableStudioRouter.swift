@@ -86,6 +86,19 @@ public final class SerializableStudioRouter: SerializableNode {
     }
 
     
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let _ = foreignKeys as? ZTronSerializable.EmptyFK else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreign keys of type \(String(describing: ZTronSerializable.EmptyFK.self)) in \(#function) @ \(#file) for studio \(self.toString())"
+            )
+        }
+
+        try self.studios.forEach { _, output in
+            try output.updateOn(db: db, with: foreignKeys, propagate: propagate)
+        }
+    }
+
+    
 }
 
 

@@ -16,7 +16,7 @@
       "location" : "https://github.com/stephencelis/SQLite.swift.git",
       "state" : {
         "branch" : "master",
-        "revision" : "c7b78f2f9a0376bc0145f3ecbd0df05eab1688f7"
+        "revision" : "eb9b2ee9d9b7f941ac883b0843557469ed567af2"
       }
     },
     {
@@ -24,8 +24,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "revision" : "9cb486020ebf03bfa5b5df985387a14a98744537",
-        "version" : "1.6.1"
+        "revision" : "ce592ae52f982c847a4efc0dd881cc9eb32d29f2",
+        "version" : "1.6.4"
+      }
+    },
+    {
+      "identity" : "swift-toolchain-sqlite",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-toolchain-sqlite",
+      "state" : {
+        "revision" : "b626d3002773b1a1304166643e7f118f724b2132",
+        "version" : "1.0.4"
       }
     },
     {
@@ -34,7 +43,7 @@
       "location" : "https://github.com/NickTheFreak97/SwiftGraph",
       "state" : {
         "branch" : "msa",
-        "revision" : "a00fc9e042d0afff473ef73ea0dc8cd80eca1b28"
+        "revision" : "b239f9e24d5ab74108613cd1350cdd09262bbbd5"
       }
     },
     {
@@ -43,7 +52,7 @@
       "location" : "https://github.com/NickTheFreak97/ztron-routing-kit.git",
       "state" : {
         "branch" : "main",
-        "revision" : "b2806b68f199c6a5f51572da90c6357f5a09dd3f"
+        "revision" : "a9fb1a82261ed77c8fe0dd2512da677047ab370d"
       }
     },
     {
@@ -52,7 +61,7 @@
       "location" : "https://github.com/NiccoloBargioni/ZTronDataModel",
       "state" : {
         "branch" : "main",
-        "revision" : "36e115415288ac4ff0312faa3ed87aabfc24f1a7"
+        "revision" : "7d6302afbd444993b5f6bd1c8dfa6440d1e5fbe4"
       }
     },
     {
@@ -61,7 +70,7 @@
       "location" : "https://github.com/NiccoloBargioni/ZTronRouter",
       "state" : {
         "branch" : "main",
-        "revision" : "1a4888983d2e2f7377b001b8b80139362154b958"
+        "revision" : "01145e0ee3240299957e1252bc176a064981d85b"
       }
     }
   ],

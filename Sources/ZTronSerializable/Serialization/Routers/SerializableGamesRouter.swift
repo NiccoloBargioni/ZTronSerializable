@@ -141,4 +141,51 @@ public final class SerializableGamesRouter: SerializableNode {
             shouldDecreasePositions: false
         )
     }
+    
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableGameForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreignKeys of type \(String(describing: SerializableGameForeignKeys.self)) in \(#file) -> \(#function)"
+            )
+        }
+
+        if self.router.getMaxDepth() > 2 {
+            throw SerializableException.illegalArgumentException(
+                reason: "At the time of coding, no game has a master->slave dependency \(self.toString())"
+            )
+        }
+        
+        if propagate {
+            try self.router.forEach { _, output in
+                try output.updateOn(db: db, with: foreignKeys, propagate: propagate)
+            }
+        }
+        
+        var allGames: [String: SerializableGameNode] = [:]
+        
+        self.router.forEach { _, gameModel in
+            allGames[gameModel.getName()] = gameModel
+        }
+        
+        try DBMS.CRUD.updateGames(
+            for: db,
+            produce: { gameDraft in
+                guard gameDraft.getStudio() == foreignKeys.getStudio() else { return }
+                guard let gameModel = allGames[gameDraft.getName()] else { return }
+                
+                gameDraft
+                    .withUpdatedPosition(gameModel.getPosition())
+                    .withAssetsImageName(gameModel.getAssetsImageName())
+
+            },
+            validate: { gameModels in
+                return Validator.validatePositions(gameModels.filter({ gameModel in
+                    return foreignKeys.getStudio() == gameModel.getStudio()
+                }).map({ gameModel in
+                    return gameModel.getPosition()
+                }))
+                
+            }
+        )
+    }
 }

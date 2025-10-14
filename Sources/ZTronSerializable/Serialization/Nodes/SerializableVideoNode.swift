@@ -111,12 +111,22 @@ public class SerializableVideoNode: SerializableVisualMediaNode {
     
     /// - Note: At the time no cleanup is necessary for video nodes
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        guard let foreignKeys = foreignKeys as? SerializableImageForeignKeys else {
+        guard let _ = foreignKeys as? SerializableImageForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "foreignKeys expected tfirstLevelOfMastersImageso be of type SerializableImageForeignKeys in \(#function) on type \(#file)"
+            )
+        }
+        
+        
+    }
+    
+    /// - Note: At the time no update is necessary for video nodes
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let _ = foreignKeys as? SerializableImageForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableImageForeignKeys in \(#function) on type \(#file)"
             )
         }
-        
         
     }
 

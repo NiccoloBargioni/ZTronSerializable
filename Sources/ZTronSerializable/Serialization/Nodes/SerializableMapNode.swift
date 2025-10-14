@@ -70,10 +70,6 @@ public final class SerializableMapNode: SerializableNode {
         
         if mapExists {
             if propagate {
-                let tabs = self.tabs.router.map { _, output in
-                    return output
-                }
-                    
                 if !(try self.tabs.existsOn(
                     db: db,
                     with: SerializableTabForeignKeys(map: self.name, mapFK: foreignKeys),
@@ -118,6 +114,10 @@ public final class SerializableMapNode: SerializableNode {
     }
 
     
+    internal func getAssetsImageName() -> String {
+        return self.assetsImageName
+    }
+    
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
         guard let foreignKeys = foreignKeys as? SerializableMapForeignKeys else {
             throw SerializableException.illegalArgumentException(
@@ -126,6 +126,21 @@ public final class SerializableMapNode: SerializableNode {
         }
 
         try self.tabs.deleteDanglingReferencesOn(
+            db: db,
+            with: SerializableTabForeignKeys(map: self.name, mapFK: foreignKeys),
+            propagate: propagate
+        )
+    }
+    
+    
+    public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        guard let foreignKeys = foreignKeys as? SerializableMapForeignKeys else {
+            throw SerializableException.illegalArgumentException(
+                reason: "Expected foreignKeys of type \(String(describing: SerializableMapForeignKeys.self)) in \(#file) -> \(#function)"
+            )
+        }
+
+        try self.tabs.updateOn(
             db: db,
             with: SerializableTabForeignKeys(map: self.name, mapFK: foreignKeys),
             propagate: propagate
