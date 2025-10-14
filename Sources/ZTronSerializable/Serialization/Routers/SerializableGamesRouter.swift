@@ -132,7 +132,11 @@ public final class SerializableGamesRouter: SerializableNode {
         try DBMS.CRUD.batchDeleteGames(
             for: db,
             shouldRemove: { gameModel in
-                return allGames[gameModel.getName()] == nil
+                if allGames[gameModel.getName()] == nil {
+                    return gameModel.getStudio() == foreignKeys.getStudio()
+                } else {
+                    return false
+                }
             },
             shouldDecreasePositions: false
         )
