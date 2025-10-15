@@ -318,27 +318,27 @@ public class SerializableGalleryNode: SerializableNode {
                     return
                 }
             }
-            
-            try imagesVariantsTree.keys.forEach { imageMasterName in
-                if let slavesOfMaster = imagesVariantsTree[imageMasterName] {
-                    var firstLevelOfSlaves: [String: any SerializableVisualMediaNode] = [:]
-                    
-                    slavesOfMaster.forEach { slave in
-                        firstLevelOfSlaves[slave.getName()] = slave
-                    }
-                    
-                    try DBMS.CRUD.batchDeleteFirstSlaveImagesForImage(
-                        for: db,
-                        master: imageMasterName,
-                        gallery: self.name,
-                        tool: foreignKeys.getTool(),
-                        tab: foreignKeys.getTab(),
-                        map: foreignKeys.getMap(),
-                        game: foreignKeys.getGame(),
-                        shouldDecreasePositions: false
-                    ) { slaveModel in
-                        return firstLevelOfSlaves[slaveModel.getName()] == nil
-                    }
+        }
+        
+        try imagesVariantsTree.keys.forEach { imageMasterName in
+            if let slavesOfMaster = imagesVariantsTree[imageMasterName] {
+                var firstLevelOfSlaves: [String: any SerializableVisualMediaNode] = [:]
+                
+                slavesOfMaster.forEach { slave in
+                    firstLevelOfSlaves[slave.getName()] = slave
+                }
+                
+                try DBMS.CRUD.batchDeleteFirstSlaveImagesForImage(
+                    for: db,
+                    master: imageMasterName,
+                    gallery: self.name,
+                    tool: foreignKeys.getTool(),
+                    tab: foreignKeys.getTab(),
+                    map: foreignKeys.getMap(),
+                    game: foreignKeys.getGame(),
+                    shouldDecreasePositions: false
+                ) { slaveModel in
+                    return firstLevelOfSlaves[slaveModel.getName()] == nil
                 }
             }
         }
