@@ -114,8 +114,7 @@ public class SerializableBoundingCircleNode: OverlaySerializableNode {
     
     /// - Note: Bounding Circle cannot have dangling references if you enter here. Deleting a bounding circle must happen at Visual Media level.
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        print("DELETING \(String(describing: Self.self))")
-        guard let foreignKeys = foreignKeys as? SerializableImageOverlayForeignKeys else {
+        guard let _ = foreignKeys as? SerializableImageOverlayForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableImageOverlayForeignKeys in \(#function) on type \(#file)"
             )
@@ -125,7 +124,7 @@ public class SerializableBoundingCircleNode: OverlaySerializableNode {
 
     /// - Note: Bounding Circle cannot have dangling references if you enter here. Deleting a bounding circle must happen at Visual Media level.
     public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        guard let foreignKeys = foreignKeys as? SerializableImageOverlayForeignKeys else {
+        guard let _ = foreignKeys as? SerializableImageOverlayForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableImageOverlayForeignKeys in \(#function) on type \(#file)"
             )

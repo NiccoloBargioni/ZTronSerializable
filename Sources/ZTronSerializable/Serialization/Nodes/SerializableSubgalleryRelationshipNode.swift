@@ -77,8 +77,6 @@ public class SerializableSubgalleryRelationshipNode: SerializableNode {
     
     /// - Note: Nothing to do, `SerializableSubgalleryRelationshipNode` is a leaf.
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        print("DELETING \(String(describing: Self.self))")
-
         guard let _ = foreignKeys as? SerializableGalleryForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableGalleryForeignKeys in \(#function) on type \(#file)"

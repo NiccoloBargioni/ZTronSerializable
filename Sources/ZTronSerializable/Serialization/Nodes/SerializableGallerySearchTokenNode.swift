@@ -83,9 +83,8 @@ public class SerializableGallerySearchTokenNode: SerializableNode {
     
     /// - Note: Nothing to do, `SerializableGallerySearchTokenNode` is a leaf.
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        print("DELETING \(String(describing: Self.self))")
 
-        guard let foreignKeys = foreignKeys as? SerializableImageForeignKeys else {
+        guard let _ = foreignKeys as? SerializableImageForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableImageForeignKeys in \(#function) on type \(#file)"
             )
@@ -95,7 +94,7 @@ public class SerializableGallerySearchTokenNode: SerializableNode {
     
     /// - Note: Nothing to do, `SerializableGallerySearchTokenNode` is a leaf.
     public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        guard let foreignKeys = foreignKeys as? SerializableImageForeignKeys else {
+        guard let _ = foreignKeys as? SerializableImageForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableImageForeignKeys in \(#function) on type \(#file)"
             )

@@ -73,7 +73,7 @@ public final class SerializableStudioRouter: SerializableNode {
     }
     
     
-    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {        print("DELETING \(String(describing: Self.self))")
+    public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
 
         guard let _ = foreignKeys as? ZTronSerializable.EmptyFK else {
             throw SerializableException.illegalArgumentException(

@@ -278,8 +278,6 @@ public class SerializableGalleryNode: SerializableNode {
     /// - Note: This should `DELETE CASCADE` all master-slave relationship from db as well
     /// - Note: `propagate` should be unnecessary: removing dangling content for a gallery should delete all of their subtrees
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        print("DELETING \(String(describing: Self.self))")
-
         guard let foreignKeys = foreignKeys as? SerializableGalleryForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableGalleryForeignKeys in \(#function) on type \(#file)"

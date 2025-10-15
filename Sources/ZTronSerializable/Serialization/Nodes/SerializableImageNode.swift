@@ -136,8 +136,6 @@ public class SerializableImageNode: SerializableVisualMediaNode {
     
     /// This implementation removes dangling outlines and bounding circles if any.
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        print("DELETING \(String(describing: Self.self))")
-
         guard let foreignKeys = foreignKeys as? SerializableImageForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableImageForeignKeys in \(#function) on type \(#file)"

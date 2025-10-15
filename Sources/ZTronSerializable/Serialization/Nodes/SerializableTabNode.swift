@@ -136,8 +136,6 @@ public final class SerializableTabNode: SerializableNode {
     }
     
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        print("DELETING \(String(describing: Self.self))")
-
         guard let foreignKeys = foreignKeys as? SerializableTabForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "Expected foreignKeys of type \(String(describing: SerializableTabForeignKeys.self)) in \(#file) -> \(#function)"

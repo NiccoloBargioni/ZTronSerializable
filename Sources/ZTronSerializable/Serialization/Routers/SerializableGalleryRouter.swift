@@ -109,8 +109,6 @@ public class SerializableGalleryRouter: SerializableNode {
         with foreignKeys: any SerializableForeignKeys,
         propagate: Bool
     ) throws {
-        print("DELETING \(String(describing: Self.self))")
-
         guard let foreignKeys = foreignKeys as? SerializableGalleryForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableGalleryForeignKeys in \(#function) on type \(#file)"
