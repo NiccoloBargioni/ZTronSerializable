@@ -83,6 +83,8 @@ public final class SerializableStudioNode: SerializableNode {
     
     
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        print("DELETING \(String(describing: Self.self))")
+
         guard let _ = foreignKeys as? ZTronSerializable.EmptyFK else {
             throw SerializableException.illegalArgumentException(
                 reason: "Expected foreign keys of type \(String(describing: ZTronSerializable.EmptyFK.self)) in \(#function) @ \(#file) for game \(self.toString())"

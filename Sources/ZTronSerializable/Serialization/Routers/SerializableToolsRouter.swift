@@ -131,6 +131,8 @@ public final class SerializableToolsRouter: SerializableNode {
     }
     
     public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        print("DELETING \(String(describing: Self.self))")
+
         guard let foreignKeys = foreignKeys as? SerializableToolForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "Expected foreignKeys of type \(String(describing: SerializableToolForeignKeys.self)) in \(#file) -> \(#function)"

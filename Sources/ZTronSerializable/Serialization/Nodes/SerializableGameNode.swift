@@ -125,6 +125,8 @@ public final class SerializableGameNode: SerializableNode {
     }
     
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        print("DELETING \(String(describing: Self.self))")
+
         guard let foreignKeys = foreignKeys as? SerializableGameForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "Expected foreignKeys of type \(String(describing: SerializableGameForeignKeys.self)) in \(#file) -> \(#function)"

@@ -112,7 +112,7 @@ public class SerializableOutlineNode: OverlaySerializableNode {
     
     /// - Note: Outline cannot have dangling references if you enter here. Deleting a bounding circle must happen at Visual Media level.
     public func deleteDanglingReferencesOn(db: Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        
+        print("DELETING \(String(describing: Self.self))")
     }
     
     
