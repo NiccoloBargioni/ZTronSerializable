@@ -165,6 +165,7 @@ public final class SerializableTabsRouter: SerializableNode {
                 if let tab = tabs[tabDraft.getName()] {
                     tabDraft
                         .withUpdatedPosition(tab.getPosition())
+                        .withRating(tab.getRating())
                 }
             } validate: { tabs in
                 return Validator.validatePositions(tabs.map({ tabModel in

@@ -165,6 +165,7 @@ public final class SerializableToolsRouter: SerializableNode {
                     toolDraft
                         .withUpdatedPosition(toolNode.getPosition())
                         .withAssetsImageName(toolNode.getAssetsImageName())
+                        .withIsSolver(toolNode.isSolver())
                 }
             } validate: { tools in
                 return Validator.validatePositions(tools.map({ toolModel in

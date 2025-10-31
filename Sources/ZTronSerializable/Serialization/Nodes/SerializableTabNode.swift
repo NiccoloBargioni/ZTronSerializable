@@ -9,15 +9,17 @@ import os
 public final class SerializableTabNode: SerializableNode {
     @Lowercased private var name: String
     private let position: Int
-    @Lowercased private var iconName: String
+    private let rating: Int
     private let tools: SerializableToolsRouter
     
     private static let logger: os.Logger = .init()
     
-    public init(name: String, position: Int, iconName: String, tools: SerializableToolsRouter) {
+    public init(name: String, position: Int, rating: Int, tools: SerializableToolsRouter) {
+        assert(rating >= 0 && rating <= 3)
+        
         self.name = name
         self.position = position
-        self.iconName = iconName
+        self.rating = rating
         self.tools = tools
     }
 
@@ -60,7 +62,7 @@ public final class SerializableTabNode: SerializableNode {
             for: db,
             name: self.name,
             position: self.position,
-            iconName: self.iconName,
+            rating: self.rating,
             game: foreignKeys.getGame(),
             map: foreignKeys.getMap()
         )
@@ -121,7 +123,7 @@ public final class SerializableTabNode: SerializableNode {
             TAB(
                 name: \(self.name),
                 position: \(self.position),
-                iconName: \(self.iconName)
+                rating: \(self.rating)
             )
         """
     }
@@ -129,10 +131,14 @@ public final class SerializableTabNode: SerializableNode {
     public func getPosition() -> Int {
         return self.position
     }
-    
+
     
     public func getName() -> String {
         return self.name
+    }
+    
+    public func getRating() -> Int {
+        return self.rating
     }
     
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {

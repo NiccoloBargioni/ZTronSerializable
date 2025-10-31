@@ -10,7 +10,7 @@ public final class SerializableToolNode: SerializableNode {
     @Lowercased private var name: String
     private let position: Int
     private let assetsImageName: String
-    private let isSolver: Bool
+    private let _isSolver: Bool
     private let galleryRouters: [SerializableGalleryRouter]?
     
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableToolNode")
@@ -28,10 +28,10 @@ public final class SerializableToolNode: SerializableNode {
         
         if let galleryRouter = galleryRouter {
             self.galleryRouters = [galleryRouter]
-            self.isSolver = isSolver
+            self._isSolver = isSolver
         } else {
             self.galleryRouters = nil
-            self.isSolver = true
+            self._isSolver = true
         }
     }
     
@@ -48,16 +48,16 @@ public final class SerializableToolNode: SerializableNode {
         self.galleryRouters = galleryRouter
         
         if galleryRouter.count <= 0 {
-            self.isSolver = true
+            self._isSolver = true
         } else {
             let min = galleryRouter.reduce(0, { minDepth, toolRouter in
                 return Swift.min(minDepth, toolRouter.getDepth())
             })
             
             if min <= 0 {
-                self.isSolver = true
+                self._isSolver = true
             } else {
-                self.isSolver = isSolver
+                self._isSolver = isSolver
             }
         }
     }
@@ -95,7 +95,7 @@ public final class SerializableToolNode: SerializableNode {
             name: self.name,
             position: self.position,
             assetsImageName: self.assetsImageName,
-            isSolver: self.isSolver,
+            isSolver: self._isSolver,
             game: foreignKeys.getGame(),
             map: foreignKeys.getMap(),
             tab: foreignKeys.getTab()
@@ -160,6 +160,7 @@ public final class SerializableToolNode: SerializableNode {
             name: \(self.name),
             position: \(self.position),
             assetsImageName: \(self.assetsImageName)
+            isSolver: \(self._isSolver)
         )
         """
     }
@@ -176,6 +177,9 @@ public final class SerializableToolNode: SerializableNode {
         return self.name
     }
     
+    public final func isSolver() -> Bool {
+        return self._isSolver
+    }
     
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
         guard let foreignKeys = foreignKeys as? SerializableToolForeignKeys else {
