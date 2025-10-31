@@ -272,6 +272,9 @@ public class SerializableGalleryRouter: SerializableNode {
         }
     }
 
+    internal final func getDepth() -> Int {
+        return self.router.getMaxDepth()
+    }
 }
 
 fileprivate enum ExistanceError: Error {

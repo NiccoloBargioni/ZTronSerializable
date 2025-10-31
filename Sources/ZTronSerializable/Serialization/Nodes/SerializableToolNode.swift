@@ -10,27 +10,56 @@ public final class SerializableToolNode: SerializableNode {
     @Lowercased private var name: String
     private let position: Int
     private let assetsImageName: String
+    private let isSolver: Bool
     private let galleryRouters: [SerializableGalleryRouter]?
     
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableToolNode")
 
-    public init(name: String, position: Int, assetsImageName: String, galleryRouter: SerializableGalleryRouter?) {
+    public init(
+        name: String,
+        position: Int,
+        assetsImageName: String,
+        isSolver: Bool = false,
+        galleryRouter: SerializableGalleryRouter?
+    ) {
         self.name = name
         self.position = position
         self.assetsImageName = assetsImageName
         
         if let galleryRouter = galleryRouter {
             self.galleryRouters = [galleryRouter]
+            self.isSolver = isSolver
         } else {
             self.galleryRouters = nil
+            self.isSolver = true
         }
     }
     
-    public init(name: String, position: Int, assetsImageName: String, galleryRouter: [SerializableGalleryRouter]) {
+    public init(
+        name: String,
+        position: Int,
+        assetsImageName: String,
+        isSolver: Bool = false,
+        galleryRouter: [SerializableGalleryRouter]
+    ) {
         self.name = name
         self.position = position
         self.assetsImageName = assetsImageName
         self.galleryRouters = galleryRouter
+        
+        if galleryRouter.count <= 0 {
+            self.isSolver = true
+        } else {
+            let min = galleryRouter.reduce(0, { minDepth, toolRouter in
+                return Swift.min(minDepth, toolRouter.getDepth())
+            })
+            
+            if min <= 0 {
+                self.isSolver = true
+            } else {
+                self.isSolver = isSolver
+            }
+        }
     }
 
     
@@ -66,6 +95,7 @@ public final class SerializableToolNode: SerializableNode {
             name: self.name,
             position: self.position,
             assetsImageName: self.assetsImageName,
+            isSolver: self.isSolver,
             game: foreignKeys.getGame(),
             map: foreignKeys.getMap(),
             tab: foreignKeys.getTab()

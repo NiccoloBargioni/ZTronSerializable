@@ -297,7 +297,7 @@ public class SerializableGalleryNode: SerializableNode {
         var imagesVariantsTree: [String: [any SerializableVisualMediaNode]] = [:]
         var firstLevelOfMastersImages: [String: any SerializableVisualMediaNode] = [:]
         
-        try self.medias.forEach { absolutePath, output, params in
+        self.medias.forEach { absolutePath, output, params in
             if absolutePath.count > 2 {
                 let master = absolutePath[absolutePath.count-2]
                 
