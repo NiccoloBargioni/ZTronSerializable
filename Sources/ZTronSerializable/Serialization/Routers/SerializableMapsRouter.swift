@@ -228,7 +228,6 @@ public final class SerializableMapsRouter: SerializableNode {
                         if let mapModel = flatSlavesDict[mapDraft.getName()] {
                             mapDraft
                                 .withUpdatedPosition(mapModel.getPosition())
-                                .withUpdatedAssetsImageName(mapModel.getAssetsImageName())
                         }
                     } validate: { mapModels in
                         return Validator.validatePositions(mapModels.map({ map in
@@ -245,7 +244,6 @@ public final class SerializableMapsRouter: SerializableNode {
             if let mapModel = firstLevelOfMaps[mapDraft.getName()] {
                 mapDraft
                     .withUpdatedPosition(mapModel.getPosition())
-                    .withUpdatedAssetsImageName(mapModel.getAssetsImageName())
             }
         } validate: { mapModels in
             return Validator.validatePositions(mapModels.map({ map in

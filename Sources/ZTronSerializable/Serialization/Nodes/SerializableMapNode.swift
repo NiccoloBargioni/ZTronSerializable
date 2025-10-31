@@ -10,13 +10,11 @@ public final class SerializableMapNode: SerializableNode {
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableMapNode")
     @Lowercased private var name: String
     private let position: Int
-    private let assetsImageName: String
     private let tabs: SerializableTabsRouter
     
-    public init(name: String, position: Int, assetsImageName: String, tabs: SerializableTabsRouter) {
+    public init(name: String, position: Int, tabs: SerializableTabsRouter) {
         self.name = name
         self.position = position
-        self.assetsImageName = assetsImageName
         self.tabs = tabs
     }
     
@@ -49,7 +47,6 @@ public final class SerializableMapNode: SerializableNode {
             for: db,
             name: self.name,
             position: self.position,
-            assetsImageName: self.assetsImageName,
             game: foreignKeys.getGame()
         )
         
@@ -100,7 +97,6 @@ public final class SerializableMapNode: SerializableNode {
         MAP(
             name: \(self.name),
             position: \(self.position),
-            assetsImageName: \(self.assetsImageName)
         )
         """
     }
@@ -113,11 +109,7 @@ public final class SerializableMapNode: SerializableNode {
         return self.name
     }
 
-    
-    internal func getAssetsImageName() -> String {
-        return self.assetsImageName
-    }
-    
+        
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
         guard let foreignKeys = foreignKeys as? SerializableMapForeignKeys else {
             throw SerializableException.illegalArgumentException(

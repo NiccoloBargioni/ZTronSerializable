@@ -8,14 +8,12 @@ import os
 public final class SerializableStudioNode: SerializableNode {
     @Lowercased private var name: String
     private let position: Int
-    private let assetsImageName: String
     private let games: SerializableGamesRouter
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableStudioNode")
     
-    public init(name: String, position: Int, assetsImageName: String, games: SerializableGamesRouter) {
+    public init(name: String, position: Int, games: SerializableGamesRouter) {
         self.name = name
         self.position = position
-        self.assetsImageName = assetsImageName
         self.games = games
     }
     
@@ -43,7 +41,6 @@ public final class SerializableStudioNode: SerializableNode {
             for: db,
             name: self.name,
             position: self.position,
-            assetsImageName: self.assetsImageName
         )
         
         try self.games.router.forEach { _ , game in
@@ -72,7 +69,6 @@ public final class SerializableStudioNode: SerializableNode {
         STUDIO(
             name: \(self.name),
             position: \(self.position),
-            assetsImageName: \(self.assetsImageName)
         )
         """
     }

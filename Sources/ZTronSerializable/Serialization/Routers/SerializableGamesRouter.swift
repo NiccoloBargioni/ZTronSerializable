@@ -175,7 +175,6 @@ public final class SerializableGamesRouter: SerializableNode {
                 
                 gameDraft
                     .withUpdatedPosition(gameModel.getPosition())
-                    .withAssetsImageName(gameModel.getAssetsImageName())
 
             },
             validate: { gameModels in

@@ -9,14 +9,12 @@ import os
 public final class SerializableGameNode: SerializableNode {
     @Lowercased private var name: String
     private let position: Int
-    private let assetsImageName: String
     private let maps: SerializableMapsRouter
     private static let logger: os.Logger = .init(subsystem: "ZTronSerializable", category: "SerializableGameNode")
     
-    public init(name: String, position: Int, assetsImageName: String, maps: SerializableMapsRouter) {
+    public init(name: String, position: Int, maps: SerializableMapsRouter) {
         self.name = name
         self.position = position
-        self.assetsImageName = assetsImageName
         self.maps = maps
     }
     
@@ -60,7 +58,6 @@ public final class SerializableGameNode: SerializableNode {
             for: db,
             name: self.name,
             position: self.position,
-            assetsImageName: self.assetsImageName,
             studio: foreignKeys.getStudio()
         )
 
@@ -78,10 +75,6 @@ public final class SerializableGameNode: SerializableNode {
         
         if gameExists {
             if propagate {
-                let allMaps = self.maps.router.map {
-                    return $1
-                }
-                
                 if !(try maps.existsOn(db: db, with: SerializableMapForeignKeys(game: self.name), propagate: propagate)) {
                     return false
                 }
@@ -106,7 +99,6 @@ public final class SerializableGameNode: SerializableNode {
         GAME(
             name: \(self.name),
             position: \(self.position),
-            assetsImageName: \(assetsImageName)
         )
         """
     }
@@ -119,13 +111,9 @@ public final class SerializableGameNode: SerializableNode {
     public final func getName() -> String {
         return self.name
     }
-    
-    internal final func getAssetsImageName() -> String {
-        return self.assetsImageName
-    }
-    
+        
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        guard let foreignKeys = foreignKeys as? SerializableGameForeignKeys else {
+        guard let _ = foreignKeys as? SerializableGameForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "Expected foreignKeys of type \(String(describing: SerializableGameForeignKeys.self)) in \(#file) -> \(#function)"
             )
@@ -136,7 +124,7 @@ public final class SerializableGameNode: SerializableNode {
     
     
     public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        guard let foreignKeys = foreignKeys as? SerializableGameForeignKeys else {
+        guard let _ = foreignKeys as? SerializableGameForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "Expected foreignKeys of type \(String(describing: SerializableGameForeignKeys.self)) in \(#file) -> \(#function)"
             )
