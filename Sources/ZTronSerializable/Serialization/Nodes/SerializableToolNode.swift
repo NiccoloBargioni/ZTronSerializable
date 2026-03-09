@@ -89,7 +89,7 @@ public final class SerializableToolNode: SerializableNode {
             }
         }
         
-        try DBMS.CRUD.insertIntoTool(
+        try CRUD.insertIntoTool(
             or: .ignore,
             for: db,
             name: self.name,
@@ -119,7 +119,7 @@ public final class SerializableToolNode: SerializableNode {
             )
         }
         
-        let toolExists = try DBMS.CRUD.toolExists(for: db, tool: self.name, tab: foreignKeys.getTab(), map: foreignKeys.getMap(), game: foreignKeys.getGame())
+        let toolExists = try CRUD.toolExists(for: db, tool: self.name, tab: foreignKeys.getTab(), map: foreignKeys.getMap(), game: foreignKeys.getGame())
         
         if toolExists {
             if propagate {

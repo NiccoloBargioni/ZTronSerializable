@@ -57,7 +57,7 @@ public final class SerializableTabNode: SerializableNode {
         }
         
         
-        try DBMS.CRUD.insertIntoTab(
+        try CRUD.insertIntoTab(
             or: .ignore,
             for: db,
             name: self.name,
@@ -83,7 +83,7 @@ public final class SerializableTabNode: SerializableNode {
             )
         }
         
-        let tabExists = try DBMS.CRUD.tabExists(for: db, tab: self.name, map: foreignKeys.getMap(), game: foreignKeys.getGame())
+        let tabExists = try CRUD.tabExists(for: db, tab: self.name, map: foreignKeys.getMap(), game: foreignKeys.getGame())
         
         if tabExists {
             if propagate {

@@ -13,7 +13,7 @@ public final class SerializableGameForeignKeys: SerializableForeignKeys {
     }
     
     public func validate(on db: SQLite.Connection) throws -> ForeignKey? {
-        return try DBMS.CRUD.studioExists(for: db, studio: self.studio) ? nil : .studio
+        return try CRUD.studioExists(for: db, studio: self.studio) ? nil : .studio
     }
     
     public func toString() -> String {

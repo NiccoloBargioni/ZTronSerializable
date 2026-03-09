@@ -14,7 +14,7 @@ public final class SerializableMapForeignKeys: SerializableForeignKeys {
     
     
     public func validate(on db: SQLite.Connection) throws -> ForeignKey? {
-        return try DBMS.CRUD.gameExists(for: db, game: self.game) ? nil : .game
+        return try CRUD.gameExists(for: db, game: self.game) ? nil : .game
     }
     
     public func toString() -> String {

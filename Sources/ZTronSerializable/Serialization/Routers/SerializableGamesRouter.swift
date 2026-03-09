@@ -105,6 +105,7 @@ public final class SerializableGamesRouter: SerializableNode {
     
     
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        /*
         guard let foreignKeys = foreignKeys as? SerializableGameForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "Expected foreignKeys of type \(String(describing: SerializableGameForeignKeys.self)) in \(#file) -> \(#function)"
@@ -129,7 +130,7 @@ public final class SerializableGamesRouter: SerializableNode {
             allGames[gameModel.getName()] = gameModel
         }
         
-        try DBMS.CRUD.batchDeleteGames(
+        try CRUD.batchDeleteGames(
             for: db,
             shouldRemove: { gameModel in
                 if allGames[gameModel.getName()] == nil {
@@ -139,7 +140,7 @@ public final class SerializableGamesRouter: SerializableNode {
                 }
             },
             shouldDecreasePositions: false
-        )
+        )*/
     }
     
     public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
@@ -161,13 +162,14 @@ public final class SerializableGamesRouter: SerializableNode {
             }
         }
         
+        /*
         var allGames: [String: SerializableGameNode] = [:]
         
         self.router.forEach { _, gameModel in
             allGames[gameModel.getName()] = gameModel
         }
         
-        try DBMS.CRUD.updateGames(
+        try CRUD.updateGames(
             for: db,
             produce: { gameDraft in
                 guard gameDraft.getStudio() == foreignKeys.getStudio() else { return }
@@ -188,6 +190,6 @@ public final class SerializableGamesRouter: SerializableNode {
                 */
                 return true
             }
-        )
+        )*/
     }
 }

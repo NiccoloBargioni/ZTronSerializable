@@ -132,6 +132,7 @@ public final class SerializableMapsRouter: SerializableNode {
             }
         }
         
+        /*
         var firstLevelOfMaps: [String: SerializableMapNode] = [:]
         var firstLevelOfSlavesForMaster: [String: [SerializableMapNode]] = [:]
         
@@ -159,7 +160,7 @@ public final class SerializableMapsRouter: SerializableNode {
                     flatSlavesDict[slaveModel.getName()] = slaveModel
                 }
                 
-                try DBMS.CRUD.batchDeleteFirstLevelSubmapsForMap(
+                try CRUD.batchDeleteFirstLevelSubmapsForMap(
                     for: db,
                     master: masterID,
                     game: foreignKeys.getGame(),
@@ -171,14 +172,14 @@ public final class SerializableMapsRouter: SerializableNode {
             }
         }
         
-        try DBMS.CRUD.batchDeleteFirstLevelMapsForGame(
+        try CRUD.batchDeleteFirstLevelMapsForGame(
             for: db,
             game: foreignKeys.getGame(),
             shouldRemove: { mapModel in
                 return firstLevelOfMaps[mapModel.getName()] == nil
             },
             shouldDecreasePositions: false
-        )
+        )*/
     }
     
     public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
@@ -194,6 +195,7 @@ public final class SerializableMapsRouter: SerializableNode {
             }
         }
         
+        /*
         var firstLevelOfMaps: [String: SerializableMapNode] = [:]
         var firstLevelOfSlavesForMaster: [String: [SerializableMapNode]] = [:]
         
@@ -221,7 +223,7 @@ public final class SerializableMapsRouter: SerializableNode {
                     flatSlavesDict[slaveModel.getName()] = slaveModel
                 }
                 
-                try DBMS.CRUD.updateFirstLevelSubmapsOfMap(
+                try CRUD.updateFirstLevelSubmapsOfMap(
                     for: db,
                     master: masterID,
                     game: foreignKeys.getGame()) { mapDraft in
@@ -237,7 +239,7 @@ public final class SerializableMapsRouter: SerializableNode {
             }
         }
         
-        try DBMS.CRUD.updateFirstLevelMapsForGame(
+        try CRUD.updateFirstLevelMapsForGame(
             for: db,
             game: foreignKeys.getGame()
         ) { mapDraft in
@@ -249,6 +251,6 @@ public final class SerializableMapsRouter: SerializableNode {
             return Validator.validatePositions(mapModels.map({ map in
                 return map.getPosition()
             }))
-        }
+        }*/
     }
 }

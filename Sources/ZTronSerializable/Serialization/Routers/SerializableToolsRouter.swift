@@ -112,13 +112,14 @@ public final class SerializableToolsRouter: SerializableNode {
             }
         }
 
+        /*
         var toolsForThisTab: [String: SerializableToolNode] = [:]
         
         self.router.forEach { absolutePath, toolModel in
             toolsForThisTab[toolModel.getName()] = toolModel
         }
         
-        try DBMS.CRUD.batchDeleteToolsForTab(
+        try CRUD.batchDeleteToolsForTab(
             for: db,
             tab: foreignKeys.getTab(),
             map: foreignKeys.getMap(),
@@ -127,7 +128,7 @@ public final class SerializableToolsRouter: SerializableNode {
                 return toolsForThisTab[tool.getName()] == nil
             },
             shouldDecreasePositions: false
-        )
+        )*/
     }
     
     public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
@@ -156,7 +157,7 @@ public final class SerializableToolsRouter: SerializableNode {
         }
         
         
-        try DBMS.CRUD.updateToolsForTab(
+        try CRUD.updateToolsForTab(
             for: db,
             game: foreignKeys.getGame(),
             map: foreignKeys.getMap(),

@@ -77,7 +77,7 @@ public class SerializableGalleryNode: SerializableNode {
             }
         }
         
-        try DBMS.CRUD.insertIntoGallery(
+        try CRUD.insertIntoGallery(
             or: .ignore,
             for: db,
             name: self.name,
@@ -180,7 +180,7 @@ public class SerializableGalleryNode: SerializableNode {
         if medias.getRoutesCount() <= 0 {
             
             /// If no images are included in this gallery, just verify if the record for this Gallery exists on the db
-            return try DBMS.CRUD.galleryExists(
+            return try CRUD.galleryExists(
                 for: db,
                 gallery: self.name,
                 game: foreignKeys.getGame(),
@@ -203,7 +203,7 @@ public class SerializableGalleryNode: SerializableNode {
             
             /// In order for countImagesForGallery with `includeVariants: false` to produce the correct result,
             /// the images variants relationships must be correct at least at the top level.
-            let dbImagesMastersForThisGallery = try DBMS.CRUD.countImagesForGallery(
+            let dbImagesMastersForThisGallery = try CRUD.countImagesForGallery(
                 includeVariants: false,
                 for: db,
                 game: foreignKeys.getGame(),
@@ -278,6 +278,7 @@ public class SerializableGalleryNode: SerializableNode {
     /// - Note: This should `DELETE CASCADE` all master-slave relationship from db as well
     /// - Note: `propagate` should be unnecessary: removing dangling content for a gallery should delete all of their subtrees
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        /*
         guard let foreignKeys = foreignKeys as? SerializableGalleryForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableGalleryForeignKeys in \(#function) on type \(#file)"
@@ -326,7 +327,7 @@ public class SerializableGalleryNode: SerializableNode {
                     firstLevelOfSlaves[slave.getName()] = slave
                 }
                 
-                try DBMS.CRUD.batchDeleteFirstSlaveImagesForImage(
+                try CRUD.batchDeleteFirstSlaveImagesForImage(
                     for: db,
                     master: imageMasterName,
                     gallery: self.name,
@@ -341,7 +342,7 @@ public class SerializableGalleryNode: SerializableNode {
             }
         }
             
-        try DBMS.CRUD.batchDeleteFirstLevelImagesForGallery(
+        try CRUD.batchDeleteFirstLevelImagesForGallery(
             for: db,
             gallery: self.name,
             tool: foreignKeys.getTool(),
@@ -352,6 +353,7 @@ public class SerializableGalleryNode: SerializableNode {
         ) { imageModel in
             return firstLevelOfMastersImages[imageModel.getName()] == nil
         }
+         */
     }
     
     
@@ -363,6 +365,7 @@ public class SerializableGalleryNode: SerializableNode {
             )
         }
         
+        /*
         var imagesVariantsTree: [String: [any SerializableVisualMediaNode]] = [:]
         var firstLevelOfMastersImages: [String: any SerializableVisualMediaNode] = [:]
         
@@ -378,7 +381,7 @@ public class SerializableGalleryNode: SerializableNode {
                 imagesVariantsTree[master]?.append(output)
                 
                 if let params = params {
-                    try DBMS.CRUD.updateVisualMediaMasterSlaveRelationshipsForMaster(
+                    try CRUD.updateVisualMediaMasterSlaveRelationshipsForMaster(
                         for: db,
                         master: master,
                         gallery: self.name,
@@ -432,7 +435,7 @@ public class SerializableGalleryNode: SerializableNode {
                     slavesModels[slaveModel.getName()] = slaveModel
                 }
                 
-                try DBMS.CRUD.updateFirstLevelVariantsOfImageForGallery(
+                try CRUD.updateFirstLevelVariantsOfImageForGallery(
                     for: db,
                     master: masterId,
                     gallery: self.name,
@@ -455,7 +458,7 @@ public class SerializableGalleryNode: SerializableNode {
             }
         }
         
-        try DBMS.CRUD.updateMasterVisualMediasForGallery(
+        try CRUD.updateMasterVisualMediasForGallery(
             for: db,
             gallery: self.name,
             tool: foreignKeys.getTool(),
@@ -473,7 +476,7 @@ public class SerializableGalleryNode: SerializableNode {
             return Validator.validatePositions(masters.map({ masterNode in
                 return masterNode.getPosition()
             }))
-        }
+        }*/
 
         
         if propagate {

@@ -36,7 +36,7 @@ public final class SerializableToolForeignKeys: SerializableForeignKeys {
         var isGameFKValid: Bool = true
         
         do {
-            isGameFKValid = try DBMS.CRUD.gameExists(for: db, game: self.game)
+            isGameFKValid = try CRUD.gameExists(for: db, game: self.game)
         } catch {
             throw SerializableException.invalidForeignKeyException(reason: .game)
         }
@@ -44,7 +44,7 @@ public final class SerializableToolForeignKeys: SerializableForeignKeys {
         if isGameFKValid {
             var isMapFKValid: Bool = true
             do {
-                isMapFKValid = try DBMS.CRUD.mapExists(for: db, map: self.map, game: self.game)
+                isMapFKValid = try CRUD.mapExists(for: db, map: self.map, game: self.game)
             } catch {
                 throw SerializableException.invalidForeignKeyException(reason: .map)
             }
@@ -52,7 +52,7 @@ public final class SerializableToolForeignKeys: SerializableForeignKeys {
             if isMapFKValid {
                 var isTabFKValid: Bool = true
                 do {
-                    isTabFKValid = try DBMS.CRUD.tabExists(for: db, tab: self.tab, map: self.map, game: self.game)
+                    isTabFKValid = try CRUD.tabExists(for: db, tab: self.tab, map: self.map, game: self.game)
                 } catch {
                     throw SerializableException.invalidForeignKeyException(reason: .tab)
                 }

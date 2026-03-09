@@ -26,7 +26,7 @@ public class SerializableSubgalleryRelationshipNode: SerializableNode {
             }
         }
         
-        try DBMS.CRUD.insertIntoHasSubgallery(
+        try CRUD.insertIntoHasSubgallery(
             or: .ignore,
             for: db,
             master: self.master,
@@ -45,7 +45,7 @@ public class SerializableSubgalleryRelationshipNode: SerializableNode {
             )
         }
 
-        return try DBMS.CRUD.subgalleryRelationshipExists(
+        return try CRUD.subgalleryRelationshipExists(
             for: db,
             master: self.master,
             slave: self.slave,

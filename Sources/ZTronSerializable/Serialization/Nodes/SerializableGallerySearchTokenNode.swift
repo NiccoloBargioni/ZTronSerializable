@@ -28,7 +28,7 @@ public class SerializableGallerySearchTokenNode: SerializableNode {
             }
         }
         
-        try DBMS.CRUD.insertIntoGallerySearchToken(
+        try CRUD.insertIntoGallerySearchToken(
             or: .ignore,
             for: db,
             title: self.title,
@@ -49,7 +49,7 @@ public class SerializableGallerySearchTokenNode: SerializableNode {
             )
         }
 
-        return try DBMS.CRUD.gallerySearchTokenExists(
+        return try CRUD.gallerySearchTokenExists(
             for: db,
             game: foreignKeys.getGame(),
             map: foreignKeys.getMap(),

@@ -53,7 +53,7 @@ public final class SerializableGameNode: SerializableNode {
             }
         }
         
-        try DBMS.CRUD.insertIntoGame(
+        try CRUD.insertIntoGame(
             or: .ignore,
             for: db,
             name: self.name,
@@ -71,7 +71,7 @@ public final class SerializableGameNode: SerializableNode {
             )
         }
         
-        let gameExists = try DBMS.CRUD.gameExists(for: db, game: self.name)
+        let gameExists = try CRUD.gameExists(for: db, game: self.name)
         
         if gameExists {
             if propagate {

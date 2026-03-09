@@ -42,7 +42,7 @@ public final class SerializableMapNode: SerializableNode {
             )
         }
         
-        try DBMS.CRUD.insertIntoMap(
+        try CRUD.insertIntoMap(
             or: .ignore,
             for: db,
             name: self.name,
@@ -63,7 +63,7 @@ public final class SerializableMapNode: SerializableNode {
             throw SerializableException.illegalArgumentException(reason: "Expected foreign keys of type \(String(describing: SerializableMapForeignKeys.self)) in \(#function) @ \(#file) for map \(self.name)")
         }
         
-        let mapExists = try DBMS.CRUD.mapExists(for: db, map: self.name, game: foreignKeys.getGame())
+        let mapExists = try CRUD.mapExists(for: db, map: self.name, game: foreignKeys.getGame())
         
         if mapExists {
             if propagate {

@@ -113,14 +113,14 @@ public final class SerializableTabsRouter: SerializableNode {
             }
         }
 
-
+        /*
         var tabs: [String: SerializableTabNode] = [:]
         
         self.router.forEach { absolutePath, tabNode in
             tabs[tabNode.getName()] = tabNode
         }
         
-        try DBMS.CRUD.batchDeleteTabsForMap(
+        try CRUD.batchDeleteTabsForMap(
             for: db,
             map: foreignKeys.getMap(),
             game: foreignKeys.getGame(),
@@ -128,7 +128,7 @@ public final class SerializableTabsRouter: SerializableNode {
                 return tabs[tabModel.getName()] == nil
             },
             shouldDecreasePositions: false
-        )
+        )*/
     }
     
     
@@ -151,14 +151,14 @@ public final class SerializableTabsRouter: SerializableNode {
             }
         }
 
-
+        /*
         var tabs: [String: SerializableTabNode] = [:]
         
         self.router.forEach { absolutePath, tabNode in
             tabs[tabNode.getName()] = tabNode
         }
         
-        try DBMS.CRUD.updateTabsForMap(
+        try CRUD.updateTabsForMap(
             for: db,
             game: foreignKeys.getGame(),
             map: foreignKeys.getMap()) { tabDraft in
@@ -172,7 +172,7 @@ public final class SerializableTabsRouter: SerializableNode {
                     return tabModel.getPosition()
                 }))
             }
-
+         */
     }
 
 }

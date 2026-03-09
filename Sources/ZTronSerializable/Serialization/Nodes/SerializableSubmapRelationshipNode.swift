@@ -26,7 +26,7 @@ public class SerializableSubmapRelationshipNode: SerializableNode {
             }
         }
         
-        try DBMS.CRUD.insertIntoHasSubmap(
+        try CRUD.insertIntoHasSubmap(
             or: .ignore,
             for: db,
             master: self.master,
@@ -42,7 +42,7 @@ public class SerializableSubmapRelationshipNode: SerializableNode {
             )
         }
 
-        return try DBMS.CRUD.submapRelationshipExists(
+        return try CRUD.submapRelationshipExists(
             for: db,
             master: self.master,
             slave: self.slave,
