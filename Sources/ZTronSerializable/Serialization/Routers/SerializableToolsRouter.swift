@@ -112,7 +112,7 @@ public final class SerializableToolsRouter: SerializableNode {
             }
         }
 
-        /*
+        
         var toolsForThisTab: [String: SerializableToolNode] = [:]
         
         self.router.forEach { absolutePath, toolModel in
@@ -128,7 +128,7 @@ public final class SerializableToolsRouter: SerializableNode {
                 return toolsForThisTab[tool.getName()] == nil
             },
             shouldDecreasePositions: false
-        )*/
+        )
     }
     
     public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
