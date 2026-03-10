@@ -188,6 +188,7 @@ public final class SerializableToolNode: SerializableNode {
             )
         }
         
+        
         try self.galleryRouters?.forEach { galleryRouter in
             try galleryRouter.deleteDanglingReferencesOn(db: db, with: SerializableGalleryForeignKeys(tool: self.name, toolFK: foreignKeys), propagate: propagate)
         }
