@@ -136,7 +136,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
     
     /// This implementation removes dangling outlines and bounding circles if any.
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
-        /*
+        
         guard let foreignKeys = foreignKeys as? SerializableImageForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableImageForeignKeys in \(#function) on type \(#file)"
@@ -173,7 +173,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
                map: foreignKeys.getMap(),
                game: foreignKeys.getGame()
            )
-       }*/
+       }
     }
 
     public func updateOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
@@ -183,7 +183,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
             )
         }
         
-        /*
+        
         try self.overlays.compactMap { overlay in
             return overlay as? SerializableBoundingCircleNode
         }.forEach { boundingCircleNode in
@@ -233,6 +233,8 @@ public class SerializableImageNode: SerializableVisualMediaNode {
                 draft
                     .withResourceName(outlineNode.getResourceName())
                     .withBoundingBox(outlineNode.getBoundingBox())
+                    .withColorHex(outlineNode.getColorHex())
+                    .withOpacity(outlineNode.getOpacity())
             } validate: { outlines in
                 return outlines.reduce(true) { isSetValid, outline in
                     let boundingBox = outline.getBoundingBox()
@@ -247,7 +249,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
                             opacity >= 0 && opacity <= 1 && isValidHexColor(color)
                 }
             }
-        }*/
+        }
         
         if propagate {
             try self.overlays.forEach { overlayNode in
