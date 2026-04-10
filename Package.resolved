@@ -1,5 +1,5 @@
 {
-  "originHash" : "12d53804e62294f7d365f7db4e2956ead0d65bf4dcf6a32b95a15339742d26bd",
+  "originHash" : "dbccd030b9bc507f5ba1ab70e647ff56495a825a0b2b4840bae523a12f0fc3fd",
   "pins" : [
     {
       "identity" : "loremipsum",
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/NiccoloBargioni/ZTronDataModel",
       "state" : {
-        "branch" : "development/testing",
-        "revision" : "26f47d2693743e4d75549650de29e7fb7e63f1cf"
+        "branch" : "main",
+        "revision" : "a044cd783a597a2c939d3692b760173520b81367"
       }
     },
     {
