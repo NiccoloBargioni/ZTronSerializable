@@ -38,7 +38,7 @@ public class SerializableOutlineNode: OverlaySerializableNode {
             }
         }
         
-        try DBMS.CRUD.insertIntoOutline(
+        try CRUD.insertIntoOutline(
             or: .ignore,
             for: db,
             resourceName: self.resourceName,
@@ -62,7 +62,7 @@ public class SerializableOutlineNode: OverlaySerializableNode {
             )
         }
 
-        return try DBMS.CRUD.countOutlinesForImage(
+        return try CRUD.countOutlinesForImage(
             for: db,
             game: foreignKeys.getGame(),
             map: foreignKeys.getMap(),

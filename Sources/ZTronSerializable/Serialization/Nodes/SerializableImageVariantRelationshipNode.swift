@@ -34,7 +34,7 @@ class SerializableImageVariantRelationshipNode: SerializableNode {
             }
         }
                 
-        try DBMS.CRUD.insertIntoImageVariant(
+        try CRUD.insertIntoImageVariant(
             or: .ignore,
             for: db,
             master: self.master,
@@ -58,7 +58,7 @@ class SerializableImageVariantRelationshipNode: SerializableNode {
             )
         }
 
-        return try DBMS.CRUD.imageVariantRelationshipExists(
+        return try CRUD.imageVariantRelationshipExists(
             for: db,
             master: self.master,
             slave: self.slave,

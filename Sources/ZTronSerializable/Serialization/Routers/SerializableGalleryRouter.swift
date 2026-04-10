@@ -121,6 +121,7 @@ public class SerializableGalleryRouter: SerializableNode {
             }
         }
 
+        /*
         var firstLevelOfMasterGalleries: [String: SerializableGalleryNode] = [:]
         var firstLevelOfSlavesForGallery: [String: [SerializableGalleryNode]] = [:]
         
@@ -153,7 +154,7 @@ public class SerializableGalleryRouter: SerializableNode {
                     slaves[galleryNode.getName()] = galleryNode
                 }
                 
-                try DBMS.CRUD.batchDeleteSubgalleriesOfMasterForTool(
+                try CRUD.batchDeleteSubgalleriesOfMasterForTool(
                     for: db,
                     master: masterId,
                     tool: foreignKeys.getTool(),
@@ -169,7 +170,7 @@ public class SerializableGalleryRouter: SerializableNode {
         }
         
         
-        try DBMS.CRUD.batchDeleteFirstLevelGalleryForTool(
+        try CRUD.batchDeleteFirstLevelGalleryForTool(
             for: db,
             tool: foreignKeys.getTool(),
             tab: foreignKeys.getTab(),
@@ -179,7 +180,7 @@ public class SerializableGalleryRouter: SerializableNode {
                 return firstLevelOfMasterGalleries[galleryModel.getName()] == nil
             },
             shouldDecreasePositions: false
-        )
+        )*/
     }
     
     
@@ -191,6 +192,7 @@ public class SerializableGalleryRouter: SerializableNode {
             )
         }
      
+        /*
         var firstLevelOfMasterGalleries: [String: SerializableGalleryNode] = [:]
         var firstLevelOfSlavesForGallery: [String: [SerializableGalleryNode]] = [:]
         
@@ -223,7 +225,7 @@ public class SerializableGalleryRouter: SerializableNode {
                     slaves[galleryNode.getName()] = galleryNode
                 }
                 
-                try DBMS.CRUD.updateFirstLevelSlaveGalleriesForMaster(
+                try CRUD.updateFirstLevelSlaveGalleriesForMaster(
                     for: db,
                     master: masterId,
                     tool: foreignKeys.getTool(),
@@ -247,7 +249,7 @@ public class SerializableGalleryRouter: SerializableNode {
         }
         
         
-        try DBMS.CRUD.updateFirstLevelGalleriesForTab(
+        try CRUD.updateFirstLevelGalleriesForTab(
             for: db,
             tool: foreignKeys.getTool(),
             tab: foreignKeys.getTab(),
@@ -263,7 +265,7 @@ public class SerializableGalleryRouter: SerializableNode {
                     mastersModels.getPosition()
                 }))
             })
-    
+         */
         
         if propagate {
             try self.router.forEach { _, galleryNode in

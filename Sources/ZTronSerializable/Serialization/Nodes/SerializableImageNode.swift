@@ -38,7 +38,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
             }
         }
                         
-        try DBMS.CRUD.insertIntoVisualMedia(
+        try CRUD.insertIntoVisualMedia(
             or: .ignore,
             for: db,
             type: .image,
@@ -73,7 +73,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
             )
         }
 
-        let imageExists = try DBMS.CRUD.imageExists(
+        let imageExists = try CRUD.imageExists(
             for: db,
             image: self.name,
             game: foreignKeys.getGame(),
@@ -136,6 +136,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
     
     /// This implementation removes dangling outlines and bounding circles if any.
     public func deleteDanglingReferencesOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws {
+        
         guard let foreignKeys = foreignKeys as? SerializableImageForeignKeys else {
             throw SerializableException.illegalArgumentException(
                 reason: "foreignKeys expected to be of type SerializableImageForeignKeys in \(#function) on type \(#file)"
@@ -147,7 +148,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
         }
         
         if boundingCircles.count <= 0 {
-            try DBMS.CRUD.deleteBoundingCircleForImage(
+            try CRUD.deleteBoundingCircleForImage(
                 for: db,
                 image: self.name,
                 gallery: foreignKeys.getGallery(),
@@ -163,7 +164,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
         }
         
         if outlines.count <= 0 {
-           try DBMS.CRUD.deleteOutlineForImage(
+           try CRUD.deleteOutlineForImage(
                for: db,
                image: self.name,
                gallery: foreignKeys.getGallery(),
@@ -182,10 +183,11 @@ public class SerializableImageNode: SerializableVisualMediaNode {
             )
         }
         
+        
         try self.overlays.compactMap { overlay in
             return overlay as? SerializableBoundingCircleNode
         }.forEach { boundingCircleNode in
-            try DBMS.CRUD.updateBoundingCirclesForImage(
+            try CRUD.updateBoundingCirclesForImage(
                 for: db,
                 image: self.name,
                 gallery: foreignKeys.getGallery(),
@@ -219,7 +221,7 @@ public class SerializableImageNode: SerializableVisualMediaNode {
             return overlay as? SerializableOutlineNode
         }.forEach { outlineNode in
             
-            try DBMS.CRUD.updateOutlinesForImage(
+            try CRUD.updateOutlinesForImage(
                 for: db,
                 image: self.name,
                 gallery: foreignKeys.getGallery(),
@@ -231,6 +233,8 @@ public class SerializableImageNode: SerializableVisualMediaNode {
                 draft
                     .withResourceName(outlineNode.getResourceName())
                     .withBoundingBox(outlineNode.getBoundingBox())
+                    .withColorHex(outlineNode.getColorHex())
+                    .withOpacity(outlineNode.getOpacity())
             } validate: { outlines in
                 return outlines.reduce(true) { isSetValid, outline in
                     let boundingBox = outline.getBoundingBox()

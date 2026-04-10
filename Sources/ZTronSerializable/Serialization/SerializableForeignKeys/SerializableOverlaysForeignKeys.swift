@@ -63,7 +63,7 @@ public final class SerializableImageOverlayForeignKeys: SerializableForeignKeys 
         var isGameFKValid: Bool = true
         
         do {
-            isGameFKValid = try DBMS.CRUD.gameExists(for: db, game: self.game)
+            isGameFKValid = try CRUD.gameExists(for: db, game: self.game)
         } catch {
             throw SerializableException.invalidForeignKeyException(reason: .game)
         }
@@ -71,7 +71,7 @@ public final class SerializableImageOverlayForeignKeys: SerializableForeignKeys 
         if isGameFKValid {
             var isMapFKValid: Bool = true
             do {
-                isMapFKValid = try DBMS.CRUD.mapExists(for: db, map: self.map, game: self.game)
+                isMapFKValid = try CRUD.mapExists(for: db, map: self.map, game: self.game)
             } catch {
                 throw SerializableException.invalidForeignKeyException(reason: .map)
             }
@@ -79,7 +79,7 @@ public final class SerializableImageOverlayForeignKeys: SerializableForeignKeys 
             if isMapFKValid {
                 var isTabFKValid: Bool = true
                 do {
-                    isTabFKValid = try DBMS.CRUD.tabExists(for: db, tab: self.tab, map: self.map, game: self.game)
+                    isTabFKValid = try CRUD.tabExists(for: db, tab: self.tab, map: self.map, game: self.game)
                 } catch {
                     throw SerializableException.invalidForeignKeyException(reason: .tab)
                 }
@@ -87,7 +87,7 @@ public final class SerializableImageOverlayForeignKeys: SerializableForeignKeys 
                 if isTabFKValid {
                     var isToolFKValid: Bool = true
                     do {
-                        isToolFKValid = try DBMS.CRUD.toolExists(for: db, tool: self.tool, tab: self.tab, map: self.map, game: self.game)
+                        isToolFKValid = try CRUD.toolExists(for: db, tool: self.tool, tab: self.tab, map: self.map, game: self.game)
                     } catch {
                         throw SerializableException.invalidForeignKeyException(reason: .tool)
                     }
@@ -95,7 +95,7 @@ public final class SerializableImageOverlayForeignKeys: SerializableForeignKeys 
                     if isToolFKValid {
                         var isGalleryValid: Bool = true
                         do {
-                            isGalleryValid = try DBMS.CRUD.galleryExists(for: db, gallery: self.gallery, game: self.game, map: self.map, tab: self.tab, tool: self.tool)
+                            isGalleryValid = try CRUD.galleryExists(for: db, gallery: self.gallery, game: self.game, map: self.map, tab: self.tab, tool: self.tool)
                         } catch {
                             throw SerializableException.invalidForeignKeyException(reason: .gallery)
                         }
@@ -103,7 +103,7 @@ public final class SerializableImageOverlayForeignKeys: SerializableForeignKeys 
                         if isGalleryValid {
                             var isImageValid: Bool = true
                             do {
-                                isImageValid = try DBMS.CRUD.imageExists(for: db, image: self.image, game: self.game, map: self.map, tab: self.tab, tool: self.tool, gallery: self.gallery)
+                                isImageValid = try CRUD.imageExists(for: db, image: self.image, game: self.game, map: self.map, tab: self.tab, tool: self.tool, gallery: self.gallery)
                             }
                             
                             return isImageValid ? nil : .image

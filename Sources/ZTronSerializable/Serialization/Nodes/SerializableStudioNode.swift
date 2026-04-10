@@ -36,7 +36,7 @@ public final class SerializableStudioNode: SerializableNode {
         }
         */
 
-        try DBMS.CRUD.insertIntoStudio(
+        try CRUD.insertIntoStudio(
             or: .ignore,
             for: db,
             name: self.name,
@@ -53,7 +53,7 @@ public final class SerializableStudioNode: SerializableNode {
     }
     
     public func existsOn(db: SQLite.Connection, with foreignKeys: any SerializableForeignKeys, propagate: Bool) throws -> Bool {
-        let studioExists = try DBMS.CRUD.studioExists(for: db, studio: self.name)
+        let studioExists = try CRUD.studioExists(for: db, studio: self.name)
         
         #if DEBUG
         if studioExists {

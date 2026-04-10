@@ -38,7 +38,7 @@ public class SerializableVideoNode: SerializableVisualMediaNode {
             }
         }
                         
-        try DBMS.CRUD.insertIntoVisualMedia(
+        try CRUD.insertIntoVisualMedia(
             or: .ignore,
             for: db,
             type: .video,
@@ -63,7 +63,7 @@ public class SerializableVideoNode: SerializableVisualMediaNode {
             )
         }
 
-        let videoExists = try DBMS.CRUD.videoExists(
+        let videoExists = try CRUD.videoExists(
             for: db,
             image: self.name,
             game: foreignKeys.getGame(),

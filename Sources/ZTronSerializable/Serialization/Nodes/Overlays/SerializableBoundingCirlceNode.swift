@@ -39,7 +39,7 @@ public class SerializableBoundingCircleNode: OverlaySerializableNode {
         }
 
         
-        try DBMS.CRUD.insertIntoBoundingCircle(
+        try CRUD.insertIntoBoundingCircle(
             or: .ignore,
             for: db,
             colorHex: self.colorHex,
@@ -63,7 +63,7 @@ public class SerializableBoundingCircleNode: OverlaySerializableNode {
             )
         }
         
-        return try DBMS.CRUD.countBoundingCirclesForImage(
+        return try CRUD.countBoundingCirclesForImage(
             for: db,
             game: foreignKeys.getGame(),
             map: foreignKeys.getMap(),

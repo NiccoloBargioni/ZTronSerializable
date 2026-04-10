@@ -22,7 +22,7 @@ public final class SerializableTabForeignKeys: SerializableForeignKeys {
         var isGameFKValid: Bool = true
         
         do {
-            isGameFKValid = try DBMS.CRUD.gameExists(for: db, game: self.game)
+            isGameFKValid = try CRUD.gameExists(for: db, game: self.game)
         } catch {
             throw SerializableException.invalidForeignKeyException(reason: .game)
         }
@@ -30,7 +30,7 @@ public final class SerializableTabForeignKeys: SerializableForeignKeys {
         if isGameFKValid {
             var isMapFKValid: Bool = true
             do {
-                isMapFKValid = try DBMS.CRUD.mapExists(for: db, map: self.map, game: self.game)
+                isMapFKValid = try CRUD.mapExists(for: db, map: self.map, game: self.game)
             } catch {
                 throw SerializableException.invalidForeignKeyException(reason: .map)
             }

@@ -48,7 +48,7 @@ public class SerializableLabelNode: OverlaySerializableNode {
             }
         }
         
-        try DBMS.CRUD.insertIntoLabel(
+        try CRUD.insertIntoLabel(
             or: .ignore,
             for: db,
             label: self.label,
@@ -75,7 +75,7 @@ public class SerializableLabelNode: OverlaySerializableNode {
             )
         }
 
-        return try DBMS.CRUD.labelExists(
+        return try CRUD.labelExists(
             for: db,
             label: self.label,
             game: foreignKeys.getGame(),
