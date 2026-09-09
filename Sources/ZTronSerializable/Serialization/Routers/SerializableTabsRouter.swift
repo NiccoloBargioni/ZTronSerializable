@@ -113,7 +113,6 @@ public final class SerializableTabsRouter: SerializableNode {
             }
         }
 
-        /*
         var tabs: [String: SerializableTabNode] = [:]
         
         self.router.forEach { absolutePath, tabNode in
@@ -128,7 +127,7 @@ public final class SerializableTabsRouter: SerializableNode {
                 return tabs[tabModel.getName()] == nil
             },
             shouldDecreasePositions: false
-        )*/
+        )
     }
     
     
@@ -151,7 +150,6 @@ public final class SerializableTabsRouter: SerializableNode {
             }
         }
 
-        /*
         var tabs: [String: SerializableTabNode] = [:]
         
         self.router.forEach { absolutePath, tabNode in
@@ -172,7 +170,6 @@ public final class SerializableTabsRouter: SerializableNode {
                     return tabModel.getPosition()
                 }))
             }
-         */
     }
 
 }

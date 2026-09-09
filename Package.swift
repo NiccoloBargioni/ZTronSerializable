@@ -29,10 +29,6 @@ let package = Package(
         .package(
             url: "https://github.com/stephencelis/SQLite.swift.git", from: "0.15.3"
         ),
-        
-        .package(
-            url: "https://github.com/lukaskubanek/LoremIpsum", branch: "master"
-        )
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -44,7 +40,6 @@ let package = Package(
                 .product(name: "ZTronDataModel", package: "ZTronDataModel"),
                 .product(name: "ZTronRouter", package: "ZTronRouter"),
                 .product(name: "SQLite", package: "SQLite.swift"),
-                .product(name: "LoremIpsum", package: "LoremIpsum")
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency=complete")
